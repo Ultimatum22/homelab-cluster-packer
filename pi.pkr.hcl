@@ -482,6 +482,13 @@ build {
             "systemctl enable cloud-init"
         ]
     }
+
+    provisioner "shell" {
+        skip_clean = true
+        inline = [
+            "/usr/sbin/userdel -r -f pi",
+        ]
+    }
 }
 
 /**

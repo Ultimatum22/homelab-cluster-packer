@@ -11,3 +11,7 @@ docker run --rm --privileged \
         -var "git_repo=$(git remote get-url origin)" \
         -var "git_commit=$(git rev-parse HEAD)" \
         pi.pkr.hcl
+
+## Set password user
+
+`echo <password> | mkpasswd -m sha-512 -s`
