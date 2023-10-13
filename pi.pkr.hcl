@@ -53,6 +53,14 @@ variable "file_target_extension" {
     default = "zip"
 }
 
+variable "file_unarchive_cmd" {
+    type = list(string)
+    description = <<-EOT
+        The file extension of `file_unarchive_cmd`.
+    EOT
+    default = []
+}
+
 variable "file_checksum" {
     type = string
     description = <<-EOT
@@ -328,11 +336,12 @@ EOF
 source "arm" "rpi" {
     file_urls             = [var.file_url]
     file_target_extension = var.file_target_extension
-
+    file_unarchive_cmd    = var.file_unarchive_cmd
+    
     file_checksum         = var.file_checksum
     file_checksum_url     = var.file_checksum_url
     file_checksum_type    = var.file_checksum_type
-
+    
     image_build_method    = "reuse"
     
     image_partitions {

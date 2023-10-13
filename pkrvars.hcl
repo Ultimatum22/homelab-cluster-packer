@@ -3,9 +3,11 @@
 
 file_url              = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz"
 file_target_extension = "xz"
+file_unarchive_cmd    = ["xz", "-d", "$ARCHIVE_PATH"]
 
 file_checksum_url  = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz.sha256"
 file_checksum_type = "sha256"
+
 
 # Resulting image file
 # Could also be passed at the command line, e.g.
