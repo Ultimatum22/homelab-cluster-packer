@@ -1,0 +1,32 @@
+#cloud-config
+timezone: America/Toronto
+locale: en_CA.UTF-8
+
+ntp:
+  enabled: true
+
+users:
+  - name: system
+    passwd: "$6$kW4vfBM9kGgq4hr$TFtHW7.3jOECR9UCBuw9NrdSMJETzSVoNQGcVv2y.RqRUzWDEtYhYRkGvIpB6ml1fh/fZEVIgKbSXI9L1B6xF."
+    shell: /bin/bash
+    lock-passwd: false
+    ssh_pwauth: True
+    chpasswd: { expire: False }
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    ssh_authorized_keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCbJ7oF5RXUj6R1ewF15X2i6RieWFmVUkOyT0DwzgfI8fRl5mMMSRlDRYQi3NznwcWDAxLApF82FomNv8vk1V2SXDGGs8XpOvtgAPpR3JUKJGmxoiES7rxa7bq/JSmpGprsnlCocTJnOfDz6Gz2Ge4+D84EZHOW7ejbkWDBdXOYYRMIlRSoXBkb0017G/OIvPNdwZRYLzLJYjGGL08GX+/Da+lrbz8/FaewXwb/BfjRYESOG+aJNTCOQfgzNsFGJ6EslsMc1bDtCq2pvWUenlUo/2BEAICiJxmXZkAjDrIYcyTzHLE14+UfCiC6pbMEdXF2ndUARr0HcNpvJz8K0Mg4CfjRpxaopfPfHp/lMR36ys0r4bT3q9iU4ClnUAeWxbCK7pUN+D/6TVrIKLOLuuIph81sb5+jW23ycg0fjQ/2/ttKQvTzHwomN6B6T/KgXVt367Iq+uzN02wtk282pJOIIqVi3PSHVcJl1I+bFAzeEdmJP29d/wnp0ZyuNYDp0P8= miesl@mies-pc
+
+apt:
+  # keep existing sources (cloud-init wipes them by default)
+  preserve_sources_list: true
+
+# add each entry to ~/.ssh/authorized_keys for the configured user or the
+# first user defined in the user definition directive.
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJ5HlTMLWfPBnv9dC0LBqzFtk0r2OBu9UfHdsbMR5YExSQHnhCI5yNrCDbhxDa/Xd/2x3LYYtcI+VW5Li7inO71wNxrMys9/obAVOXXVgPzOLX/5uG2HNlY1mN9qqhjToZSVTFhJBB3gMLDbuIkI81JrKGWAFFj6nakVdhVXHV3V5hclgQhlFLDmUhmINw9Tk9UkdCn9cWbOIaJmaVtJhDk2rxoqlz/SEaUKzN6RctgmrSggpVNEkAWAWvzoo1b6rkLv14QR2uu02FPpGx0dnicAP/VZGwiTDA0P/XVCa088m4v7MNODG3iWLr8oo4o0Syj5pHaYI60ji/wt2V1ogQGQrkJot/3TWc81z1Pz5YAKhOgnql2WBCJCWGAr81q+pJpMOitCaa5mP8uFHmUsVpYTI3clhy81shmgWyVEgsnLpARKK1rXzIhtYeoHlK60UlP1zwN+caAvE5LJFvJYyQsu73TNhBCyW8MHeOpwiofBF42tCgC4gF/PsNEspc+9sKYiVfIfFdFbgLRsvk7GZS4IDUcOqA8Z68uhECi5Qxemzf6cQerK9jrpZalq57JG/kuXHZfvg65xUbQv5MuI0OdvzuRphK04C1RU+C5VW3hQQmUwdzQ912KNwvY+TTsTzTEjgPU1i8RkF6Jd2fCC6ZeAoYKwfSffFh0MmPCiq+Tw== pndurette@gmail.com
+
+# package_upgrade: true
+packages:
+  - htop
+  - vim
