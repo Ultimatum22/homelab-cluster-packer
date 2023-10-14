@@ -358,7 +358,7 @@ source "arm" "rpi" {
         mountpoint   = "/"
         name         = "root"
         size         = "0"
-        start_sector = "532480"
+        start_sector = "4532480"
         type         = "83"
     }
 
