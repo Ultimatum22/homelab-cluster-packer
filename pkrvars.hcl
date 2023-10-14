@@ -1,13 +1,11 @@
 # Raspberry Pi OS base image
 # https://github.com/mkaczanowski/packer-builder-arm#remote-file
 
-file_url              = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz"
-file_target_extension = "xz"
-file_unarchive_cmd    = ["xz", "-d", "$ARCHIVE_PATH"]
+file_url              = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip"
+file_target_extension = "zip"
 
-file_checksum_url  = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz.sha256"
+file_checksum_url  = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip.sha256"
 file_checksum_type = "sha256"
-
 
 # Resulting image file
 # Could also be passed at the command line, e.g.

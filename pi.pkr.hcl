@@ -337,11 +337,11 @@ source "arm" "rpi" {
     file_urls             = [var.file_url]
     file_target_extension = var.file_target_extension
     file_unarchive_cmd    = var.file_unarchive_cmd
-    
+
     file_checksum         = var.file_checksum
     file_checksum_url     = var.file_checksum_url
     file_checksum_type    = var.file_checksum_type
-    
+
     image_build_method    = "reuse"
     
     image_partitions {
