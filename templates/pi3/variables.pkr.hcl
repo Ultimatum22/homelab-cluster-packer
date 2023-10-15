@@ -66,56 +66,30 @@ variable "image_path" {
     description = "The file path the new OS image to create."
 }
 
+variable "git_repo" {
+    type = string
+    description = <<-EOT
+        The current git remote to pass to the build. It will be prepended to `/boot/config.txt`
+
+        Use on the command-line, i.e. `-var "git_repo=$(git remote get-url origin)" `
+    EOT
+    default = ""
+}
+
+variable "git_commit" {
+    type = string
+    description = <<-EOT
+        The current git commit to pass to the build. It will be prepended to `/boot/config.txt`
+
+        Use on the command-line, i.e. `-var "git_commit=$(git rev-parse HEAD)"`
+    EOT
+    default = ""
+}
+
 # Variables: OS Config
 
 variable "locales" {
     type = list(string)
     description = "List of locales to generate, as seen in `/etc/locale.gen`."
     default = ["en_GB.UTF-8 UTF-8", "en_US.UTF-8 UTF-8"]
-}
-
-source "arm" "rpi" {
-    file_checksum_url     = var.file_checksum_url
-    file_checksum_type    = var.file_checksum_type
-
-    file_target_extension = var.file_target_extension
-    file_unarchive_cmd    = var.file_unarchive_cmd
-    file_urls             = [var.file_url]
-
-    image_build_method    = "resize"
-
-    image_chroot_env      = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
-    
-    image_partitions {
-        filesystem   = "vfat"
-        mountpoint   = "/boot"
-        name         = "boot"
-        size         = "256M"
-        start_sector = "8192"
-        type         = "c"
-    }
-
-    image_partitions {
-        filesystem   = "ext4"
-        mountpoint   = "/"
-        name         = "root"
-        size         = "0"
-        start_sector = "532480"
-        type         = "83"
-    }
-
-    image_path                   = var.image_path
-    image_size                   = "4G"
-    image_type                   = "dos"
-    qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
-    qemu_binary_source_path      = "/usr/bin/qemu-arm-static"
-}
-
-build {
-    sources = ["source.arm.rpi"]
-
-    provisioner "shell" {
-        script = "provision-raspberry.sh"
-    }
-
 }
