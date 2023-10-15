@@ -342,7 +342,7 @@ source "arm" "rpi" {
     file_checksum_url     = var.file_checksum_url
     file_checksum_type    = var.file_checksum_type
 
-    image_build_method    = "reuse"
+    image_build_method    = "resize"
     
     image_partitions {
         filesystem   = "vfat"
@@ -358,12 +358,12 @@ source "arm" "rpi" {
         mountpoint   = "/"
         name         = "root"
         size         = "0"
-        start_sector = "4532480"
+        start_sector = "532480"
         type         = "83"
     }
 
     image_path       = var.image_path
-    image_size       = "1G"
+    image_size       = "6G"
     image_type       = "dos"
     image_chroot_env = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
 

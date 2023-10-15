@@ -1,12 +1,12 @@
 # Raspberry Pi OS base image
 # https://github.com/mkaczanowski/packer-builder-arm#remote-file
 
-file_url              = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz"
-file_target_extension = "xz"
+file_url              = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2021-11-08/2021-10-30-raspios-bullseye-armhf-lite.zip"
+file_target_extension = "zip"
 
-file_checksum_url  = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz.sha256"
+file_checksum_url  = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2021-11-08/2021-10-30-raspios-bullseye-armhf-lite.zip.sha256"
 file_checksum_type = "sha256"
-file_unarchive_cmd  = ["xz", "-d", "$ARCHIVE_PATH"]
+// file_unarchive_cmd  = ["xz", "-d", "$ARCHIVE_PATH"]
 
 # Resulting image file
 # Could also be passed at the command line, e.g.
@@ -42,16 +42,16 @@ boot_cmdline = [
 # http://rpf.io/configtxt
 # https://elinux.org/RPiconfig
 
-boot_config = []
+boot_config = [
+        "dtoverlay=vc4-fkms-v3d",
+        "max_framebuffers=2"
+    ]
 
 # /boot/config.txt (conditional filters properties) (default)
 # https://www.raspberrypi.org/documentation/configuration/config-txt/conditional.md
 
 boot_config_filters = [
     [
-        "[pi4]",
-        "dtoverlay=vc4-fkms-v3d",
-        "max_framebuffers=2"
     ]
 ]
 
