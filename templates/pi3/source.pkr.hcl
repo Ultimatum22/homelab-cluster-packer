@@ -34,12 +34,3 @@ source "arm" "rpi" {
     qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
     qemu_binary_source_path      = "/usr/bin/qemu-arm-static"
 }
-
-build {
-    sources = ["source.arm.rpi"]
-
-    provisioner "shell" {
-        script = "provision-raspberry.sh"
-    }
-
-}

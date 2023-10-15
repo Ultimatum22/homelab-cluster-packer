@@ -1,6 +1,7 @@
 #!/bin/bash
 
-[ -d logs ] || mkdir logsz
+[ -d logs ] || mkdir logs
+[ -d output ] || mkdir output
 
 echo "Initializing packer"
 packer init templates/pi3
