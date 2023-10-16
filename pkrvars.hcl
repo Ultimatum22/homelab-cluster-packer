@@ -12,7 +12,7 @@ file_checksum_type = "sha256"
 # Could also be passed at the command line, e.g.
 # -var="image_path=whatever.img"
 
-image_path = "rpi.img"
+image_path = "output/rpi.img"
 
 # wpa_supplicant.conf file to use
 # https://linux.die.net/man/5/wpa_supplicant.conf
@@ -31,11 +31,9 @@ boot_cmdline = [
     "console=tty1",
     "root=PARTUUID=9730496b-02",
     "rootfstype=ext4",
-    "elevator=deadline",
     "fsck.repair=yes",
     "rootwait",
-    "quiet",
-    "init=/usr/lib/raspi-config/init_resize.sh"
+    "quiet"
 ]
 
 # /boot/config.txt (properties) (default)

@@ -159,23 +159,23 @@ variable "boot_config_filters" {
 	]
 }
 
-# variable "cloudinit_metadata_file" {
-#     type = string
-#     description = <<-EOT
-#         The local path to a cloud-init metadata file.
+variable "cloudinit_metadata_file" {
+    type = string
+    description = <<-EOT
+        The local path to a cloud-init metadata file.
         
-#         See the `cloud-init` [`NoCloud` datasource](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html)
-#     EOT
-# }
+        See the `cloud-init` [`NoCloud` datasource](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html)
+    EOT
+}
 
-# variable "cloudinit_userdata_file" {
-#     type = string
-#     description = <<-EOT
-#         The local path to a cloud-init userdata file.
+variable "cloudinit_userdata_file" {
+    type = string
+    description = <<-EOT
+        The local path to a cloud-init userdata file.
         
-#         See the `cloud-init` [`NoCloud` datasource](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html)
-#     EOT
-# }
+        See the `cloud-init` [`NoCloud` datasource](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html)
+    EOT
+}
 
 variable "kernel_modules" {
     type = list(string)
