@@ -1,9 +1,10 @@
 
 build {
     sources = [
-        "source.arm.raspios_bookworm_armhf"
+        "source.arm.raspios_bookworm_armhf",
         "source.arm.raspios_bookworm_arm64"
     ]
+
     # Backup original /boot files
     provisioner "shell" {
         inline = [
@@ -48,6 +49,13 @@ build {
         ]
     }
 
+    # Enable ssh
+    provisioner "shell" {
+        inline = [
+           "touch /boot/sh",
+        ]
+    }
+
     # Set dns
     provisioner "shell" {
         inline = [
@@ -60,10 +68,10 @@ build {
     # Update, upgrade and autoremove packages
     provisioner "shell" {
         inline = [
-            "sudo apt-get update",
-            "sudo apt-get upgrade -y",
-            "sudo apt-get autoremove -y",
-            "sudo apt-get clean -y"
+            "apt-get update",
+            "apt-get upgrade -y",
+            "apt-get autoremove -y",
+            "apt-get clean -y"
         ]
     }
     
@@ -81,8 +89,17 @@ build {
     }
 
     provisioner "shell" {
-        script = "./scripts/manage_users.sh"
+        script = "./scripts/install_cloud_init.sh"
     }
+    
+    provisioner "file" {
+        source = "files/etc/cloud/cloud.cfg"
+        destination = "/etc/cloud/cloud.cf"
+    }
+
+    # provisioner "shell" {
+    #     script = "./scripts/manage_users.sh"
+    # }
 
     # Set locale
     provisioner "shell" {
