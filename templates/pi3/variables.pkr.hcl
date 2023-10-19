@@ -1,56 +1,8 @@
-variable "file_url" {
+variable "image_date_version" {
     type = string
     description = <<-EOT
-        The URL of the OS image file.
+        The date of the image.
     EOT
-}
-
-variable "file_target_extension" {
-    type = string
-    description = <<-EOT
-        The file extension of `file_url`.
-    EOT
-    default = "zip"
-}
-
-variable "file_unarchive_cmd" {
-    type = list(string)
-    description = <<-EOT
-        The file extension of `file_unarchive_cmd`.
-    EOT
-    default = []
-}
-
-variable "file_checksum" {
-    type = string
-    description = <<-EOT
-        The checksum value of `file_url`.
-    EOT
-    default = ""
-}
-
-variable "file_checksum_url" {
-    type = string
-    description = <<-EOT
-        The checksum file URL of `file_url`.
-    EOT
-    default = ""
-}
-
-variable "file_checksum_type" {
-    type = string
-    description = <<-EOT
-        The checksum type of `file_checksum_url`.
-    EOT
-    default = "sha256"
-}
-
-# Variables: packer-builder-arm builder 'image_'
-# https://github.com/mkaczanowski/packer-builder-arm#image-config
-
-variable "image_path" {
-    type = string
-    description = "The file path the new OS image to create."
 }
 
 # Variables: OS Config

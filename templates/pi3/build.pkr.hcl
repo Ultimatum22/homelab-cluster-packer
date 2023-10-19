@@ -1,7 +1,9 @@
 
 build {
-    sources = ["source.arm.rpi"]
-
+    sources = [
+        "source.arm.raspios_bookworm_armhf"
+        "source.arm.raspios_bookworm_arm64"
+    ]
     # Backup original /boot files
     provisioner "shell" {
         inline = [
@@ -15,7 +17,7 @@ build {
         inline = [
         <<-EOF
 			tee /boot/config.txt <<- CONFIG
-				# Image: ${var.image_path} (generated $(date))
+				# (generated $(date))
 				# ${var.git_repo} (${var.git_commit})
 
 				${local.boot_config}

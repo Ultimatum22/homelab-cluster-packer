@@ -1,5 +1,0 @@
-.vagrant
-images
-packer_cache
-dist
-*.log
