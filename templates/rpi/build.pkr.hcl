@@ -96,10 +96,16 @@ build {
         source = "files/etc/cloud/cloud.cfg"
         destination = "/etc/cloud/cloud.cf"
     }
-
-    # provisioner "shell" {
-    #     script = "./scripts/manage_users.sh"
-    # }
+    
+    provisioner "file" {
+        source = "files/boot/meta-data.yaml"
+        destination = "/boot/meta-data"
+    }
+    
+    provisioner "file" {
+        source = "files/boot/user-data.yaml"
+        destination = "/boot/user-data"
+    }
 
     # Set locale
     provisioner "shell" {

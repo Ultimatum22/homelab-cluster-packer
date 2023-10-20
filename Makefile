@@ -6,6 +6,9 @@ clean:
 docker:
 	docker pull mkaczanowski/packer-builder-arm
 
+unmount:
+	umount /media/dave/bootfs /media/dave/rootfs
+
 build: docker clean
 	docker run \
 		--rm \
@@ -22,3 +25,6 @@ flash:
 	flash --force \
 		--userdata ./files/boot/user-data.yaml \
 		./output/rpi-cloud-init-raspios-bullseye-armhf.img
+
+dd: unmount
+	sudo dd if=output/rpi-cloud-init-raspios-bullseye-armhf.img of=/dev/sdc bs=4M status=progress
