@@ -2,7 +2,7 @@
 build {
     sources = [
         "source.arm.raspios_bookworm_armhf",
-        # "source.arm.raspios_bookworm_arm64"
+        "source.arm.raspios_bookworm_arm64"
     ]
 
     # Backup original /boot files
@@ -80,9 +80,9 @@ build {
         destination = "/tmp"
     }
 
-    provisioner "shell" {
-        script = "./scripts/bootstrap_resizerootfs.sh"
-    }
+    # provisioner "shell" {
+    #     script = "./scripts/bootstrap_resizerootfs.sh"
+    # }
 
     provisioner "shell" {
         script = "./scripts/install_docker_apt.sh"
@@ -105,6 +105,19 @@ build {
     provisioner "file" {
         source = "files/boot/user-data.yaml"
         destination = "/boot/user-data"
+    }
+    
+    provisioner "file" {
+        source = "files/boot/userconf"
+        destination = "/boot/userconf"
+    }
+
+    provisioner "shell" {
+        inline = [
+            "apt-get install userconf-pi -y",
+            "sudo rename-user"
+        ]
+    #     script = "./scripts/manage_users.sh"
     }
 
     # Set locale
