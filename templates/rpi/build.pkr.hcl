@@ -98,6 +98,21 @@ build {
     }
     
     provisioner "file" {
+        source = "files/etc/cloud/cloud.cfg.d/99_fake_cloud.cfg"
+        destination = "/etc/cloud/cloud.cfg.d/99_fake_cloud.cfg"
+    }
+    
+    provisioner "file" {
+        source = "files/etc/cloud/cloud.cfg.d/99_raspbian.cfg"
+        destination = "/etc/cloud/cloud.cfg.d/99_raspbian.cfg"
+    }
+    
+    provisioner "file" {
+        source = "files/etc/cloud/templates/sources.list.debian.tmpl"
+        destination = "/etc/cloud/templates/sources.list.debian.tmpl"
+    }
+    
+    provisioner "file" {
         source = "files/boot/meta-data.yaml"
         destination = "/boot/meta-data"
     }
@@ -117,7 +132,8 @@ build {
         inline = [
             "systemctl enable ssh",
             "systemctl start ssh",
-            "systemctl enable cloud-init"
+            "systemctl enable cloud-init",
+            "systemctl mask dhcpcd" # Disable dhcpcd - it has a conflict with cloud-init network config
         ]
     }
 }

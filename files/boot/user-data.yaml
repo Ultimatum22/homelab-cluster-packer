@@ -1,6 +1,17 @@
 #cloud-config
+hostname: arawn
+
 timezone: Europe/Amsterdam
 locale: en_US.UTF-8
+
+manage_etc_hosts: true
+apt_preserve_sources_list: true
+
+resize_rootfs: true
+growpart:
+    mode: auto
+    devices: ["/"]
+    ignore_growroot_disabled: false
 
 ntp:
   enabled: true
@@ -12,7 +23,10 @@ apt:
   # keep existing sources (cloud-init wipes them by default)
   preserve_sources_list: true
 
-# package_upgrade: true
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
 packages:
-  - htop
-  - vim
+  - ntp
+
+final_message: "The system is finally up, after $UPTIME seconds"
