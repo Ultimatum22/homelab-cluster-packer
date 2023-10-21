@@ -52,18 +52,18 @@ build {
     # Enable ssh
     provisioner "shell" {
         inline = [
-           "touch /boot/sh",
+           "touch /boot/ssh",
         ]
     }
 
-    # Set dns
-    provisioner "shell" {
-        inline = [
-            "rm -f /etc/resolv.conf",
-            "echo 'nameserver 1.1.1.1' > /etc/resolv.conf",
-            "echo 'nameserver 8.8.8.8' >> /etc/resolv.conf",
-        ]
-    }
+    # # Set dns
+    # provisioner "shell" {
+    #     inline = [
+    #         "rm -f /etc/resolv.conf",
+    #         "echo 'nameserver 1.1.1.1' > /etc/resolv.conf",
+    #         "echo 'nameserver 8.8.8.8' >> /etc/resolv.conf",
+    #     ]
+    # }
 
     # Update, upgrade and autoremove packages
     provisioner "shell" {
@@ -93,8 +93,8 @@ build {
     }
     
     provisioner "file" {
-        source = "files/etc/cloud/cloud.cfg"
-        destination = "/etc/cloud/cloud.cf"
+        source = "files/etc/cloud/cloud.cfg.yaml"
+        destination = "/etc/cloud/cloud.cfg"
     }
     
     provisioner "file" {
@@ -112,21 +112,12 @@ build {
         destination = "/boot/userconf"
     }
 
+    # Enable services
     provisioner "shell" {
         inline = [
-            "apt-get install userconf-pi -y",
-            "sudo rename-user"
-        ]
-    #     script = "./scripts/manage_users.sh"
-    }
-
-    # Set locale
-    provisioner "shell" {
-        inline = [
-            "echo 'LC_CTYPE=\"en_US.UTF-8\"' >> /etc/default/locale",
-            "echo 'LC_ALL=\"en_US.UTF-8\"' >> /etc/default/locale",
-            "echo 'LANG=\"en_US.UTF-8\"' >> /etc/default/locale",
-            "DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration"
+            "systemctl enable ssh",
+            "systemctl start ssh",
+            "systemctl enable cloud-init"
         ]
     }
 }
