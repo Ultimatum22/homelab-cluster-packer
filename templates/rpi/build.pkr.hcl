@@ -2,7 +2,7 @@
 build {
     sources = [
         "source.arm.raspios_bookworm_armhf",
-        "source.arm.raspios_bookworm_arm64"
+        # "source.arm.raspios_bookworm_arm64"
     ]
 
     # Backup original /boot files

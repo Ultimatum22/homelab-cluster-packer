@@ -10,7 +10,17 @@ datasource:
 # when a 'default' entry is found it will reference the 'default_user'
 # from the distro configuration specified below
 users:
-  - system
+  - name: system
+    gecos: system
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    ssh_import_id:
+      - lp:falcojr
+      - gh:TheRealFalcon
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAFM0iEBuZCiOXBON8eJButuRzyxdTaKHRwngXRO0Y5QIfINiM4qlK0NOo5YSlNuoR2i4A7R9aq/j++RHb84vYIS9QDztV2zJl4Z4tjSF11EOvLPt7Vq7kMfc3x3Wh7GrszNsSNc+u4MD1ZZNJ0h/YNk/Hi2SLWhvsJdFHYJGhli03A/SA== dave@ares
+    password: $6$rounds=4096$9Ms2KsVWsO$qODrsJMJ8D5DX94LKfCIt28VZS..k4TH767Bq4otbqzDfcTaN85XdArQrViP8Y1A49pw4O20Q41Fq28cHgwIF/
 
 # If this is set, 'root' will not be able to ssh in and they
 # will get a message to login instead as the above $user (debian)
