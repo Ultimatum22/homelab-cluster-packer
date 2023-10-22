@@ -20,7 +20,7 @@ variable "image_output" {
 }
 
 variable "image_size" {
-  type = string
+  type        = string
   description = <<-EOT
         Defined in gigabytes
     EOT
@@ -51,4 +51,29 @@ variable "arch_qemu" {
     condition     = can(regex("^armhf$|^arm64$", var.arch_qemu))
     error_message = "Valid values for 'arch' are 'armhf' or 'arm64'."
   }
+}
+
+variable "hostname" {
+  type = string
+}
+
+
+variable "git_repo" {
+  type        = string
+  description = <<-EOT
+        The current git remote to pass to the build. It will be prepended to `/boot/config.txt`
+
+        Use on the command-line, i.e. `-var "git_repo=$(git remote get-url origin)" `
+    EOT
+  default     = ""
+}
+
+variable "git_commit" {
+  type        = string
+  description = <<-EOT
+        The current git commit to pass to the build. It will be prepended to `/boot/config.txt`
+
+        Use on the command-line, i.e. `-var "git_commit=$(git rev-parse HEAD)"`
+    EOT
+  default     = ""
 }

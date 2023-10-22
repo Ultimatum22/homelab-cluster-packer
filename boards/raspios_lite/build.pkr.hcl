@@ -20,6 +20,14 @@ build {
     ]
   }
 
+  # Backup original /boot files
+  provisioner "shell" {
+    inline = [
+      "cp /boot/config.txt /boot/config.txt.bak",
+      "cp /boot/cmdline.txt /boot/cmdline.txt.bak",
+    ]
+  }
+
   provisioner "file" {
     destination = "/tmp"
     source      = "scripts/tools"

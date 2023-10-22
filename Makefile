@@ -2,7 +2,8 @@
 OUTPUT_DIR := output
 LOGS_DIR := logs
 TEMPLATES_DIR := templates
-IMG_FILE := $(OUTPUT_DIR)/rpi-cloud-init-raspios-bullseye-armhf.img
+# IMG_FILE := $(OUTPUT_DIR)/rpi-cloud-init-raspios-bullseye-armhf.img
+IMG_FILE := $(OUTPUT_DIR)/raspios_lite.img
 
 .PHONY: all clean docker unmount build dd
 
@@ -35,6 +36,10 @@ dd: unmount
 build2: docker clean
 	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
 		mkaczanowski/packer-builder-arm build \
-		-var 'arch=armhf' -var 'arch_qemu=armhf' \
+		-var "hostname=$(hostname)" \
+		-var "arch=armhf" \
+		-var "arch_qemu=armhf" \
+		-var "git_repo=$(git remote get-url origin)" \
+		-var "git_commit=$(git rev-parse HEAD)" \
 		-var-file boards/raspios_lite.pkrvars.hcl \
 		boards/raspios_lite | tee $(LOGS_DIR)/rpi_output.txt
