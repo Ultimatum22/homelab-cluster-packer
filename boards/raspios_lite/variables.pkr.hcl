@@ -77,3 +77,15 @@ variable "git_commit" {
     EOT
   default     = ""
 }
+
+variable "system_user" {
+  type        = string
+}
+
+variable "system_user_password" {
+  type        = string
+}
+
+variable "install_tools" {
+  type        = list(string)
+}
