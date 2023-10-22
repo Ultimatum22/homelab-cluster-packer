@@ -31,3 +31,10 @@ dd: unmount
 		exit 1; \
 	fi
 	sudo dd if=$(IMG_FILE) of=$(of) bs=4M status=progress
+
+build2: docker clean
+	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
+		mkaczanowski/packer-builder-arm build \
+		-var 'arch=armhf' -var 'arch_qemu=armhf' \
+		-var-file boards/raspios_lite.pkrvars.hcl \
+		boards/raspios_lite | tee $(LOGS_DIR)/rpi_output.txt
