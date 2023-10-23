@@ -2,9 +2,11 @@
 
 set -e
 
-if [[ ${var.hostname} != "" ]]; then
-    sed -i "s/raspberrypi/${var.hostname}/g" /etc/hosts
-    echo "${var.hostname}" > /etc/hostname
+echo ${HOSTNAME}
+
+if [[ ${HOSTNAME} != "" ]]; then
+    sed -i "s/raspberrypi/${HOSTNAME}/g" /etc/hosts
+    echo "${HOSTNAME}" > /etc/hostname
 
     cat /etc/hosts
     cat /etc/hostname

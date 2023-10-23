@@ -94,6 +94,8 @@ build {
     }
 
     provisioner "shell" {
+
+        environment_vars = ["HOSTNAME=${var.hostname}"],
         script = "scripts/bootstrap.sh"
     }
 

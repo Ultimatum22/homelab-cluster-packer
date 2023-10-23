@@ -29,12 +29,12 @@ build {
   #   ]
   # }
 
-  # provisioner "file" {
-  #   destination = "/tmp"
-  #   source      = "scripts/tools"
-  # }
+  provisioner "file" {
+    destination = "/tmp"
+    source      = "scripts/tools"
+  }
 
-  # provisioner "shell" {
-  #   script = "scripts/bootstrap.sh"
-  # }
+  provisioner "shell" {
+    script = "scripts/bootstrap.sh"
+  }
 }

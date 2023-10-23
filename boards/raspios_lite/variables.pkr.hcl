@@ -57,7 +57,6 @@ variable "hostname" {
   type = string
 }
 
-
 variable "git_repo" {
   type        = string
   description = <<-EOT

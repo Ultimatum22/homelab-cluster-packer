@@ -155,6 +155,10 @@ variable "git_commit" {
     default = ""
 }
 
+variable "hostname" {
+  type = string
+}
+
 locals {
     # Generate files string content
 
