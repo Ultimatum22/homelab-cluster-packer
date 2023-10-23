@@ -88,52 +88,61 @@ build {
         script = "./scripts/install_docker_apt.sh"
     }
 
-    provisioner "shell" {
-        script = "./scripts/install_cloud_init.sh"
-    }
-    
     provisioner "file" {
-        source = "files/etc/cloud/cloud.cfg.yaml"
-        destination = "/etc/cloud/cloud.cfg"
-    }
-    
-    provisioner "file" {
-        source = "files/etc/cloud/cloud.cfg.d/99_fake_cloud.cfg"
-        destination = "/etc/cloud/cloud.cfg.d/99_fake_cloud.cfg"
-    }
-    
-    provisioner "file" {
-        source = "files/etc/cloud/cloud.cfg.d/99_raspbian.cfg"
-        destination = "/etc/cloud/cloud.cfg.d/99_raspbian.cfg"
-    }
-    
-    provisioner "file" {
-        source = "files/etc/cloud/templates/sources.list.debian.tmpl"
-        destination = "/etc/cloud/templates/sources.list.debian.tmpl"
-    }
-    
-    provisioner "file" {
-        source = "files/boot/meta-data.yaml"
-        destination = "/boot/meta-data"
-    }
-    
-    provisioner "file" {
-        source = "files/boot/user-data.yaml"
-        destination = "/boot/user-data"
-    }
-    
-    provisioner "file" {
-        source = "files/boot/userconf"
-        destination = "/boot/userconf"
+        destination = "/tmp"
+        source      = "scripts/tools"
     }
 
-    # Enable services
     provisioner "shell" {
-        inline = [
-            "systemctl enable ssh",
-            "systemctl start ssh",
-            "systemctl enable cloud-init",
-            "systemctl mask dhcpcd" # Disable dhcpcd - it has a conflict with cloud-init network config
-        ]
+        script = "scripts/bootstrap.sh"
     }
+
+    # provisioner "shell" {
+    #     script = "./scripts/install_cloud_init.sh"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/etc/cloud/cloud.cfg.yaml"
+    #     destination = "/etc/cloud/cloud.cfg"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/etc/cloud/cloud.cfg.d/99_fake_cloud.cfg"
+    #     destination = "/etc/cloud/cloud.cfg.d/99_fake_cloud.cfg"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/etc/cloud/cloud.cfg.d/99_raspbian.cfg"
+    #     destination = "/etc/cloud/cloud.cfg.d/99_raspbian.cfg"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/etc/cloud/templates/sources.list.debian.tmpl"
+    #     destination = "/etc/cloud/templates/sources.list.debian.tmpl"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/boot/meta-data.yaml"
+    #     destination = "/boot/meta-data"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/boot/user-data.yaml"
+    #     destination = "/boot/user-data"
+    # }
+    
+    # provisioner "file" {
+    #     source = "files/boot/userconf"
+    #     destination = "/boot/userconf"
+    # }
+
+    # # Enable services
+    # provisioner "shell" {
+    #     inline = [
+    #         "systemctl enable ssh",
+    #         "systemctl start ssh",
+    #         "systemctl enable cloud-init",
+    #         "systemctl mask dhcpcd" # Disable dhcpcd - it has a conflict with cloud-init network config
+    #     ]
+    # }
 }

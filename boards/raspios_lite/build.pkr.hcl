@@ -11,6 +11,7 @@ build {
       "touch /boot/ssh",
     ]
   }
+  
   # # Set dns
   # provisioner "shell" {
   #   inline = [
