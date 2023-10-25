@@ -35,6 +35,13 @@ build {
   }
 
   provisioner "shell" {
+    environment_vars = [
+        "HOSTNAME=${var.hostname}",
+        "SYSTEM_USER=${var.system_user}",
+        "SYSTEM_USER_PASSWORD=${var.system_user_password}",
+        # "INSTALL_TOOLS=${var.install_tools}",
+        "ARCH=${var.arch}"
+    ]
     script = "scripts/bootstrap.sh"
   }
 }

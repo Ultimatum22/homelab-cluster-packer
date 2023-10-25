@@ -2,8 +2,9 @@
 
 set -e
 
-if [[ ${var.system_user} != "pi" ]]; then
-  useradd -m -s /usr/bin/bash ${var.system_user}
-  groupadd ${var.system_user}
-  echo "${var.system_user_password} | passwd "${var.system_user}" --stdin
+echo "SYSTEM_USER ${SYSTEM_USER}"
+if [[ ${SYSTEM_USER} != "pi" ]]; then
+  # useradd -m -s /usr/bin/bash -U -G users ${SYSTEM_USER}
+  useradd -m -s /usr/bin/bash ${SYSTEM_USER}
+  # echo "${SYSTEM_USER_PASSWORD}" | passwd "${SYSTEM_USER}" --stdin
 fi

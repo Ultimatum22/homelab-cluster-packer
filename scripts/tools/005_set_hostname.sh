@@ -2,7 +2,7 @@
 
 set -e
 
-echo ${HOSTNAME}
+echo "HOSTNAME ${HOSTNAME}"
 
 if [[ ${HOSTNAME} != "" ]]; then
     sed -i "s/raspberrypi/${HOSTNAME}/g" /etc/hosts

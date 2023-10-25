@@ -155,8 +155,16 @@ variable "git_commit" {
     default = ""
 }
 
-variable "hostname" {
-  type = string
+variable "system_user" {
+  type        = string
+}
+
+variable "system_user_password" {
+  type        = string
+}
+
+variable "install_tools" {
+  type        = list(string)
 }
 
 locals {
