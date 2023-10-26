@@ -40,7 +40,8 @@ build {
         "SYSTEM_USER=${var.system_user}",
         "SYSTEM_USER_PASSWORD=${var.system_user_password}",
         # "INSTALL_TOOLS=${var.install_tools}",
-        "ARCH=${var.arch}"
+        "ARCH=${var.arch}",
+        # "CLUSTER_IPS=${var.cluster_ips}"
     ]
     script = "scripts/bootstrap.sh"
   }

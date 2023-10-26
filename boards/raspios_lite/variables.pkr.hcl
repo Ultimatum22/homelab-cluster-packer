@@ -78,13 +78,22 @@ variable "git_commit" {
 }
 
 variable "system_user" {
-  type        = string
+  type = string
 }
 
 variable "system_user_password" {
-  type        = string
+  type = string
 }
 
 variable "install_tools" {
-  type        = list(string)
+  type = list(string)
+}
+
+variable "cluster_ips" {
+  type = list(string)
+  default = [
+    "192.168.2.2.221",
+    "192.168.2.2.222",
+    "192.168.2.2.223"
+  ]
 }
