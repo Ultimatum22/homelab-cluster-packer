@@ -15,7 +15,7 @@ rpi-eeprom-update -d -a
 raspi-config nonint do_boot_splash 0
 raspi-config nonint do_memory_split 16
 
-raspi-config nonint do_configure_keyboard nl
+raspi-config nonint do_configure_keyboard en
 raspi-config nonint do_change_timezone Europe/Amsterdam
 
 raspi-config nonint do_boot_rom E1
