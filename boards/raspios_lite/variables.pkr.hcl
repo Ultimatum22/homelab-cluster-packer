@@ -111,5 +111,3 @@ variable "timezone" {
 #     EOT
 #   default     = ""
 # }
-
-variable "omad_"
