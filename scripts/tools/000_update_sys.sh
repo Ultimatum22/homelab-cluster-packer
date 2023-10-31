@@ -1,8 +1,8 @@
-# #!/usr/bin/env bash
+#!/usr/bin/env bash
 
-# set -e
+set -e
 
-# apt-get update --allow-releaseinfo-change
-# apt-get upgrade -y
-# apt-get clean
-# rm -rf /var/lib/apt/lists/*
+apt-get update --allow-releaseinfo-change
+apt-get upgrade -y
+apt-get clean
+rm -rf /var/lib/apt/lists/*
