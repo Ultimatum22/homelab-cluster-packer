@@ -86,14 +86,17 @@ variable "system_user_password" {
 }
 
 variable "install_tools" {
-  type = list(string)
+  type = string
 }
 
 variable "cluster_ips" {
-  type = list(string)
-  default = [
-    "192.168.2.2.221",
-    "192.168.2.2.222",
-    "192.168.2.2.223"
-  ]
+  type = string
+}
+
+variable "keyboard" {
+  type = string
+}
+
+variable "timezone" {
+  type = string
 }

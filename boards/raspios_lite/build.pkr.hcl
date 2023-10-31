@@ -39,9 +39,11 @@ build {
         "HOSTNAME=${var.hostname}",
         "SYSTEM_USER=${var.system_user}",
         "SYSTEM_USER_PASSWORD=${var.system_user_password}",
-        # "INSTALL_TOOLS=${var.install_tools}",
+        "INSTALL_TOOLS=${var.install_tools}",
         "ARCH=${var.arch}",
-        # "CLUSTER_IPS=${var.cluster_ips}"
+        "CLUSTER_IPS=[${var.cluster_ips}]",
+        "KEYBOARD=${var.keyboard}",
+        "TIMEZONE=${var.timezone}"
     ]
     script = "scripts/bootstrap.sh"
   }

@@ -5,3 +5,6 @@ image_type      = "dos"
 
 system_user = "system"
 system_user_password = "system"
+
+keyboard = "en"
+timezone = "Europe/Amsterdam"
