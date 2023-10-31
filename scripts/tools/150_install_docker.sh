@@ -17,11 +17,12 @@ apt-get install \
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
+
+arch=${ARCH}
+
 if [[ ${ARCH} == "aarch64" ]]; then
 	arch=arm64
 fi
-
-arch=${ARCH}
 
 echo "==> arch: ${arch} / ${ARCH}"
 
