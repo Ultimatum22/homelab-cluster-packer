@@ -4,13 +4,6 @@ build {
     "source.arm.raspios",
     # "source.arm.raspios_bookworm_arm64"
   ]
-
-  # Enable ssh
-  provisioner "shell" {
-    inline = [
-      "touch /boot/ssh",
-    ]
-  }
   
   # # Set dns
   # provisioner "shell" {
@@ -41,9 +34,9 @@ build {
         "SYSTEM_USER_PASSWORD=${var.system_user_password}",
         "INSTALL_TOOLS=${var.install_tools}",
         "ARCH=${var.arch}",
-        "CLUSTER_IPS=[${var.cluster_ips}]",
+        "CLUSTER_IPS=(${var.cluster_ips})",
         "KEYBOARD=${var.keyboard}",
-        "TIMEZONE=${var.timezone}"
+        "TIMEZONE=${var.timezone}",
     ]
     script = "scripts/bootstrap.sh"
   }

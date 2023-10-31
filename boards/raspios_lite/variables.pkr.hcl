@@ -91,6 +91,9 @@ variable "install_tools" {
 
 variable "cluster_ips" {
   type = string
+  description = <<-EOT
+        Space based list, this is because of restrictions of packer to pass a list of strings in environment_vars
+    EOT
 }
 
 variable "keyboard" {
@@ -100,3 +103,11 @@ variable "keyboard" {
 variable "timezone" {
   type = string
 }
+
+# variable "public_ssh_keys" {
+#   type = string
+#   description = <<-EOT
+#         Space based list, this is because of restrictions of packer to pass a list of strings in environment_vars
+#     EOT
+#   default     = ""
+# }

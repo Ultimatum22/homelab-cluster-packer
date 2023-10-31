@@ -2,8 +2,6 @@
 
 set -e
 
-echo "get_boot_cli: $(raspi-config nonint get_boot_cli)"
-
 INIT="$(ps --no-headers -o comm 1)"
 
 if [ "$(raspi-config nonint get_boot_cli)" -ne 0 ]; then
