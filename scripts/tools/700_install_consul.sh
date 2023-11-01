@@ -17,8 +17,6 @@ fi
 
 echo "==> arch: ${arch} / ${ARCH}"
 
-CONSUL_VERSION=1.16.3
-
 # Download, decompress and install
 curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_${arch}.zip
 unzip consul_${CONSUL_VERSION}_linux_${arch}.zip

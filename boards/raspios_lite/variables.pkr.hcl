@@ -109,6 +109,14 @@ variable "timezone" {
 #   default     = ""
 # }
 
+variable "consul_version" {
+  type = string
+}
+
+variable "nomad_version" {
+  type = string
+}
+
 variable "consul_encryption_key" {
   type = string
 }

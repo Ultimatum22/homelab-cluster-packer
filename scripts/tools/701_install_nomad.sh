@@ -17,8 +17,6 @@ fi
 
 echo "==> arch: ${arch} / ${ARCH}"
 
-NOMAD_VERSION=1.6.3
-
 # Download, decompress and install
 curl --silent --remote-name https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_${arch}.zip
 unzip nomad_${NOMAD_VERSION}_linux_${arch}.zip
