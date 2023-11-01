@@ -7,22 +7,17 @@ mkdir -p /opt/startup
 cat <<EOF > /opt/startup/701_install_nomad.sh
 #!/usr/bin/env bash
 
-arch=${ARCH}
+converted_arch=$(convert_arch "$ARCH")
+echo "Converted ARCH: $converted_arch"
 
-if [ "$arch" == "aarch64" ]; then
-    arch=arm64
-elif [ "$arch" == "armhf" ]; then
-    arch=arm
-fi
-
-echo "==> arch: ${arch} / ${ARCH}"
+echo "==> arch: $arch / ${ARCH}"
 
 # Download, decompress and install
-curl --silent --remote-name https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_${arch}.zip
-unzip nomad_${NOMAD_VERSION}_linux_${arch}.zip
+curl --silent --remote-name https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_$arch.zip
+unzip nomad_${NOMAD_VERSION}_linux_$arch.zip
 sudo chown root:root nomad
 sudo mv nomad /usr/local/bin/
-rm nomad_${NOMAD_VERSION}_linux_${arch}.zip
+rm nomad_${NOMAD_VERSION}_linux_$arch.zip
 
 # Check if everything is correct
 nomad version
