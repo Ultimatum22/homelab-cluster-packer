@@ -9,10 +9,10 @@ cat <<EOF > /opt/startup/701_install_nomad.sh
 
 arch=${ARCH}
 
-if [[ ${ARCH} == "aarch64" ]]; then
-	arch=arm64
-elif [[ ${ARCH} == "armhf" ]]; then
-	arch=arm
+if [ "$arch" == "aarch64" ]; then
+    arch=arm64
+elif [ "$arch" == "armhf" ]; then
+    arch=arm
 fi
 
 echo "==> arch: ${arch} / ${ARCH}"
