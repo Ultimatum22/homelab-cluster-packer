@@ -23,14 +23,25 @@ nomad_datacenter=homelab
 cat <<EOF > /opt/startup/700_install_nomad.sh
 curl --silent --remote-name https://releases.hashicorp.com/nomad/${nomad_version}/nomad_${nomad_version}_linux_${arch}.zip
 unzip nomad_${nomad_version}_linux_${arch}.zip
-
 sudo chown root:root nomad
 sudo mv nomad /usr/local/bin/
+rm nomad_${nomad_version}_linux_${arch}.zip
+
 nomad version
+
 nomad -autocomplete-install
 complete -C /usr/local/bin/nomad nomad
-sudo mkdir --parents ${nomad_data_dir}
-sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
+
+useradd --system --home /etc/consul.d --shell /bin/false consul
+mkdir --parents /opt/consul
+chown --recursive consul:consul /opt/consul
+
+mkdir --parents /etc/consul.d
+touch /etc/consul.d/consul.hcl
+chown --recursive consul:consul /etc/consul.d
+chmod 640 /etc/consul.d/consul.hcl
+
+
 
 sudo systemctl enable nomad
 sudo systemctl start nomad
@@ -129,6 +140,8 @@ client {
   network_interface = "eth0"
   server_join {
     retry_join = [
+      "192.168.2.221",
+      "192.168.2.222",
       "192.168.2.223"
     ]
     retry_max = 3
