@@ -15,9 +15,6 @@ variable "image_file" {
         ```
     EOT
 }
-variable "image_output" {
-  type = string
-}
 
 variable "image_size" {
   type        = string
@@ -90,7 +87,7 @@ variable "install_tools" {
 }
 
 variable "cluster_ips" {
-  type = string
+  type        = string
   description = <<-EOT
         Space based list, this is because of restrictions of packer to pass a list of strings in environment_vars
     EOT
@@ -111,3 +108,11 @@ variable "timezone" {
 #     EOT
 #   default     = ""
 # }
+
+variable "consul_encryption_key" {
+  type = string
+}
+
+variable "consul_certificate_id" {
+  type = number
+}

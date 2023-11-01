@@ -1,0 +1,1 @@
+consul_encryption_key = "hj/rDT9thKQjOM0vST/TBLIvt6q0ulLRcIc3duFYkrU="

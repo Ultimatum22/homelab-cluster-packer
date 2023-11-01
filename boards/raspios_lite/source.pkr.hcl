@@ -29,7 +29,7 @@ source "arm" "raspios" {
         type         = "83"
     }
 
-    image_path                   = "output/${var.image_output}-${var.arch}.img"
+    image_path                   = "output/raspios_${var.hostname}-${var.arch}.img"
     image_size                   = "${var.image_size}G"
     image_type                   = "${var.image_type}"
     qemu_binary_destination_path = "/usr/bin/qemu-${var.arch_qemu}-static"
