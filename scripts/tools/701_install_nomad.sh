@@ -10,14 +10,14 @@ cat <<EOF > /opt/startup/701_install_nomad.sh
 converted_arch=$(convert_arch "$ARCH")
 echo "Converted ARCH: $converted_arch"
 
-echo "==> arch: $arch / ${ARCH}"
+echo "==> arch: $converted_arch / ${ARCH}"
 
 # Download, decompress and install
-curl --silent --remote-name https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_$arch.zip
-unzip nomad_${NOMAD_VERSION}_linux_$arch.zip
+curl --silent --remote-name https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_$converted_arch.zip
+unzip nomad_${NOMAD_VERSION}_linux_$converted_arch.zip
 sudo chown root:root nomad
 sudo mv nomad /usr/local/bin/
-rm nomad_${NOMAD_VERSION}_linux_$arch.zip
+rm nomad_${NOMAD_VERSION}_linux_$converted_arch.zip
 
 # Check if everything is correct
 nomad version
