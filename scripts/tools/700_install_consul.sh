@@ -20,7 +20,7 @@ nomad_datacenter=homelab
 
 # Nomad install
 
-cat <<EOF > /opt/startup/700_install_nomad.sh
+cat <<EOF > /opt/startup/700_install_consul.sh
 curl --silent --remote-name https://releases.hashicorp.com/nomad/${nomad_version}/nomad_${nomad_version}_linux_${arch}.zip
 unzip nomad_${nomad_version}_linux_${arch}.zip
 sudo chown root:root nomad
@@ -40,8 +40,6 @@ mkdir --parents /etc/consul.d
 touch /etc/consul.d/consul.hcl
 chown --recursive consul:consul /etc/consul.d
 chmod 640 /etc/consul.d/consul.hcl
-
-
 
 sudo systemctl enable nomad
 sudo systemctl start nomad
