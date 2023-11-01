@@ -28,10 +28,6 @@ dd: unmount
 		echo "Error: 'of' argument is required."; \
 		exit 1; \
 	fi
-	@if [ -z "$(filename)" ]; then \
-		echo "Error: 'filename' argument is required."; \
-		exit 1; \
-	fi
 	sudo dd if=$(OUTPUT_DIR)/raspios_$(hostname)-armhf.img of=$(of) bs=4M status=progress
 
 build: docker clean
