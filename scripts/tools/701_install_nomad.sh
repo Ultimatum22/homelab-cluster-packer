@@ -6,7 +6,6 @@ mkdir -p /opt/startup
 
 cat <<EOF > /opt/startup/701_install_nomad.sh
 #!/usr/bin/env bash
-
 arch=${ARCH}
 
 if [ "$arch" == "aarch64" ]; then

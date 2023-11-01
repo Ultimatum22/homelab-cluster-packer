@@ -2,10 +2,7 @@
 
 set -e
 
-mkdir -p /opt/startup
-
-cat <<EOF > /opt/startup/700_install_consul.sh
-#!/usr/bin/env bash
+mkdir -p /opt/tools/nomad
 
 arch=${ARCH}
 
@@ -17,110 +14,139 @@ fi
 
 echo "==> arch: ${arch} / ${ARCH}"
 
-# Download, decompress and install
-curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_${arch}.zip
-unzip consul_${CONSUL_VERSION}_linux_${arch}.zip
-sudo chown root:root consul
-sudo mv consul /usr/local/bin/
-rm consul_${CONSUL_VERSION}_linux_${arch}.zip
+nomad_data_dir=/opt/nomad
+nomad_version=1.6.3
+nomad_datacenter=homelab
 
-# Check if everything is correct
-consul version
+# Nomad install
 
-# Install autocomplete functionality
-consul -autocomplete-install
-complete -C /usr/local/bin/consul consul
+cat <<EOF > /opt/startup/700_install_nomad.sh
+curl --silent --remote-name https://releases.hashicorp.com/nomad/${nomad_version}/nomad_${nomad_version}_linux_${arch}.zip
+unzip nomad_${nomad_version}_linux_${arch}.zip
+sudo chown root:root nomad
+sudo mv nomad /usr/local/bin/
+rm nomad_${nomad_version}_linux_${arch}.zip
 
-# Create user
-sudo useradd --system --home /etc/consul.d --shell /bin/false consul
-sudo mkdir --parents /opt/consul
-sudo chown --recursive consul:consul /opt/consul
+nomad version
 
-# Prepare configuration
-sudo mkdir --parents /etc/consul.d
-sudo touch /etc/consul.d/consul.hcl
-sudo chown --recursive consul:consul /etc/consul.d
-sudo chmod 640 /etc/consul.d/consul.hcl
+nomad -autocomplete-install
+complete -C /usr/local/bin/nomad nomad
 
-# Prepare TLS certificates (create a certificate per server)
-consul tls ca create
-consul tls cert create -server -dc homelab
-consul tls cert create -server -dc homelab
-consul tls cert create -server -dc homelab
-consul tls cert create -client -dc homelab
+useradd --system --home /etc/consul.d --shell /bin/false consul
+mkdir --parents /opt/consul
+chown --recursive consul:consul /opt/consul
 
-consul validate /etc/consul.d/consul.hcl
+mkdir --parents /etc/consul.d
+touch /etc/consul.d/consul.hcl
+chown --recursive consul:consul /etc/consul.d
+chmod 640 /etc/consul.d/consul.hcl
 
-# Start cluster
-sudo systemctl enable consul
-sudo systemctl start consul
-sudo systemctl status consul
 
-# Check cluster
-consul members
 
+sudo systemctl enable nomad
+sudo systemctl start nomad
+sudo systemctl status nomad
 EOF
 
-chmod +x /opt/startup/700_install_consul.sh
+# Nomad service startup
 
-# Consul service startup
+chmod +x /opt/startup/700_install_nomad.sh
 
-cat <<EOF > /etc/systemd/system/consul.service
+cat <<EOF > /etc/systemd/system/nomad.service
 [Unit]
-Description="HashiCorp Consul - A service mesh solution"
-Documentation=https://www.consul.io/
-Requires=network-online.target
+Description=Nomad
+Documentation=https://www.nomadproject.io/docs/
+Wants=network-online.target
 After=network-online.target
-ConditionFileNotEmpty=/etc/consul.d/consul.hcl
+
+# When using Nomad with Consul it is not necessary to start Consul first. These
+# lines start Consul before Nomad as an optimization to avoid Nomad logging
+# that Consul is unavailable at startup.
+#Wants=consul.service
+#After=consul.service
 
 [Service]
-Type=exec
-User=consul
-Group=consul
-ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
-ExecReload=/bin/kill --signal HUP $MAINPID
+
+# Nomad server should be run as the nomad user. Nomad clients
+# should be run as root
+User=nomad
+Group=nomad
+
+ExecReload=/bin/kill -HUP \$MAINPID
+ExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d
 KillMode=process
-KillSignal=SIGTERM
-Restart=on-failure
+KillSignal=SIGINT
 LimitNOFILE=65536
+LimitNPROC=infinity
+Restart=on-failure
+RestartSec=2
+
+## Configure unit start rate limiting. Units which are started more than
+## *burst* times within an *interval* time span are not permitted to start any
+## more. Use `StartLimitIntervalSec` or `StartLimitInterval` (depending on
+## systemd version) to configure the checking interval and `StartLimitBurst`
+## to configure how many starts per interval are allowed. The values in the
+## commented lines are defaults.
+
+# StartLimitBurst = 5
+
+## StartLimitIntervalSec is used for systemd versions >= 230
+# StartLimitIntervalSec = 10s
+
+## StartLimitInterval is used for systemd versions < 230
+# StartLimitInterval = 10s
+
+TasksMax=infinity
+OOMScoreAdjust=-1000
 
 [Install]
 WantedBy=multi-user.target
 
 EOF
 
-# Consul configuration
+# Nomad configuration
 
-sudo mkdir -p /etc/consul.d
-sudo chmod 700 /etc/consul.d
+sudo mkdir -p /etc/nomad.d
+sudo chmod 700 /etc/nomad.d
 
-cat <<EOF > /etc/consul.d/consul.hcl
-datacenter = "homelab"
-data_dir = "/opt/consul"
-encrypt = "${CONSUL_ENCRYPTION_KEY}"
-ca_file = "/etc/consul.d/consul-agent-ca.pem"
-cert_file = "/etc/consul.d/homelab-server-consul-${CONSUL_CERTIFICATE_ID}.pem"
-key_file = "/etc/consul.d/homelab-server-consul-${CONSUL_CERTIFICATE_ID}-key.pem"
-verify_incoming = true
-verify_outgoing = true
-verify_server_hostname = true
-retry_join = ["192.168.2.221","192.168.2.222","192.168.2.223"]
-bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"192.168.2.0/23\" | attr \"address\" }}"
+cat <<EOF > /etc/nomad.d/nomad.hcl
+datacenter = "${nomad_datacenter}"
+data_dir = "${nomad_data_dir}"
 
-acl = {
+EOF
+
+cat <<EOF > /etc/nomad.d/server.hcl
+server {
   enabled = true
-  default_policy = "allow"
-  enable_token_persistence = true
+  bootstrap_expect = 1
 }
 
-performance {
-  raft_multiplier = 1
+bind_addr = "0.0.0.0"
+ports {
+  http = 4646
+  rpc  = 4647
+  serf = 4648
+}
+
+acl {
+  enabled = false
 }
 
 EOF
 
-cat <<EOF > /etc/consul.d/server.hcl
-server = true
-bootstrap_expect = 3
+cat <<EOF > /etc/nomad.d/client.hcl
+client {
+  enabled = true
+  network_interface = "eth0"
+  server_join {
+    retry_join = [
+      "192.168.2.221",
+      "192.168.2.222",
+      "192.168.2.223"
+    ]
+    retry_max = 3
+    retry_interval = "15s"
+  }
+}
 
 EOF
