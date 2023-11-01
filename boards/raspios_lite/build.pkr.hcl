@@ -47,12 +47,12 @@ build {
 
   provisioner "file" {
     destination = "//etc/consul.d/"
-    source      = "files/homelab-client-consul-${var.consul_certificate_id}.pem"
+    source      = "files/homelab-server-consul-${var.consul_certificate_id}.pem"
   }
 
   provisioner "file" {
     destination = "/etc/consul.d/"
-    source      = "files/homelab-client-consul-${var.consul_certificate_id}-key.pem"
+    source      = "files/homelab-server-consul-${var.consul_certificate_id}-key.pem"
   }
 
   provisioner "file" {
