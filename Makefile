@@ -20,6 +20,10 @@ unmount:
 	-umount -lq /media/dave/rootfs
 
 dd: unmount
+	@if [ -z "$(hostname)" ]; then \
+		echo "Error: 'hostname' argument is required."; \
+		exit 1; \
+	fi
 	@if [ -z "$(of)" ]; then \
 		echo "Error: 'of' argument is required."; \
 		exit 1; \
@@ -28,7 +32,7 @@ dd: unmount
 		echo "Error: 'filename' argument is required."; \
 		exit 1; \
 	fi
-	sudo dd if=$(OUTPUT_DIR)/$(filename).img of=$(of) bs=4M status=progress
+	sudo dd if=$(OUTPUT_DIR)/raspios_$(hostname)-armhf.img of=$(of) bs=4M status=progress
 
 build: docker clean
 	@if [ -z "$(hostname)" ]; then \
@@ -37,8 +41,7 @@ build: docker clean
 	fi
 	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
 		mkaczanowski/packer-builder-arm build \
-		-var "hostname=$(hostname)" \
 		-var "git_repo=$(git remote get-url origin)" \
 		-var "git_commit=$(git rev-parse HEAD)" \
-		-var-file boards/raspios_lite-armhf.pkrvars.hcl \
+		-var-file boards/$(hostname).pkrvars.hcl \
 		boards/raspios_lite | tee $(LOGS_DIR)/rpi_output.txt
