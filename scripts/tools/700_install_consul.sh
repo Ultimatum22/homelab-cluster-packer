@@ -91,6 +91,9 @@ EOF
 
 # Consul configuration
 
+sudo mkdir -p /etc/consul.d
+sudo chmod 700 /etc/consul.d
+
 cat <<EOF > /etc/consul.d/consul.hcl
 datacenter = "homelab"
 data_dir = "/opt/consul"

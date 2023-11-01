@@ -75,6 +75,9 @@ EOF
 
 # Nomad configuration
 
+sudo mkdir -p /etc/nomad.d
+sudo chmod 700 /etc/nomad.d
+
 cat <<EOF > /etc/nomad.d/nomad.hcl
 datacenter = "homelab"
 data_dir = "/opt/nomad"
