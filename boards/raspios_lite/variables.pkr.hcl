@@ -109,6 +109,10 @@ variable "timezone" {
 #   default     = ""
 # }
 
+variable "ip_address" {
+  type = string
+}
+
 variable "consul_version" {
   type = string
 }

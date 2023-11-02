@@ -34,13 +34,14 @@ build {
         "SYSTEM_USER_PASSWORD=${var.system_user_password}",
         "INSTALL_TOOLS=${var.install_tools}",
         "ARCH=${var.arch}",
-        "CLUSTER_IPS=(${var.cluster_ips})",
+        "CLUSTER_IPS=${var.cluster_ips}",
         "KEYBOARD=${var.keyboard}",
         "TIMEZONE=${var.timezone}",
         "CONSUL_VERSION=${var.consul_version}",
         "NOMAD_VERSION=${var.nomad_version}",
         "CONSUL_ENCRYPTION_KEY=${var.consul_encryption_key}",
-        "CONSUL_CERTIFICATE_ID=${var.consul_certificate_id}"
+        "CONSUL_CERTIFICATE_ID=${var.consul_certificate_id}",
+        "IP_ADDRESS=${var.ip_address}"
     ]
     script = "scripts/bootstrap.sh"
   }

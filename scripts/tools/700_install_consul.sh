@@ -4,7 +4,6 @@ set -e
 
 mkdir -p /opt/startup
 
-
 converted_arch=$(convert_arch "$ARCH")
 echo "Converted ARCH: $converted_arch"
 
@@ -88,18 +87,33 @@ EOF
 sudo mkdir -p /etc/consul.d
 sudo chmod 700 /etc/consul.d
 
+cluster_ips_array=($(space_string_to_array "$CLUSTER_IPS"))
+retry_join_array=$(bash_array_to_json cluster_ips_array)
+
 cat <<EOF > /etc/consul.d/consul.hcl
 datacenter = "homelab"
 data_dir = "/opt/consul"
 encrypt = "${CONSUL_ENCRYPTION_KEY}"
-ca_file = "/etc/consul.d/consul-agent-ca.pem"
-cert_file = "/etc/consul.d/homelab-server-consul-${CONSUL_CERTIFICATE_ID}.pem"
-key_file = "/etc/consul.d/homelab-server-consul-${CONSUL_CERTIFICATE_ID}-key.pem"
-verify_incoming = true
-verify_outgoing = true
-verify_server_hostname = true
-retry_join = ["192.168.2.221","192.168.2.222","192.168.2.223"]
-bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"192.168.2.0/23\" | attr \"address\" }}"
+retry_join = $retry_join_array
+bind_addr = "${IP_ADDRESS}"
+
+ui_config = {
+  enabled = true
+}
+
+tls = {
+  defaults = {
+    ca_file = "/etc/consul.d/consul-agent-ca.pem"
+    cert_file = "/etc/consul.d/homelab-server-consul-${CONSUL_CERTIFICATE_ID}.pem"
+    key_file = "/etc/consul.d/homelab-server-consul-${CONSUL_CERTIFICATE_ID}-key.pem"
+    verify_incoming = true
+    verify_outgoing = true
+  }
+
+  internal_rpc = {
+    verify_server_hostname = true.
+  }
+}
 
 acl = {
   enabled = true
@@ -115,6 +129,6 @@ EOF
 
 cat <<EOF > /etc/consul.d/server.hcl
 server = true
-bootstrap_expect = 3
+bootstrap_expect = ${#cluster_ips_array[@]}
 
 EOF

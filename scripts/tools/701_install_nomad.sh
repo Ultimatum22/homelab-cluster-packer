@@ -73,6 +73,8 @@ EOF
 sudo mkdir -p /etc/nomad.d
 sudo chmod 700 /etc/nomad.d
 
+cluster_ips_array=($(space_string_to_array "$CLUSTER_IPS"))
+
 cat <<EOF > /etc/nomad.d/nomad.hcl
 datacenter = "homelab"
 data_dir = "/opt/nomad"
@@ -82,7 +84,7 @@ EOF
 cat <<EOF > /etc/nomad.d/server.hcl
 server {
   enabled = true
-  bootstrap_expect = 3
+  bootstrap_expect = ${#cluster_ips_array[@]}
 }
 
 acl {
