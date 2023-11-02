@@ -96,6 +96,7 @@ data_dir = "/opt/consul"
 encrypt = "${CONSUL_ENCRYPTION_KEY}"
 retry_join = $retry_join_array
 bind_addr = "${IP_ADDRESS}"
+client_addr = "0.0.0.0"
 
 ui_config = {
   enabled = true
@@ -111,7 +112,7 @@ tls = {
   }
 
   internal_rpc = {
-    verify_server_hostname = true.
+    verify_server_hostname = true
   }
 }
 
