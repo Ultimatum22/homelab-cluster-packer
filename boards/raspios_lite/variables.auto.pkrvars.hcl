@@ -8,3 +8,5 @@ system_user_password = "system"
 
 keyboard = "en"
 timezone = "Europe/Amsterdam"
+
+terraform_version = "1.6.3"

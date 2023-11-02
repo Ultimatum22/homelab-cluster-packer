@@ -128,3 +128,7 @@ variable "consul_encryption_key" {
 variable "consul_certificate_id" {
   type = number
 }
+
+variable "terraform_version" {
+  type = string
+}
