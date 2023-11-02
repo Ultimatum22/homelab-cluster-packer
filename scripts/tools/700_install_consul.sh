@@ -43,13 +43,6 @@ sudo touch /etc/consul.d/consul.hcl
 sudo chown --recursive consul:consul /etc/consul.d
 sudo chmod 640 /etc/consul.d/consul.hcl
 
-# Prepare TLS certificates (create a certificate per server)
-consul tls ca create
-consul tls cert create -server -dc homelab
-consul tls cert create -server -dc homelab
-consul tls cert create -server -dc homelab
-consul tls cert create -client -dc homelab
-
 consul validate /etc/consul.d/consul.hcl
 
 # Start cluster
