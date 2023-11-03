@@ -3,7 +3,6 @@ job "gitea" {
   region = "global"
 
   datacenters = [
-
     "homelab",
   ]
 
