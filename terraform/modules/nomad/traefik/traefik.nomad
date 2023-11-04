@@ -1,5 +1,5 @@
 job "traefik" {
-  datacenters = ["dc1"]
+  datacenters = ["homelab"]
   type = "service"
   priority = 100
 
