@@ -37,7 +37,7 @@ sudo systemctl enable nomad
 sudo systemctl start nomad
 sudo systemctl status nomad
 
-nomad acl bootstrap > /etc/nomad.d/acl.keys
+nomad acl bootstrap > /opt/nomad/acl.keys
 
 EOF
 
