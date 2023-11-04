@@ -1,5 +1,5 @@
 provider "nomad" {
   address = var.nomad_address
-  secret_id = var.nomad_secret_id
+  // secret_id = var.nomad_secret_id
   region = "global"
 }

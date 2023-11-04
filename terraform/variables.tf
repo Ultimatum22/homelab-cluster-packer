@@ -8,8 +8,8 @@ variable "base_hostname" {
   default = "twisted-wires.nl"
 }
 
-variable "nomad_secret_id" {
-  type        = string
-  description = "Secret ID for ACL bootstrapped Nomad"
-  sensitive   = true
-}
+// variable "nomad_secret_id" {
+//   type        = string
+//   description = "Secret ID for ACL bootstrapped Nomad"
+//   sensitive   = true
+// }
