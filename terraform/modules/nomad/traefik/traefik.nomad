@@ -115,7 +115,7 @@ job "traefik" {
     [entryPoints.websecure.http.tls]
       certResolver = "letsEncrypt"
       [[entryPoints.websecure.http.tls.domains]]
-        main = "*.<< with nomadVar "nomad/jobs" >><< .base_hostname >><< end >>"
+        main = "*.var.base_hostname"
 
   [entryPoints.metrics]
     address = ":8989"
