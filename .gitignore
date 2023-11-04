@@ -2,5 +2,3 @@
 build/
 logs/
 output/
-
-.terraform.lock.hcl
