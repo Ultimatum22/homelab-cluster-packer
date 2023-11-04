@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"nomad","Source":"./modules/nomad","Dir":"modules/nomad"},{"Key":"nomad.traefik","Source":"./traefik","Dir":"modules/nomad/traefik"}]}

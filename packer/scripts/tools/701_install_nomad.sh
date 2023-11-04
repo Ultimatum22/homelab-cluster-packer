@@ -4,13 +4,13 @@ set -e
 
 mkdir -p /opt/startup
 
-cat <<EOF > /opt/startup/701_install_nomad.sh
-#!/usr/bin/env bash
-
 converted_arch=$(convert_arch "$ARCH")
 echo "Converted ARCH: $converted_arch"
 
 echo "==> arch: $converted_arch / ${ARCH}"
+
+cat <<EOF > /opt/startup/701_install_nomad.sh
+#!/usr/bin/env bash
 
 # Download, decompress and install
 curl --silent --remote-name https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_$converted_arch.zip
@@ -39,6 +39,8 @@ sudo touch /etc/nomad.d/nomad.hcl
 sudo systemctl enable nomad
 sudo systemctl start nomad
 sudo systemctl status nomad
+
+nomad acl bootstrap > /opt/nomad/acl.keys
 
 EOF
 
@@ -91,7 +93,7 @@ server {
 }
 
 acl {
-  enabled = false
+  enabled = true
 }
 
 EOF

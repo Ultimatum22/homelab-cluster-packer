@@ -1,0 +1,3 @@
+module "traefik" {
+  source = "./traefik"
+}
