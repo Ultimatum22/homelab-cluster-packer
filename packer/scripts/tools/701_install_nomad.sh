@@ -26,10 +26,13 @@ nomad version
 nomad -autocomplete-install
 complete -C /usr/local/bin/nomad nomad
 
+# Create user
+sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
+sudo mkdir -p /opt/nomad
+sudo chown -R nomad:nomad /opt/nomad
+
 # Prepare configuration
-sudo mkdir --parents /opt/nomad
-sudo mkdir --parents /etc/nomad.d
-sudo chmod 700 /etc/nomad.d
+sudo mkdir -p /etc/nomad.d
 sudo touch /etc/nomad.d/nomad.hcl
 
 # Start cluster
