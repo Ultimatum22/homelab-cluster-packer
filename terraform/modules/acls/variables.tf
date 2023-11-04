@@ -3,7 +3,7 @@ variable "nomad_address" {
   default = "http://localhost:4646"
 }
 
-// variable "nomad_secret_id" {
-//   type      = string
-//   sensitive = true
-// }
+variable "nomad_secret_id" {
+  type      = string
+  sensitive = true
+}
