@@ -24,7 +24,7 @@ build {
 
   provisioner "file" {
     destination = "/tmp"
-    source      = "scripts/tools"
+    source      = "packer/scripts/tools"
   }
 
   provisioner "shell" {
@@ -44,21 +44,21 @@ build {
         "CONSUL_CERTIFICATE_ID=${var.consul_certificate_id}",
         "IP_ADDRESS=${var.ip_address}"
     ]
-    script = "scripts/bootstrap.sh"
-  }
-
-  provisioner "file" {
-    destination = "//etc/consul.d/"
-    source      = "files/homelab-server-consul-${var.consul_certificate_id}.pem"
+    script = "packer/scripts/bootstrap.sh"
   }
 
   provisioner "file" {
     destination = "/etc/consul.d/"
-    source      = "files/homelab-server-consul-${var.consul_certificate_id}-key.pem"
+    source      = "packer/files/homelab-server-consul-${var.consul_certificate_id}.pem"
   }
 
   provisioner "file" {
     destination = "/etc/consul.d/"
-    source      = "files/consul-agent-ca.pem"
+    source      = "packer/files/homelab-server-consul-${var.consul_certificate_id}-key.pem"
+  }
+
+  provisioner "file" {
+    destination = "/etc/consul.d/"
+    source      = "packer/files/consul-agent-ca.pem"
   }
 }

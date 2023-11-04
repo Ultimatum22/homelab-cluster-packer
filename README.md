@@ -7,3 +7,8 @@ docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-b
 ## Set password user
 
 `echo <password> | mkpasswd -m sha-512 -s`
+
+## docs
+
+https://git.iamthefij.com/iamthefij/homelab-nomad
+https://github.com/Elara6331/nomad

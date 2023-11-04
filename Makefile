@@ -39,5 +39,5 @@ build: docker clean
 		mkaczanowski/packer-builder-arm build \
 		-var "git_repo=$(git remote get-url origin)" \
 		-var "git_commit=$(git rev-parse HEAD)" \
-		-var-file boards/$(hostname).pkrvars.hcl \
-		boards/raspios_lite | tee $(LOGS_DIR)/rpi_output.txt
+		-var-file packer/boards/$(hostname).pkrvars.hcl \
+		packer/boards/raspios_lite | tee $(LOGS_DIR)/rpi_output.txt
