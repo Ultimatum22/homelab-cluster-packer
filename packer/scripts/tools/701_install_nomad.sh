@@ -37,6 +37,8 @@ sudo systemctl enable nomad
 sudo systemctl start nomad
 sudo systemctl status nomad
 
+nomad acl bootstrap > /etc/nomad.d/acl.keys
+
 EOF
 
 chmod +x /opt/startup/701_install_nomad.sh
@@ -88,7 +90,7 @@ server {
 }
 
 acl {
-  enabled = false
+  enabled = true
 }
 
 EOF
