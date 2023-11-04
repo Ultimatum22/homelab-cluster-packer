@@ -4,11 +4,6 @@ job "traefik" {
   priority = 100
 
   constraint {
-    attribute = "${node.class}"
-    value = "ingress"
-  }
-
-  constraint {
     distinct_hosts = true
   }
 
