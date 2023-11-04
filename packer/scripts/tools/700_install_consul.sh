@@ -28,13 +28,13 @@ complete -C /usr/local/bin/consul consul
 
 # Create user
 sudo useradd --system --home /etc/consul.d --shell /bin/false consul
-sudo mkdir --parents /opt/consul
-sudo chown --recursive consul:consul /opt/consul
+sudo mkdir -p /opt/consul
+sudo chown -R consul:consul /opt/consul
 
 # Prepare configuration
-sudo mkdir --parents /etc/consul.d
+sudo mkdir -p /etc/consul.d
 sudo touch /etc/consul.d/consul.hcl
-sudo chown --recursive consul:consul /etc/consul.d
+sudo chown -R consul:consul /etc/consul.d
 sudo chmod 640 /etc/consul.d/consul.hcl
 
 consul validate /etc/consul.d/consul.hcl
