@@ -1,11 +1,12 @@
 variable "nomad_address" {
-  type = string
+  type    = string
   default = "http://localhost:4646"
 }
 
-// variable "base_hostname" {
-//   type = string
-// }
+variable "base_hostname" {
+  type    = string
+  default = "twisted-wires.nl"
+}
 
 // variable "nomad_secret_id" {
 //   type        = string
