@@ -1,5 +1,5 @@
 module "acls" {
-  source "./acls"
+  source = "./modules/acls"
 
   nomad_address = var.nomad_address
   // nomad_secret_id = var.nomad_secret_id
