@@ -12,11 +12,6 @@ echo "==> arch: $converted_arch / ${ARCH}"
 cat <<EOF > /opt/startup/700_install_consul.sh
 #!/usr/bin/env bash
 
-converted_arch=$(convert_arch "$ARCH")
-echo "Converted ARCH: $converted_arch"
-
-echo "==> arch: $converted_arch / ${ARCH}"
-
 # Download, decompress and install
 curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_$converted_arch.zip
 unzip consul_${CONSUL_VERSION}_linux_$converted_arch.zip
