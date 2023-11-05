@@ -132,3 +132,7 @@ variable "consul_certificate_id" {
 variable "terraform_version" {
   type = string
 }
+
+variable "ip_address" {
+  type = string
+}

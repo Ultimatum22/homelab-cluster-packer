@@ -73,17 +73,13 @@ EOF
 
 # Nomad configuration
 
-host_private_ip=$(get_host_private_ip)
-
-echo "host_private_ip -> $host_private_ip"
-
 sudo mkdir -p /etc/vault.d
 sudo chmod 700 /etc/vault.d
 
 cat <<EOF > /etc/vault.d/vault.json
 {
-  "api_addr": "http://$host_private_ip:8200",
-  "cluster_addr": "http://$host_private_ip:8201",
+  "api_addr": "http://${IP_ADDRESS}:8200",
+  "cluster_addr": "http://${IP_ADDRESS}:8201",
   "pid_file": "",
   "ui": true,
   "listener": {
