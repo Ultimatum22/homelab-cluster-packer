@@ -43,7 +43,7 @@ EOF
 
 chmod +x /opt/startup/702_install_vault.sh
 
-# Nomad service startup
+# Vault service startup
 
 cat <<EOF > /etc/systemd/system/vault.service
 [Unit]
@@ -71,7 +71,7 @@ WantedBy=multi-user.target
 
 EOF
 
-# Nomad configuration
+# Vault configuration
 
 sudo mkdir -p /etc/vault.d
 sudo chmod 700 /etc/vault.d
