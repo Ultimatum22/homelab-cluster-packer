@@ -1,5 +1,4 @@
 hostname        = "danu"
-ip_address      = "192.168.2.222"
 arch            = "armhf"
 arch_qemu       = "arm64"
 

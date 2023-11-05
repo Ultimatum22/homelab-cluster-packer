@@ -1,5 +1,4 @@
 hostname        = "arawn"
-ip_address      = "192.168.2.223"
 arch            = "armhf"
 arch_qemu       = "arm64"
 

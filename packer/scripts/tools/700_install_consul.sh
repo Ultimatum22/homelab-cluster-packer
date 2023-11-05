@@ -85,12 +85,14 @@ sudo chmod 700 /etc/consul.d
 cluster_ips_array=($(space_string_to_array "$CLUSTER_IPS"))
 retry_join_array=$(bash_array_to_json cluster_ips_array)
 
+export HOST_PRIVATE_IP=$(hostname -I | cut -d " " -f 3)
+
 cat <<EOF > /etc/consul.d/consul.hcl
 datacenter = "homelab"
 data_dir = "/opt/consul"
 encrypt = "${CONSUL_ENCRYPTION_KEY}"
 retry_join = $retry_join_array
-bind_addr = "${IP_ADDRESS}"
+bind_addr = "${HOST_PRIVATE_IP}"
 client_addr = "0.0.0.0"
 
 ui_config = {
