@@ -1,0 +1,6 @@
+[book]
+authors = ["Dave Nieuwenhuijzen"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Homelab cluster packer"
