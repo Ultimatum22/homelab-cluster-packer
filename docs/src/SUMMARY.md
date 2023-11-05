@@ -1,3 +1,11 @@
 # Summary
 
-- [Chapter 1](./chapter_1.md)
+[Home](index.md)
+
+---
+
+## Infrastructure
+
+- [Consul](consul.md)
+- [Nomad](nomad.md)
+- [Vault](vault.md)
