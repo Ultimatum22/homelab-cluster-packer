@@ -51,11 +51,11 @@ Description=Vault
 Documentation=https://developer.hashicorp.com/vault/docs
 Wants=network-online.target
 After=network-online.target
-ConditionFileNotEmpty=/etc/vault.d/vault.json
+ConditionFileNotEmpty=/etc/vault.d/vault.hcl
 
 [Service]
 ExecReload=/bin/kill -HUP $MAINPID
-ExecStart=/usr/local/bin/vault server -config /etc/vault.d/vault.json
+ExecStart=/usr/local/bin/vault server -config /etc/vault.d/vault.hcl
 KillMode=process
 KillSignal=SIGINT
 LimitNOFILE=infinity
@@ -76,24 +76,30 @@ EOF
 sudo mkdir -p /etc/vault.d
 sudo chmod 700 /etc/vault.d
 
-cat <<EOF > /etc/vault.d/vault.json
-{
-  "api_addr": "http://${IP_ADDRESS}:8200",
-  "cluster_addr": "http://${IP_ADDRESS}:8201",
-  "pid_file": "",
-  "ui": true,
-  "listener": {
-    "tcp": {
-      "address": "0.0.0.0:8200",
-      "tls_disable": true
-    }
-  },
-  "storage": {
-    "consul": {
-      "address": "127.0.0.1:8500",
-      "path": "vault/"
-    }
-  }
+
+cat <<EOF > /etc/vault.d/vault.hcl
+
+disable_cache = true
+disable_mlock = true
+ui            = true
+listener "tcp" {
+  address     = "0.0.0.0:8200"
+  tls_disable = 1
 }
+#storage "consul" {
+#  address = "127.0.0.1:8500"
+#  path="vault/"
+#}
+storage "file" {
+  path = "/var/lib/vault/data"
+}
+api_addr                = "http://${IP_ADDRESS}:8200"
+cluster_addr            = "http://${IP_ADDRESS}:8201"
+max_lease_ttl           = "10h"
+default_lease_ttl       = "10h"
+cluster_name            = "vault"
+raw_storage_endpoint    = true
+disable_sealwrap        = true
+disable_printable_check = true
 
 EOF

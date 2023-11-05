@@ -11,7 +11,6 @@ mount_point="/mnt/storage"
 usb_label="homelab-storage"
 device_info=$(lsblk -o NAME,LABEL -n -l | grep "$usb_label")
 
-
 mkdir -p /mnt/storage
 
 if [ -n "$device_info" ]; then
