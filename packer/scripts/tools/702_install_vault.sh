@@ -82,17 +82,20 @@ cat <<EOF > /etc/vault.d/vault.hcl
 disable_cache = true
 disable_mlock = true
 ui            = true
+
 listener "tcp" {
-  address     = "0.0.0.0:8200"
-  tls_disable = 1
+  address             = "${IP_ADDRESS}:8200"
+  cluster_address     = "${IP_ADDRESS}:8201"
+  tls_disable         = "true"
 }
-#storage "consul" {
-#  address = "127.0.0.1:8500"
-#  path="vault/"
-#}
-storage "file" {
-  path = "/var/lib/vault/data"
+
+backend "consul" {
+  address             = "${IP_ADDRESS}:8500"
+  path                = "vault"
+  service             = "vault"
+  scheme              = "http"
 }
+
 api_addr                = "http://${IP_ADDRESS}:8200"
 cluster_addr            = "http://${IP_ADDRESS}:8201"
 max_lease_ttl           = "10h"
