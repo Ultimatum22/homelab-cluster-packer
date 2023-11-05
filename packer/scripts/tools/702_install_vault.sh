@@ -34,6 +34,11 @@ sudo chown -R vault:vault /opt/vault
 # Prepare configuration
 sudo mkdir -p /etc/vault.d
 
+# Start cluster
+sudo systemctl enable vault
+sudo systemctl start vault
+sudo systemctl status vault
+
 EOF
 
 chmod +x /opt/startup/702_install_vault.sh
@@ -68,15 +73,17 @@ EOF
 
 # Nomad configuration
 
+host_private_ip=$(get_host_private_ip)
+
+echo "host_private_ip -> $host_private_ip"
+
 sudo mkdir -p /etc/vault.d
 sudo chmod 700 /etc/vault.d
 
-export HOST_PRIVATE_IP=$(hostname -I | cut -d " " -f 3)
-
 cat <<EOF > /etc/vault.d/vault.json
 {
-  "api_addr": "http://${HOST_PRIVATE_IP}:8200",
-  "cluster_addr": "http://${HOST_PRIVATE_IP}:8201",
+  "api_addr": "http://$host_private_ip:8200",
+  "cluster_addr": "http://$host_private_ip:8201",
   "pid_file": "",
   "ui": true,
   "listener": {

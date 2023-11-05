@@ -40,3 +40,15 @@ bash_array_to_json() {
   json_array+="]"
   echo "$json_array"
 }
+
+get_host_private_ip() {
+  local host_private_ip
+  host_private_ip=$(hostname -I | cut -d " " -f 3)
+  echo "$host_private_ip"
+}
+
+get_host_public_ip() {
+  local host_public_ip
+  host_public_ip=$(hostname -I | cut -d " " -f 1)
+  echo "$host_public_ip"
+}
