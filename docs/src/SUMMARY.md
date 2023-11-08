@@ -4,8 +4,6 @@
 
 ---
 
-## Infrastructure
-
 - [Packer](packer.md)
   - [Consul](packer/consul.md)
   - [Nomad](packer/nomad.md)
