@@ -41,6 +41,7 @@ build {
         "NOMAD_VERSION=${var.nomad_version}",
         "VAULT_VERSION=${var.vault_version}",
         "TERRAFORM_VERSION=${var.terraform_version}",
+        "DNSMASQ_VERSION=${var.dnsmasq_version}",
         "CONSUL_ENCRYPTION_KEY=${var.consul_encryption_key}",
         "CONSUL_CERTIFICATE_ID=${var.consul_certificate_id}",
         "IP_ADDRESS=${var.ip_address}"

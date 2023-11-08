@@ -133,6 +133,10 @@ variable "terraform_version" {
   type = string
 }
 
+variable "dnsmasq_version" {
+  type = string
+}
+
 variable "ip_address" {
   type = string
 }
