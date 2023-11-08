@@ -5,7 +5,7 @@ To create iso images for the rapsberry pi Packer is used. Because arm is not def
 `docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
     mkaczanowski/packer-builder-arm init`
 
-YOu can use the `make build` command, which uses the following docker command.
+You can use the `make build` command, which uses the following docker command.
 
 `docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
     mkaczanowski/packer-builder-arm build \
