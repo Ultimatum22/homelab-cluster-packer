@@ -7,6 +7,8 @@
 ## Infrastructure
 
 - [Packer](packer.md)
-- [Consul](consul.md)
-- [Nomad](nomad.md)
-- [Vault](vault.md)
+  - [Consul](packer/consul.md)
+  - [Nomad](packer/nomad.md)
+    - [Jobs](packer/nomad/jobs.md)
+  - [Vault](packer/vault.md)
+- [Terraform](terraform.md)
