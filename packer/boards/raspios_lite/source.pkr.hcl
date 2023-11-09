@@ -10,7 +10,7 @@ source "arm" "raspios" {
     image_build_method    = "resize"
 
     image_chroot_env      = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
-    
+
     image_partitions {
         filesystem   = "vfat"
         mountpoint   = "/boot"

@@ -29,4 +29,3 @@ terraform -install-autocomplete
 EOF
 
 chmod +x /opt/startup/160_install_terraform.sh
-

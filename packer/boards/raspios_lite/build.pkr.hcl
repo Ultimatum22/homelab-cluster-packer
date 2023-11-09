@@ -4,7 +4,7 @@ build {
     "source.arm.raspios",
     # "source.arm.raspios_bookworm_arm64"
   ]
-  
+
   # # Set dns
   # provisioner "shell" {
   #   inline = [
