@@ -1,8 +1,26 @@
-.packer_cache/
-build/
-logs/
-output/
+.cache/*
+.venv/*
 
-.vagrant
+# ansible
+**/test.yml
+**/testca/vault/vault*
 
-.venv
+# terraform
+**.terraform/*
+*.tfstate
+*.tstate.*
+*.tfvars
+tf_ansible_*
+
+# packer
+*.pkrvars.hcl
+**/builds/*
+*.packer_cache
+output/*
+logs/*
+
+# vagrant
+**/.vagrant/*
+
+# nomad
+input.vars
