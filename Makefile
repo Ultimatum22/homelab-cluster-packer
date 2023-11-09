@@ -12,11 +12,11 @@ SHELL := /bin/bash
 
 install: pipenv pre-commit.install
 
-pipenv: pipenv.venv
+pipenv:
 	pipenv install --dev
 	pipenv shell
 
-pipenv.install: pipenv
+pipenv.install: pipenv.venv
 	pip install --user --upgrade pipenv pip
 	pip --version
 	pipenv --version
@@ -36,12 +36,21 @@ docs:
 	mdbook serve docs --open
 
 # Packer
+packer.build:
+	cd packer/armhf && packer build -var-file="auto.pkrvars.hcl" .
+
 packer.validate:
-	cd packer && docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-		mkaczanowski/packer-builder-arm validate \
-		-var "git_repo=$(git remote get-url origin)" \
-		-var "git_commit=$(git rev-parse HEAD)" \
-		packer/boards/raspios_lite
+	cd packer/armhf && packer validate -var-file="auto.pkrvars.hcl" .
+
+# packer.validate:
+# 	cd packer/armhf && docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
+# 		mkaczanowski/packer-builder-arm validate \
+# 		-var "git_repo=$(git remote get-url origin)" \
+# 		-var "git_commit=$(git rev-parse HEAD)" \
+# 		packer/boards/raspios_lite
+
+vars.generate: pipenv
+	python bin/generate-vars.py
 
 
 

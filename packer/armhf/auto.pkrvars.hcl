@@ -1,0 +1,7 @@
+username = "system"
+password = "system"
+clone_vm = ""
+vm_name = ""
+template_description = "Debian 11 base image"
+ip_address = "192.168.2.250"
+gateway = "192.168.2.254"
