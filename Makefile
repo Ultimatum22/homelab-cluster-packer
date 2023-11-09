@@ -4,21 +4,44 @@ LOGS_DIR := logs
 TEMPLATES_DIR := templates
 ARCH := armhf
 ARCH_QEMU := arm64
+SHELL := /bin/bash
 
-.PHONY: all clean docker unmount build dd
+.PHONY: all clean docker unmount build dd venv pre-commit docs
 
-venv:
-	@python3 -m venv .venv
+# Development
 
+install: pipenv pre-commit.install
 
-pip.install: requirements.txt venv
-	. .venv/bin/activate && pip install -r $< --disable-pip-version-check -q
+pipenv: pipenv.venv
+	pipenv install --dev
+	pipenv shell
 
-pre-commit.install: pip.install
-	. .venv/bin/activate && pre-commit install
+pipenv.install: pipenv
+	pip install --user --upgrade pipenv pip
+	pip --version
+	pipenv --version
+
+pipenv.venv:
+	rm -rf .venv
+	mkdir -p .venv
+
+pre-commit.install:
+	pre-commit install
 
 pre-commit:
-	pre-commit run -all
+	pre-commit run --all-files
+
+# Docs
+docs:
+	mdbook serve docs --open
+
+# Packer
+packer.validate:
+	cd packer && docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
+		mkaczanowski/packer-builder-arm validate \
+		-var "git_repo=$(git remote get-url origin)" \
+		-var "git_commit=$(git rev-parse HEAD)" \
+		packer/boards/raspios_lite
 
 
 
