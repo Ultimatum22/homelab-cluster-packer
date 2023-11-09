@@ -1,1 +1,1 @@
-nomad_version          = "1.6.3"
+nomad_version = "1.6.3"

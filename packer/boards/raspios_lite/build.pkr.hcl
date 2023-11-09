@@ -29,22 +29,22 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-        "HOSTNAME=${var.hostname}",
-        "SYSTEM_USER=${var.system_user}",
-        "SYSTEM_USER_PASSWORD=${var.system_user_password}",
-        "INSTALL_TOOLS=${var.install_tools}",
-        "ARCH=${var.arch}",
-        "CLUSTER_IPS=${var.cluster_ips}",
-        "KEYBOARD=${var.keyboard}",
-        "TIMEZONE=${var.timezone}",
-        "CONSUL_VERSION=${var.consul_version}",
-        "NOMAD_VERSION=${var.nomad_version}",
-        "VAULT_VERSION=${var.vault_version}",
-        "TERRAFORM_VERSION=${var.terraform_version}",
-        "DNSMASQ_VERSION=${var.dnsmasq_version}",
-        "CONSUL_ENCRYPTION_KEY=${var.consul_encryption_key}",
-        "CONSUL_CERTIFICATE_ID=${var.consul_certificate_id}",
-        "IP_ADDRESS=${var.ip_address}"
+      "HOSTNAME=${var.hostname}",
+      "SYSTEM_USER=${var.system_user}",
+      "SYSTEM_USER_PASSWORD=${var.system_user_password}",
+      "INSTALL_TOOLS=${var.install_tools}",
+      "ARCH=${var.arch}",
+      "CLUSTER_IPS=${var.cluster_ips}",
+      "KEYBOARD=${var.keyboard}",
+      "TIMEZONE=${var.timezone}",
+      "CONSUL_VERSION=${var.consul_version}",
+      "NOMAD_VERSION=${var.nomad_version}",
+      "VAULT_VERSION=${var.vault_version}",
+      "TERRAFORM_VERSION=${var.terraform_version}",
+      "DNSMASQ_VERSION=${var.dnsmasq_version}",
+      "CONSUL_ENCRYPTION_KEY=${var.consul_encryption_key}",
+      "CONSUL_CERTIFICATE_ID=${var.consul_certificate_id}",
+      "IP_ADDRESS=${var.ip_address}"
     ]
     script = "packer/scripts/bootstrap.sh"
   }

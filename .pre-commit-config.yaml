@@ -7,4 +7,28 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-merge-conflict
-      - id: check-added-large-files
+      # - id: check-added-large-files
+
+  # - repo: https://github.com/antonbabenko/pre-commit-terraform
+  #   rev: v1.83.5
+  #   hooks:
+  #     - id: terraform_fmt
+  #       args:
+  #         - --args=-diff
+  #         - --args=-recursive
+  #     - id: terraform_validate
+
+  # - repo: local
+  #   hooks:
+  #     - id: packer_fmt
+  #       name: Packer fmt
+  #       description: Rewrites all Packer files in canonical format
+  #       language: script
+  #       entry: ./bin/packer-fmt.sh
+  #       files: (\.pkr\.(hcl|json)|\.pkrvars\.hcl)$
+  #       require_serial: true
+
+  # - repo: https://github.com/gruntwork-io/pre-commit
+  #   rev: v0.1.23
+  #   hooks:
+  #     - id: packer-validate

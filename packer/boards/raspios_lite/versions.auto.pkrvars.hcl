@@ -1,1 +1,1 @@
-dnsmasq_version          = "2.89-1"
+dnsmasq_version = "2.89-1"
