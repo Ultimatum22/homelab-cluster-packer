@@ -4,3 +4,5 @@ logs/
 output/
 
 .vagrant
+
+.venv
