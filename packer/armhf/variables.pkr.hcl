@@ -11,6 +11,14 @@ variable "ssh_username" {
   type = string
 }
 
+variable "ssh_password" {
+  type = string
+}
+
+variable "root_password" {
+  type = string
+}
+
 variable "clone_vm" {
   type        = string
   description = "Name of existing VM template to clone"

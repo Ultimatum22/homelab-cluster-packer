@@ -1,15 +1,23 @@
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
+name = "homelab cluster"
 
 [packages]
-pre-commit = "==3.3.3"
-pyyaml = "==6.0.1"
-virtualenv = "==20.24.2"
 python-hcl2 = "*"
+ansible = "*"
+ansible-lint = "*"
+pre-commit = "==3.3.3"
+pre-commit-hooks = "*"
+molecule = "*"
+molecule-vagrant = "*"
+pyyaml = "*"
+virtualenv = "*"
 
 [dev-packages]
+docker = "*"
+yamllint = "*"
+ansible-lint = "*"
 
 [requires]
 python_version = "3.11"

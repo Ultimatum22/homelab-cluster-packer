@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 
-import hcl2
 import os.path as path
+
+import hcl2
 
 PACKER_BASE_DIR = "packer"
 PACKER_VARS_DECLARATION_FILE = "variables.pkr.hcl"
 PACKER_VARS_FILE = "auto.pkrvars.hcl"
 PACKER_DIRS = ["armhf"]
 
-# TF_BASE_DIR = "terraform"
-# TF_VARS_DECLARATION_FILE = "variables.tf"
-# TF_VARS_FILE = "terraform.tfvars"
-# TF_DIRS = ["nomad"]
+TF_BASE_DIR = "terraform"
+TF_VARS_DECLARATION_FILE = "variables.tf"
+TF_VARS_FILE = "terraform.tfvars"
+TF_DIRS = ["nomad"]
 
 
 def vars_to_tfvars(file, tfvars, overwrite=False, quiet=False):
@@ -71,11 +72,11 @@ if __name__ == "__main__":
             args.quiet,
         )
 
-    # for t in TF_DIRS:
-    #     dir = path.join(TF_BASE_DIR, t)
-    #     vars_to_tfvars(
-    #         path.join(dir, TF_VARS_DECLARATION_FILE),
-    #         path.join(dir, TF_VARS_FILE),
-    #         args.overwrite,
-    #         args.quiet,
-    #     )
+    for t in TF_DIRS:
+        dir = path.join(TF_BASE_DIR, t)
+        vars_to_tfvars(
+            path.join(dir, TF_VARS_DECLARATION_FILE),
+            path.join(dir, TF_VARS_FILE),
+            args.overwrite,
+            args.quiet,
+        )
