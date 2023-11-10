@@ -37,15 +37,22 @@ docs:
 
 # Packer
 packer.build:
-	cd packer/armhf && packer build -var-file="auto.pkrvars.hcl" .
+	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
+		mkaczanowski/packer-builder-arm build \
+		-var-file packer/armhf/auto.pkrvars.hcl \
+		packer/armhf
 
 packer.validate:
 	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-		mkaczanowski/packer-builder-arm validate packer/armhf
+		mkaczanowski/packer-builder-arm validate \
+		-var-file packer/armhf/auto.pkrvars.hcl \
+		packer/armhf
 
 packer.init:
 	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-		mkaczanowski/packer-builder-arm init packer/armhf
+		mkaczanowski/packer-builder-arm init \
+		-var-file packer/armhf/auto.pkrvars.hcl \
+		packer/armhf
 
 
 # packer.validate:
