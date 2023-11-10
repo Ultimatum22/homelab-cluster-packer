@@ -1,6 +1,13 @@
 .cache/*
 .venv/*
 
+# secrets
+certs/*
+!certs/.gitkeep
+*.crt
+secrets.*
+vault.txt
+
 # ansible
 **/test.yml
 **/testca/vault/vault*
@@ -16,6 +23,7 @@ tf_ansible_*
 *.pkrvars.hcl
 **/builds/*
 *.packer_cache
+*.packer_plugins
 output/*
 logs/*
 

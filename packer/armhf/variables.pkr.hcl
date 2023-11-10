@@ -34,3 +34,13 @@ variable "gateway" {
   description = "Gateway of VM template"
   default     = "192.168.2.254"
 }
+
+variable "ssh_public_key_path" {
+  type        = string
+  description = "SSH Public Key Path"
+}
+
+# variable "ssh_private_key_path" {
+#   type        = string
+#   description = "SSH Private Key Path"
+# }

@@ -7,8 +7,6 @@ packer {
   }
 }
 
-
-
 locals {
   vm_name        = "${var.vm_name}-${formatdate("YYYY-MM-DD", timestamp())}"
   ssh_public_key = file(var.ssh_public_key_path)
@@ -16,36 +14,47 @@ locals {
   ipv4           = "${var.ip_address}/24"
 }
 
+source "arm" "raspios" {
 
-source "raspberry-pi-arm" "base" {
-  username = var.username
-  password = var.password
+  file_checksum_type = "sha256"
+  file_checksum_url  = "https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz.sha256"
 
-  task_timeout             = "5m"
-  insecure_skip_tls_verify = true
+  file_target_extension = "xz"
+  file_urls             = ["https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2023-10-10/2023-10-10-raspios-bookworm-armhf-lite.img.xz"]
+  file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
 
-  qemu_agent              = true
-  cloud_init              = true
-  cloud_init_storage_pool = "volumes"
+  image_build_method = "resize"
 
-  vm_name              = local.vm_name
-  template_description = local.template_desc
+  image_chroot_env = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
 
-
-  ipconfig {
-    ip      = local.ipv4
-    gateway = var.gateway
+  image_partitions {
+    filesystem   = "vfat"
+    mountpoint   = "/boot"
+    name         = "boot"
+    size         = "256M"
+    start_sector = "8192"
+    type         = "c"
   }
 
-  ssh_host             = var.ip_address
-  ssh_username         = var.ssh_username
-  ssh_private_key_file = var.ssh_private_key_path
-  ssh_port             = 22
-  ssh_timeout          = "10m"
+  image_partitions {
+    filesystem   = "ext4"
+    mountpoint   = "/"
+    name         = "root"
+    size         = "0"
+    start_sector = "532480"
+    type         = "83"
+  }
+
+  image_path                   = "output/armhf.img"
+  image_size                   = "4.5G"
+  image_type                   = "dos"
+  qemu_binary_destination_path = "/usr/bin/qemu-arm64-static"
+  qemu_binary_source_path      = "/usr/bin/qemu-arm64-static"
 }
 
+
 build {
-  sources = ["raspberry-pi-arm.base"]
+  sources = ["source.arm.raspios"]
 
   # make user ssh-ready for Ansible
   provisioner "shell" {
