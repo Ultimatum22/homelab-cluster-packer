@@ -1,18 +1,20 @@
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "homelab cluster"
+name = "homelab"
 
 [packages]
-python-hcl2 = "*"
 ansible = "*"
-ansible-lint = "*"
-pre-commit = "==3.3.3"
+netaddr = "*"
+pre-commit = "*"
 pre-commit-hooks = "*"
 molecule = "*"
 molecule-vagrant = "*"
-pyyaml = "*"
-virtualenv = "*"
+yamllint = "*"
+ansible-lint = "*"
+jsondiff = "*"
+zfs-autobackup = "*"
+jmespath = "*"
 
 [dev-packages]
 docker = "*"

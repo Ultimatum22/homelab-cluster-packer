@@ -10,7 +10,10 @@ SHELL := /bin/bash
 
 # Development
 
-install: pipenv pre-commit.install
+install: pipenv pre-commit.install apt.install
+
+apt.install:
+	apt-get install parted
 
 pipenv:
 	pipenv install --dev
@@ -37,30 +40,13 @@ docs:
 
 # Packer
 packer.build:
-	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-		mkaczanowski/packer-builder-arm build \
-		-var-file packer/armhf/auto.pkrvars.hcl \
-		packer/armhf
+	cd packer/armhf && sudo packer build -var-file auto.pkrvars.hcl .
 
 packer.validate:
-	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-		mkaczanowski/packer-builder-arm validate \
-		-var-file packer/armhf/auto.pkrvars.hcl \
-		packer/armhf
+	cd packer/armhf && sudo packer validate -var-file auto.pkrvars.hcl .
 
 packer.init:
-	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-		mkaczanowski/packer-builder-arm init \
-		-var-file packer/armhf/auto.pkrvars.hcl \
-		packer/armhf
-
-
-# packer.validate:
-# 	cd packer/armhf && docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build \
-# 		mkaczanowski/packer-builder-arm validate \
-# 		-var "git_repo=$(git remote get-url origin)" \
-# 		-var "git_commit=$(git rev-parse HEAD)" \
-# 		packer/boards/raspios_lite
+	cd packer/armhf && sudo packer init -var-file auto.pkrvars.hcl .
 
 vars.generate: pipenv
 	python bin/generate-vars.py
