@@ -12,7 +12,7 @@ PACKER_DIRS = ["armhf"]
 TF_BASE_DIR = "terraform"
 TF_VARS_DECLARATION_FILE = "variables.tf"
 TF_VARS_FILE = "terraform.tfvars"
-TF_DIRS = ["nomad"]
+TF_DIRS = ["nomad", "cluster"]
 
 
 def vars_to_tfvars(file, tfvars, overwrite=False, quiet=False):
