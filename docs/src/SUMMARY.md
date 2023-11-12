@@ -24,3 +24,9 @@
   - [Nomad](applications/nomad.md)
     - [Jobs](applications/nomad/jobs.md)
   - [Vault](applications/vault.md)
+
+# Tools used
+  - [Packer](tools/packer.md)
+  - [Terraform](tools/terraform.md)
+  - [Vault](tools/vault.md)
+  - [Ansible](tools/ansible.md)
