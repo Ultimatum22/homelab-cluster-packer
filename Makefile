@@ -40,13 +40,14 @@ docs:
 
 # Packer
 packer.build:
-	cd packer/armhf && sudo packer build -var-file auto.pkrvars.hcl .
+	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build -var-file=packer/armhf/auto.pkrvars.hcl packer/armhf/
 
 packer.validate:
-	cd packer/armhf && sudo packer validate -var-file auto.pkrvars.hcl .
+	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest validate -var-file=packer/armhf/auto.pkrvars.hcl packer/armhf/
 
 packer.init:
-	cd packer/armhf && sudo packer init -var-file auto.pkrvars.hcl .
+	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init -var-file=packer/armhf/auto.pkrvars.hcl packer/armhf/
+
 
 vars.generate: pipenv
 	python bin/generate-vars.py
