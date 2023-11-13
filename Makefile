@@ -6,6 +6,10 @@ ARCH := armhf
 ARCH_QEMU := arm64
 SHELL := /bin/bash
 
+PACKER_DOCKER_RUN = docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest
+PACKER_VARS = -var-file=packer/armhf/auto.pkrvars.hcl
+PACKER_BOARD_DIR = packer/armhf/
+
 .PHONY: all clean docker unmount build dd venv pre-commit docs
 
 # Development
@@ -40,14 +44,13 @@ docs:
 
 # Packer
 packer.build:
-	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build -var-file=packer/armhf/auto.pkrvars.hcl packer/armhf/
+	$(PACKER_DOCKER_RUN) build $(PACKER_VARS) $(PACKER_BOARD_DIR}
 
 packer.validate:
-	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest validate -var-file=packer/armhf/auto.pkrvars.hcl packer/armhf/
+	$(PACKER_DOCKER_RUN) validate $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
 packer.init:
-	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init -var-file=packer/armhf/auto.pkrvars.hcl packer/armhf/
-
+	$(PACKER_DOCKER_RUN) init $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
 vars.generate: pipenv
 	python bin/generate-vars.py
