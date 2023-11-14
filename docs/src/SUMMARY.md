@@ -2,6 +2,8 @@
 
 [Home](index.md)
 [Getting Started](./getting_started.md)
+[Docker](./docker.md)
+
 
 ---
 
@@ -25,6 +27,7 @@
     - [Jobs](applications/nomad/jobs.md)
   - [Vault](applications/vault.md)
 
+<!-- trunk-ignore(markdownlint/MD025) -->
 # Tools used
   - [Packer](tools/packer.md)
   - [Terraform](tools/terraform.md)

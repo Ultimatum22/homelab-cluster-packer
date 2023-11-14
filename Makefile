@@ -6,7 +6,7 @@ ARCH := armhf
 ARCH_QEMU := arm64
 SHELL := /bin/bash
 
-PACKER_DOCKER_RUN = docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest
+PACKER_DOCKER_RUN = docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:latest
 PACKER_VARS = -var-file=packer/armhf/auto.pkrvars.hcl
 PACKER_BOARD_DIR = packer/armhf/
 
@@ -44,7 +44,7 @@ docs:
 
 # Packer
 packer.build:
-	$(PACKER_DOCKER_RUN) build $(PACKER_VARS) $(PACKER_BOARD_DIR}
+	$(PACKER_DOCKER_RUN) build $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
 packer.validate:
 	$(PACKER_DOCKER_RUN) validate $(PACKER_VARS) $(PACKER_BOARD_DIR)

@@ -58,7 +58,7 @@ source "arm" "raspios" {
     type         = "83"
   }
 
-  image_path                   = "./../../builds/armhf.img"
+  image_path                   = "./builds/armhf.img"
   image_size                   = "4.5G"
   image_type                   = "dos"
   qemu_binary_destination_path = "/usr/bin/qemu-arm-static"
