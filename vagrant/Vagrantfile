@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "debian/bullseye64"
+
+
+    # config.vm.synced_folder "../ansible", "/vagrant"
+    # config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.provider "virtualbox" do |vb|
+      vb.name = "homelab-packer"
+      vb.memory = "1024"
+    end
+
+    config.vm.provision 'ansible', type: :ansible_local do |ansible|
+      ansible.playbook = 'provisioning/playbook.yml'
+      ansible.inventory_path = 'provisioning/inventory'
+      ansible.limit = 'all'
+
+      ansible.host_vars = {}
+
+      # I use pip args only to stop Vagrant from tossing in the upgrade flag. Not
+      # sure wtf that flag does. See:
+      # https://www.vagrantup.com/docs/provisioning/ansible_local.html#options
+      ansible.install_mode = :pip_args_only
+      ansible.pip_args = 'ansible==8.6.1'
+
+      roles_file = 'provisioning/requirements.yml'
+
+      if File.exist?(roles_file)
+        ansible.galaxy_role_file = roles_file
+        ansible.galaxy_roles_path = '/home/vagrant/.ansible/roles/'
+        ansible.galaxy_command = 'ansible-galaxy install --role-file=%{role_file} --roles-path=%{roles_path}'
+      end
+    end
+  end

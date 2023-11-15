@@ -4,8 +4,11 @@
   hosts: default
   become: true
 
-  tasks:
-    - name: install Apache
-      package:
-        name: 'httpd'
-        state: present
+  roles:
+    - name: Install Docker
+      role: geerlingguy.docker
+      vars:
+        # install docker compose plugin instead of docker-compose binary
+        docker_install_compose_plugin: true
+        docker_install_compose: false
+        docker_users: ["{{ user }}"]
