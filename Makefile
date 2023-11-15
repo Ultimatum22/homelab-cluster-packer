@@ -52,6 +52,15 @@ packer.validate:
 packer.init:
 	$(PACKER_DOCKER_RUN) init $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
+vagrant.up:
+	cd vagrant && vagrant up
+
+vagrant.provision:
+	cd vagrant && vagrant provision
+
+vagrant.destroy:
+	cd vagrant && vagrant destroy -f
+
 vars.generate: pipenv
 	python bin/generate-vars.py
 
