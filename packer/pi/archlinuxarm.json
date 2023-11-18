@@ -2,16 +2,19 @@
   "builders": [
     {
       "accelerator": "kvm",
-      "boot_wait": "5s",
-      "disk_size": "10240M",
+      "disk_size": "8000M",
       "format": "qcow2",
-      "headless": true,
-      "iso_checksum": "sha256:477f50617d648e46d6e326549aa56ab92115a29a97f2ca364e944cea06970608",
-      "iso_url": "https://mirror.rackspace.com/archlinux/iso/2023.11.01/archlinux-2023.11.01-x86_64.iso",
-      "output_directory": "output-qemu",
-      "ssh_password": "arch",
-      "ssh_timeout": "20m",
-      "ssh_username": "arch",
+      "iso_checksum": "sha256:12ae6e17bf95b6ba83beca61e7394e7411b45eba7e6a520f434b0748ea7370e8",
+      "iso_url": "https://downloads.raspberrypi.org/raspbian_lite_latest",
+      "output_directory": "output-rpi",
+      "qemuargs": [
+        [ "-boot",  "menu=on,splash-time=10000" ]
+      ],
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "ssh_password": "raspberry",
+      "ssh_port": 5022,
+      "ssh_timeout": "120m",
+      "ssh_username": "pi",
       "type": "qemu"
     }
   ]
