@@ -4,12 +4,18 @@
 "domain"     = "consul"
 {% if 'consul_server' in group_names %}
 "server"    = true
+"ui_config" = {
+  "enabled" = true
+}
 {% endif %}
 
 # ----------------------------------------- Files and Logs
 "data_dir" = "{{ consul_data_dir }}"
-"log_file" = "{{ consul_log_file }}"
+"log_file" = "{{ consul_log_dir }}/consul.log"
 "log_level" = "err"
+
+"log_rotate_max_files" = 5
+"enable_syslog"        = false
 
 # ----------------------------------------- Networking
 "addresses" = {

@@ -1,5 +1,4 @@
 ---
-
 - name: Create Consul group
   group: name={{ consul_group }} system=yes state=present
 
@@ -12,34 +11,33 @@
     system=yes
     state=present
 
-# This only works in ansible 2.2
-# - name: download consul zip
-#   unarchive: >
-#     src="{{ consul_url }}"
-#     creates="{{ consul_install_dir }}/consul"
-#     dest="{{ consul_install_dir }}"
-#     remote_src=yes
+- name: Ensure Consul is installed
+  block:
+    - name: Test consul
+      ansible.builtin.command: consul --version
+      register: consul_version_test
+      changed_when: false
 
-- name: "Set variable: Set Consul download Binary (armv7l)"
-  ansible.builtin.set_fact:
-    consul_download_uri: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_arm.zip"
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_architecture == 'armv7l'
+    - name: Test if correct version is installed
+      ansible.builtin.assert:
+        that:
+          - "consul_version in consul_version_test.stdout"
+        success_msg: "Consul version {{ consul_version }} is installed"
+        fail_msg: "Consul was not successfully installed"
+  rescue:
+    - name: Ensure old consul is removed
+      ansible.builtin.file:
+        path: "{{ consul_install_dir }}/consul"
+        state: absent
 
-- name: "Set variable: Set Consul download Binary (aarch64)"
-  ansible.builtin.set_fact:
-    consul_download_uri: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_arm64.zip"
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_architecture == 'aarch64'
-
-- name: Install Consul
-  become: true
-  ansible.builtin.unarchive:
-    src: "{{ consul_download_uri }}"
-    dest: "{{ consul_install_dir }}"
-    remote_src: true
+    - name: Install Consul
+      ansible.builtin.unarchive:
+        src: "{{ consul_zip_url }}"
+        dest: "{{ consul_install_dir }}"
+        owner: root
+        group: root
+        remote_src: true
+        mode: "0777"
 
 - name: Create Consul configuration directory
   ansible.builtin.file:
@@ -50,6 +48,7 @@
     state: directory
   with_items:
     - "{{ consul_config_dir }}"
+    - "{{ consul_log_dir }}"
 
 # See https://github.com/ansible/ansible/issues/13652
 - name: If consul.service configuration already exists, remove it
@@ -90,11 +89,3 @@
     state: started
     enabled: yes
     daemon_reload: true
-
-- name: Logrotate for logfile
-  ansible.builtin.template:
-    src: etc/logrotate.d/consul
-    dest: /etc/logrotate.d/consul
-    owner: root
-    group: root
-    mode: "0644"
