@@ -1,0 +1,86 @@
+---
+- name: Install requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - build-essential
+    - libpcre3-dev
+    - libsystemd-dev
+
+- name: Ensure HAProxy is installed
+  block:
+    - name: Test HAProxy
+      ansible.builtin.command: haproxy --version
+      register: haproxy_version_test
+      changed_when: false
+
+    - name: Test if correct version is installed
+      ansible.builtin.assert:
+        that:
+          - "haproxy_version in haproxy_version_test.stdout"
+        success_msg: "HAProxy version {{ haproxy_version }} is installed"
+        fail_msg: "HAProxy was not successfully installed"
+  rescue:
+    # - name: Ensure old HAProxy is removed
+    #   ansible.builtin.file:
+    #     path: "{{ haproxy_install_dir }}/haproxy"
+    #     state: absent
+
+    # - name: Create HAProxy tmp directory
+    #   file:
+    #     path: /tmp/haproxy
+    #     owner: root
+    #     group: root
+    #     mode: "0777"
+    #     state: directory
+
+    - name: Download and unzip HAProxy
+      ansible.builtin.unarchive:
+        src: "{{ haproxy_zip_url }}"
+        dest: /tmp/
+        owner: root
+        group: root
+        remote_src: true
+        mode: "0777"
+
+    - name: Compile haproxy from source
+      make:
+        chdir: "/tmp/haproxy-{{ haproxy_version }}"
+        params:
+          TARGET: linux-glibc
+          USE_SYSTEMD: 1
+  
+    - name: Remove HAProxy tmp directory
+      file:
+        path: "/tmp/haproxy-{{ haproxy_version }}"
+        state: absent
+  tags: install
+
+# - name: Create haproxy group
+#   group:
+#     name: "{{ haproxy_group }}"
+#     gid: "{{ haproxy_gid }}"
+#     state: present
+
+# - name: Create haproxy user
+#   user:
+#     name: "{{ haproxy_user }}"
+#     group: "{{ haproxy_group }}"
+#     uid: "{{ haproxy_uid }}"
+#     comment: haproxy systemd service user
+#     shell: /sbin/nologin
+#     system: yes
+#     state: present
+
+# - name: Create haproxy directory structures
+#   file:
+#     path: "{{ item }}"
+#     owner: "{{ haproxy_user }}"
+#     group: "{{ haproxy_group }}"
+#     mode: "0750"
+#     state: directory
+#   with_items:
+#     - "{{haproxy_config_dir }}"
+#     - "{{ haproxy_certs_dir }}"
