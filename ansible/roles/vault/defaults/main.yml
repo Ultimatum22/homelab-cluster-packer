@@ -17,6 +17,8 @@ consul_port: 8500
 
 vault_base_ip: 192.168.2.
 
+vault_keysfile: ~/.hashicorp_vault_keys.json
+
 vault_cn: "{{ ansible_fqdn }}"
 vault_cc: NL
 vault_on: Vault
