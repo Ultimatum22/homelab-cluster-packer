@@ -1,0 +1,123 @@
+- name: Install requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-pip
+    - python3-openssl
+
+- name: Ensure Vault is installed
+  block:
+    - name: Test Vault
+      ansible.builtin.command: vault --version
+      register: vault_version_test
+      changed_when: false
+
+    - name: Test if correct version is installed
+      ansible.builtin.assert:
+        that:
+          - "vault_version in vault_version_test.stdout"
+        success_msg: "Vault version {{ vault_version }} is installed"
+        fail_msg: "Vault was not successfully installed"
+  rescue:
+    - name: Ensure old Vault is removed
+      ansible.builtin.file:
+        path: "{{ vault_install_dir }}/vault"
+        state: absent
+
+    - name: Install Vault
+      ansible.builtin.unarchive:
+        src: "{{ vault_zip_url }}"
+        dest: "{{ vault_install_dir }}"
+        owner: root
+        group: root
+        remote_src: true
+        mode: "0777"
+
+- name: Create vault group
+  group:
+    name: "{{ vault_group }}"
+    gid: "{{ vault_gid }}"
+    state: present
+
+- name: Create vault user
+  user:
+    name: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    uid: "{{ vault_uid }}"
+    comment: vault systemd service user
+    shell: /sbin/nologin
+    system: yes
+    state: present
+
+- name: Create vault directory structures
+  file:
+    path: "{{ item }}"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: "0750"
+    state: directory
+  with_items:
+    - "{{vault_config_dir }}"
+    - "{{ vault_certs_dir }}"
+
+- name: Generate OpenSSL private key pem file
+  openssl_privatekey:
+    path: "{{ vault_privkey }}"
+
+- name: Generate an OpenSSL CSR
+  openssl_csr:
+    path: "{{ vault_csr }}"
+    privatekey_path: "{{ vault_privkey }}"
+    common_name: "{{ vault_cn }}"
+    country_name: "{{ vault_cc }}"
+    organization_name: "{{ vault_on }}"
+
+- name: Generate a Self-Signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ vault_certfile }}"
+    privatekey_path: "{{ vault_privkey }}"
+    csr_path: "{{ vault_csr }}"
+    provider: selfsigned
+
+- name: Adjust certificate files ownerships
+  file:
+    path: "{{ vault_certs_dir }}"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: "0750"
+    state: directory
+    recurse: yes
+
+- name: Create vault server configuration
+  template:
+    src: etc/vault.d/vault.hcl.j2
+    dest: "{{ vault_config_dir }}/vault.hcl"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: "0640"
+  tags: install
+
+- name: Create vault systemd service config
+  template:
+    src: etc/systemd/system/vault.service.j2
+    dest: /etc/systemd/system/vault.service
+    owner: root
+    group: root
+    mode: "0664"
+    force: no
+
+- name: Start and enable vault systemd service
+  systemd:
+    name: vault
+    daemon_reload: yes
+    state: started
+    enabled: yes
+
+- name: Set VAULT_ADDR listener in profile
+  template:
+    src: etc/profile.d/vault.sh.j2
+    dest: /etc/profile.d/vault.sh
+    owner: root
+    group: root
+    mode: "0755"
