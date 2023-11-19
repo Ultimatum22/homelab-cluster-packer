@@ -12,7 +12,7 @@
 - name: Ensure HAProxy is installed
   block:
     - name: Test HAProxy
-      ansible.builtin.command: haproxy --version
+      ansible.builtin.command: haproxy -v
       register: haproxy_version_test
       changed_when: false
 
@@ -23,18 +23,10 @@
         success_msg: "HAProxy version {{ haproxy_version }} is installed"
         fail_msg: "HAProxy was not successfully installed"
   rescue:
-    # - name: Ensure old HAProxy is removed
-    #   ansible.builtin.file:
-    #     path: "{{ haproxy_install_dir }}/haproxy"
-    #     state: absent
-
-    # - name: Create HAProxy tmp directory
-    #   file:
-    #     path: /tmp/haproxy
-    #     owner: root
-    #     group: root
-    #     mode: "0777"
-    #     state: directory
+    - name: Ensure old HAProxy is removed
+      ansible.builtin.file:
+        path: "{{ haproxy_install_dir }}/haproxy"
+        state: absent
 
     - name: Download and unzip HAProxy
       ansible.builtin.unarchive:
@@ -45,17 +37,24 @@
         remote_src: true
         mode: "0777"
 
-    - name: Compile haproxy from source
-      make:
+    - name: Compile HAProxy from source
+      ansible.builtin.make:
         chdir: "/tmp/haproxy-{{ haproxy_version }}"
         params:
           TARGET: linux-glibc
           USE_SYSTEMD: 1
-  
-    - name: Remove HAProxy tmp directory
-      file:
-        path: "/tmp/haproxy-{{ haproxy_version }}"
-        state: absent
+
+    - name: Install HAProxy
+      ansible.builtin.copy:
+        src: "/tmp/haproxy-{{ haproxy_version }}/haproxy"
+        dest: "{{ haproxy_install_dir }}"
+        mode: a+x
+        remote_src: yes
+
+    # - name: Remove HAProxy tmp directory
+    #   file:
+    #     path: "/tmp/haproxy-{{ haproxy_version }}"
+    #     state: absent
   tags: install
 
 # - name: Create haproxy group
