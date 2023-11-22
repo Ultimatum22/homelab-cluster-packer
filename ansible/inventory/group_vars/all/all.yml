@@ -1,0 +1,5 @@
+---
+tf_action: apply
+
+hs_parent_domain: localdomain
+public_domain: "twisted-wires.{{ hs_parent_domain }}"

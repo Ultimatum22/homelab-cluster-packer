@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - role: stage0
+      tags: always

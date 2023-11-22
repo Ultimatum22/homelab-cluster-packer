@@ -1,0 +1,8 @@
+---
+
+- name: Checking terraform action
+  assert:
+    that:
+      - tf_action in ['apply', 'destroy']
+    msg: >-
+      'tf_action' must be defined and one of ['apply', 'destroy']

@@ -1,0 +1,6 @@
+---
+- name: Santiy checks
+  include_tasks: _sanity.yml
+
+- name: Terraform
+  include_tasks: _{{ tf_action }}.yml
