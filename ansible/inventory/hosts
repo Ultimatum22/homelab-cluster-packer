@@ -24,3 +24,6 @@ ogma
 [consul_cluster:children]
 consul_server
 consul_client
+
+[haproxy_master]
+arawn

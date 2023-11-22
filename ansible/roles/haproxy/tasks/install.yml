@@ -49,37 +49,98 @@
         src: "/tmp/haproxy-{{ haproxy_version }}/haproxy"
         dest: "{{ haproxy_install_dir }}"
         mode: a+x
-        remote_src: yes
+        remote_src: true
 
-    # - name: Remove HAProxy tmp directory
-    #   file:
-    #     path: "/tmp/haproxy-{{ haproxy_version }}"
-    #     state: absent
+    - name: Remove HAProxy tmp directory
+      file:
+        path: "/tmp/haproxy-{{ haproxy_version }}"
+        state: absent
+
+- name: Create HAProxy group
+  group:
+    name: "{{ haproxy_group }}"
+    gid: "{{ haproxy_gid }}"
+    state: present
+
+- name: Create HAProxy user
+  user:
+    name: "{{ haproxy_user }}"
+    group: "{{ haproxy_group }}"
+    uid: "{{ haproxy_uid }}"
+    comment: haproxy systemd service user
+    shell: /sbin/nologin
+    system: true
+    state: present
+
+- name: Create HAProxy directory structures
+  file:
+    path: "{{ item }}"
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_group }}"
+    mode: "0750"
+    state: directory
+  with_items:
+    - "{{ haproxy_config_dir }}"
+
+- name: Create HAProxy configuration
+  template:
+    src: etc/haproxy.d/haproxy.hcl.j2
+    dest: "{{ haproxy_config_dir }}/haproxy.hcl"
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_group }}"
+    mode: "0640"
   tags: install
 
-# - name: Create haproxy group
-#   group:
-#     name: "{{ haproxy_group }}"
-#     gid: "{{ haproxy_gid }}"
-#     state: present
+- name: Create HAProxy systemd service config
+  template:
+    src: etc/systemd/system/haproxy.service.j2
+    dest: /etc/systemd/system/haproxy.service
+    owner: root
+    group: root
+    mode: "0664"
+    force: false
 
-# - name: Create haproxy user
-#   user:
-#     name: "{{ haproxy_user }}"
-#     group: "{{ haproxy_group }}"
-#     uid: "{{ haproxy_uid }}"
-#     comment: haproxy systemd service user
-#     shell: /sbin/nologin
-#     system: yes
-#     state: present
+- name: Create consul services configuration file
+  template:
+    src: etc/haproxy.d/consul_services.json.j2
+    dest: "{{ consul_config_dir }}/consul_services.json"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: "0640"
+  notify: restart consul
 
-# - name: Create haproxy directory structures
-#   file:
-#     path: "{{ item }}"
-#     owner: "{{ haproxy_user }}"
-#     group: "{{ haproxy_group }}"
-#     mode: "0750"
-#     state: directory
-#   with_items:
-#     - "{{haproxy_config_dir }}"
-#     - "{{ haproxy_certs_dir }}"
+- name: Install Keepalived package
+  package:
+    name: keepalived
+    state: present
+
+
+- name: Generate random 8 character keepalive encryption string
+  set_fact:
+    ka_secret: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits')}}"
+  run_once: true
+
+- name: Create Keepalived configuration
+  template:
+    src: etc/keepalived_conf.j2
+    dest: "{{ ka_conf }}"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Allow HAProxy to bind to non-existent VIP at startup
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: '1'
+    state: present
+    reload: true
+
+- name: Start and enable HAProxy & Keepalived services
+  systemd:
+    name: "{{ item }}"
+    daemon_reload: true
+    state: started
+    enabled: true
+  with_items:
+    - haproxy
+    - keepalived
