@@ -16,7 +16,6 @@ vault.txt
 **.terraform/*
 *.tfstate
 *.tstate.*
-*.tfvars
 tf_ansible_*
 
 # packer
