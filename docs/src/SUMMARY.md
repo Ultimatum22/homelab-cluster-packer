@@ -1,13 +1,12 @@
+<!-- trunk-ignore-all(prettier) -->
 # Summary
 
 [Home](index.md)
 [Getting Started](./getting_started.md)
 [Docker](./docker.md)
 
-
 ---
 
-<!-- trunk-ignore(markdownlint/MD025) -->
 # Infrastructure
 
 - [Provisioning](provisioning.md)
@@ -18,7 +17,6 @@
     - [Roles](provisiong/ansible/roles.md)
       - [Blocky](provisiong/ansible/roles/blocky.md)
 
-<!-- trunk-ignore(markdownlint/MD025) -->
 # Applications
 
 - [Applications](applications/index.md)
@@ -27,9 +25,13 @@
     - [Jobs](applications/nomad/jobs.md)
   - [Vault](applications/vault.md)
 
-<!-- trunk-ignore(markdownlint/MD025) -->
 # Tools used
-  - [Packer](tools/packer.md)
-  - [Terraform](tools/terraform.md)
-  - [Vault](tools/vault.md)
-  - [Ansible](tools/ansible.md)
+
+- [Packer](tools/packer.md)
+- [Terraform](tools/terraform.md)
+- [Vault](tools/vault.md)
+- [Ansible](tools/ansible.md)
+
+# Dev
+
+- [Ansible](dev/ansible.md)
