@@ -1,25 +1,22 @@
 [all]
-ogma ansible_host=192.168.2.221
-danu ansible_host=192.168.2.222
-arawn ansible_host=192.168.2.223 node_name=arawn consul_node_role=server nomad_node_role=both
+; ogma ansible_host=192.168.2.221
+; danu ansible_host=192.168.2.222
+arawn ansible_host=192.168.2.223
 
 [all:vars]
 ansible_user=system
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_private_key_file=/home/dave/.ssh/homelab-infra
 
-global_vault_address={{ lookup('env','VAULT_ADDR') }}
-global_vault_token="hvs.secret-token-with-the-necessary-rights"
-
 [consul_server]
-danu
+; danu
 arawn
-ogma
+; ogma
 
 [consul_client]
-danu
+; danu
 arawn
-ogma
+; ogma
 
 [consul_cluster:children]
 consul_server
