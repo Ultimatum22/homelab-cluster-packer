@@ -2,7 +2,7 @@
 - hosts: all
   become: true
   roles:
-    # - role: consul
+    - role: consul
     # - role: vault
-    - role: haproxy
-      tags: install
+    # - role: haproxy
+    #   tags: install
