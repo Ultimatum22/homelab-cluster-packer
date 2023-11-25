@@ -22,4 +22,4 @@
 
 - name: reboot host
   ansible.builtin.reboot:
-    msg: "Rebooting machine in 5 seconds"
+    msg: Rebooting machine in 5 seconds
