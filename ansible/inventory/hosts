@@ -15,7 +15,7 @@ ogma
 
 [bootstrap:vars]
 ansible_connection=ssh
-ansible_user=system
+ansible_ssh_user=system
 ansible_ssh_pass=system
 
 [consul_server]

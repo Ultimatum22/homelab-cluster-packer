@@ -1,2 +1,9 @@
 ---
-# handlers file for roles/bootstrap
+- name: restart sshd
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+
+- name: reload ufw
+  ansible.builtin.ufw:
+    state: reloaded
