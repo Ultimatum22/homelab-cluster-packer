@@ -11,6 +11,7 @@ ansible_ssh_private_key_file=/home/dave/.ssh/homelab-infra
 [bootstrap]
 danu
 arawn
+ogma
 
 [bootstrap:vars]
 ansible_connection=ssh
