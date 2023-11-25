@@ -1,23 +1,18 @@
 ---
 - name: Check timezone
-  command: cat /etc/timezone
+  ansible.builtin.command: cat /etc/timezone
   changed_when: false
   register: current_timezone
 
-- debug:
-    var: current_timezone
-
 - name: Set timezone
-  become: yes
-  copy: content={{timezone}}
-        dest=/etc/timezone
-        owner=root
-        group=root
-        mode=0644
-        backup=yes
+  ansible.builtin.copy:
+    content: "{{timezone}}"
+    dest: /etc/timezone
+    owner: root
+    group: root
+    mode: "0644"
   when: current_timezone.stdout != timezone
 
 - name: Reconfigure timezone data
-  become: yes
-  command: dpkg-reconfigure -f noninteractive tzdata
+  ansible.builtin.command: dpkg-reconfigure -f noninteractive tzdata
   when: current_timezone.stdout != timezone
