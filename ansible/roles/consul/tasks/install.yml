@@ -18,6 +18,9 @@
         path: "{{ consul_install_directory }}/consul"
         state: absent
 
+    - debug:
+        var: consul_download
+
     - name: Install Consul
       ansible.builtin.unarchive:
         src: "{{ consul_download }}"
@@ -26,3 +29,42 @@
         group: "{{ consul_group }}"
         remote_src: true
         mode: "0755"
+
+- name: create TLS directory
+  file:
+    state: directory
+    path: '{{ consul_tls_directory }}'
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+    mode: '0750'
+
+# - name: copying over TLS certificates
+#   copy:
+#     src: '{{ item }}'
+#     dest: '{{ consul_tls_directory }}/{{ item | basename }}'
+#     owner: '{{ consul_user }}'
+#     group: '{{ consul_group }}'
+#     mode: '0640'
+#   with_items:
+#     - '{{ consul_tls_ca_file }}'
+#     - '{{ consul_tls_cert_file }}'
+#     - '{{ consul_tls_key_file }}'
+#   notify:
+#     - restart consul
+
+- name: templating out consul configuration
+  template:
+    src: consul.hcl.j2
+    dest: '{{ consul_config_file }}'
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+    mode: '0640'
+
+- name: templating out consul server configuration
+  template:
+    src: server.hcl.j2
+    dest: '{{ consul_server_file }}'
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+    mode: '0640'
+  when: "'consul_server' in group_names"

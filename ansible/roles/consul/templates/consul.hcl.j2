@@ -1,0 +1,58 @@
+datacenter = "{{ consul_datacenter }}"
+data_dir   = "{{ consul_data_directory }}"
+node_name  = "{{ ansible_hostname }}"
+log_level  = "INFO"
+
+{% if consul_gossip_key is defined %}
+encrypt = "{{ consul_gossip_key }}"
+{% endif %}
+
+{% if consul_acl_enabled %}
+acl {
+  enabled        = true
+  default_policy = "deny"
+  down_policy    = "extend-cache"
+{% if consul_acl_agent_token is defined %}
+  tokens {
+    "agent" = "{{ consul_acl_agent_token }}"
+  }
+{% endif %}
+}
+{% endif %}
+
+{% if consul_tls_enabled %}
+ca_file                = "{{ consul_tls_directory }}/{{ consul_tls_ca_file | basename }}"
+cert_file              = "{{ consul_tls_directory }}/{{ consul_tls_cert_file | basename }}"
+key_file               = "{{ consul_tls_directory }}/{{ consul_tls_key_file | basename }}"
+verify_incoming        = {{ consul_tls_verify_incoming | lower }}
+verify_outgoing        = {{ consul_tls_verify_outgoing | lower }}
+verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
+{% endif %}
+
+{% if consul_tls_cipher_suites is defined %}
+tls_cipher_suites = "{{ consul_tls_cipher_suites }}"
+{% endif %}
+tls_min_version = "{{ consul_tls_min_version }}"
+
+ports {
+  dns      = {{ consul_port_dns }}
+  http     = {{ consul_port_http }}
+  https    = {{ consul_port_https }}
+  grpc     = {{ consul_port_grpc }}
+  serf_lan = {{ consul_port_serf_lan }}
+  serf_wan = {{ consul_port_serf_wan }}
+  server   = {{ consul_port_server }}
+}
+
+retry_join = [
+{% for consul_server in groups['consul_server'] %}
+  "{{ consul_server }}"{% if not loop.last %},{% endif %}{{''}}
+{% endfor %}
+]
+
+client_addr    = "{{ consul_client_addr }}"
+advertise_addr = "{{ consul_advertise_addr }}"
+
+performance {
+  raft_multiplier = {{ consul_raft_multiplier }}
+}
