@@ -1,0 +1,24 @@
+---
+vault_user: vault
+vault_group: vault
+
+vault_config_directory: /etc/vault.d
+vault_data_directory: /var/lib/vault
+vault_install_directory: /usr/bin
+vault_tls_directory: "{{ vault_data_directory }}/tls"
+vault_plugin_directory: "{{ vault_config_directory }}/plugins"
+
+vault_config_file: "{{ vault_config_directory }}/vault.hcl"
+
+vault_version: 1.11.3
+vault_architecture: "{{ architecture_map[ansible_architecture] }}"
+vault_archive: "vault_{{ vault_version }}_linux_{{ vault_architecture }}.zip"
+vault_download: "https://releases.hashicorp.com/vault/{{ vault_version }}/{{ vault_archive }}"
+
+vault_client_addr: 0.0.0.0
+vault_api_port: 8200
+vault_cluster_port: 8201
+vault_ui_enable: true
+
+# options: file, integrated, consul, gcs
+vault_storage_backend: 'integrated'

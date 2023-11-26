@@ -1,19 +1,14 @@
 ---
-consul_version: 1.17.0
-consul_webui_version: 1.3.0
-
-consul_datacenter: "{{ datacenter_name }}"
-
 consul_user: consul
 consul_group: consul
 
-consul_zip_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_{{ arch[ansible_architecture] }}.zip"
+consul_config_directory: /etc/consul.d
+consul_data_directory: /var/lib/consul
+consul_install_directory: /usr/bin
 
-consul_install_dir: /usr/bin
-consul_config_dir: /etc/consul.d
-consul_data_dir: /var/lib/consul
+consul_config_file: "{{ consul_config_directory }}/consul.hcl"
 
-arch:
-  x86_64: amd64
-  aarch64: arm64
-  armv7l: arm
+consul_version: 1.9.5
+consul_architecture: "{{ architecture_map[ansible_architecture] }}"
+consul_archive: "consul_{{ consul_version }}_linux_{{ consul_architecture }}.zip"
+consul_download: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}"

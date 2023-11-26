@@ -1,0 +1,28 @@
+---
+- name: Creating service environment file
+  ansible.builtin.file:
+    path: "{{ vault_home_directory }}/vault.env"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: "0640"
+    state: touch
+    access_time: preserve
+    modification_time: preserve
+  notify:
+    - Reload Vault daemon
+
+- name: Templating out systemd script
+  ansible.builtin.template:
+    src: vault.service.j2
+    dest: /etc/systemd/system/vault.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload Vault daemon
+
+- name: Starting and enabling Vault
+  ansible.builtin.systemd:
+    name: vault
+    enabled: true
+    state: started
