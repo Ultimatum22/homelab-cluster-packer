@@ -1,4 +1,0 @@
----
-- name: Apply Terraform
-  ansible.builtin.debug:
-    msg: Starting aply phase of Terraform

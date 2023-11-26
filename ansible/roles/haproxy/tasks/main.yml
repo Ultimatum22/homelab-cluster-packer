@@ -1,5 +1,0 @@
-- name: Install HAProxy
-  ansible.builtin.include_tasks: install.yml
-
-# - name: Initialize HAProxy
-#   ansible.builtin.include_tasks: initialize.yml
