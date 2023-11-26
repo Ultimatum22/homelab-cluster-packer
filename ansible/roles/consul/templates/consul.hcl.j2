@@ -11,8 +11,8 @@
 
 # ----------------------------------------- Files and Logs
 "data_dir" = "{{ consul_data_dir }}"
-"log_file" = "{{ consul_log_dir }}/consul.log"
-"log_level" = "err"
+"log_file" = "/var/log/consul.log"
+"log_level" = "info"
 
 "log_rotate_max_files" = 5
 "enable_syslog"        = false

@@ -9,10 +9,9 @@ consul_group: consul
 
 consul_zip_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_{{ arch[ansible_architecture] }}.zip"
 
-# consul_install_dir: /usr/bin
+consul_install_dir: /usr/bin
 consul_config_dir: /etc/consul.d
 consul_data_dir: /var/lib/consul
-consul_log_dir: /var/log/consul
 
 arch:
   x86_64: amd64
