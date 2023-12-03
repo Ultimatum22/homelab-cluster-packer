@@ -1,0 +1,8 @@
+---
+- hosts: cluster
+  become: true
+  roles:
+    - role: consul
+    # - role: vault
+    # - role: haproxy
+    #   tags: install
