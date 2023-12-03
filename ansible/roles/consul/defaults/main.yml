@@ -7,7 +7,7 @@ consul_datacenter: "{{ datacenter_name }}"
 consul_config_directory: /etc/consul.d
 consul_data_directory: /var/lib/consul
 consul_install_directory: /usr/bin
-consul_cert_directory: "{{ consul_config_directory }}/cert"
+consul_cert_directory: "{{ consul_data_directory }}/cert"
 
 consul_cert_file: "{{ consul_cert_directory }}/consul.crt"
 consul_key_file: "{{ consul_cert_directory }}/consul.key"
