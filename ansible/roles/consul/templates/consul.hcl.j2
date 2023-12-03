@@ -50,7 +50,7 @@ ports {
 
 retry_join = [{% for h in groups['consul_server']%}"{{ hostvars[h].ansible_host }}"{% if not loop.last %},{% endif %}{% endfor %}]
 
-client_addr    = "{{ consul_advertise_addr }}"
+client_addr    = "{{ consul_client_addr }}"
 advertise_addr = "{{ consul_advertise_addr }}"
 
 performance {
