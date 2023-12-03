@@ -11,11 +11,11 @@ ansible_ssh_private_key_file=/home/dave/.ssh/homelab-infra
 [bootstrap]
 danu
 arawn
-# ogma
+ogma
 
 
 [cluster]
-danu
+# danu
 arawn
 # ogma
 
@@ -25,7 +25,7 @@ ansible_ssh_user=system
 ansible_ssh_pass=system
 
 [consul_server]
-danu
+# danu
 arawn
 ; ogma
 

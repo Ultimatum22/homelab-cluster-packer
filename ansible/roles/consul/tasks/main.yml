@@ -1,10 +1,6 @@
 ---
-- name: Configure Vault
-  ansible.builtin.include_tasks: ./config.yml
-
-- name: Install Vault
+- name: Install Consul
   ansible.builtin.include_tasks: ./install.yml
-
 
 - name: Setup service
   ansible.builtin.include_tasks: ./service.yml

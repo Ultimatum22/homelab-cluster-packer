@@ -1,5 +1,5 @@
-{# server = true
-bootstrap_expect = {{ groups['consul_server'] | length }} #}
+server = true
+bootstrap_expect = {{ groups['consul_server'] | length }}
 ui_config {
     enabled        = true
 }

@@ -3,13 +3,13 @@ Description="HashiCorp Consul - A service mesh solution"
 Documentation=https://www.consul.io/
 Requires=network-online.target
 After=network-online.target
-ConditionFileNotEmpty={{ consul_config_file }}
+ConditionFileNotEmpty={{ consul_config_directory }}/consul.hcl
 
 [Service]
 Type=notify
 User={{ consul_user }}
 Group={{ consul_group }}
-ExecStart={{ consul_install_directory }}/consul agent -config-dir={{ consul_config_directory }}
+ExecStart={{ consul_install_directory }}/consul agent -config-dir={{ consul_config_directory }} -log-file={{ consul_log_file }}
 ExecReload=/bin/kill --signal HUP $MAINPID
 KillMode=process
 KillSignal=SIGTERM

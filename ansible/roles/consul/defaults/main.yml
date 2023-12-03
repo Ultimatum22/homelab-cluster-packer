@@ -9,7 +9,8 @@ consul_data_directory: /var/lib/consul
 consul_install_directory: /usr/bin
 consul_tls_directory: "{{ consul_config_directory }}/tls"
 
-consul_config_file: "{{ consul_config_directory }}/consul.hcl"
+consul_log_file: /var/log/consul
+
 consul_server_file: "{{ consul_config_directory }}/server.hcl"
 
 consul_version: 1.17.0
