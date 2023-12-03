@@ -1,0 +1,69 @@
+---
+- name: Install dnsmasq
+  ansible.builtin.apt:
+    pkg: dnsmasq
+    state: latest
+
+- name: Ensure directory exists
+  file:
+    dest: /etc/dnsmasq.d
+    state: directory
+
+- name: ensure dnsmasq configuration
+  ansible.builtin.lineinfile:
+    dest: /etc/dnsmasq.conf
+    regexp: ^conf-dir=
+    line: conf-dir=/etc/dnsmasq.d
+    state: present
+
+- name: ensure configure directory
+  ansible.builtin.file:
+    dest: /etc/resolvconf/resolv.conf.d
+    state: directory
+
+- name: add local dns lookup
+  ansible.builtin.lineinfile:
+    insertbefore: BOF
+    state: present
+    line: nameserver 127.0.0.1
+    dest: /etc/resolvconf/resolv.conf.d/consul
+    create: yes
+
+- name: configure dnsmasq to listen on interface(s)
+  ansible.builtin.lineinfile:
+    regexp: "^interface={{ item }}"
+    line: "interface={{ item }}"
+    dest: /etc/dnsmasq.conf
+  with_items:
+    "{{ consul_dnsmasq.listen_interface }}"
+
+- name: configure dnsmasq to disable DHCP and TFTP
+  ansible.builtin.lineinfile:
+    regexp: "^no-dhcp-interface={{ item }}"
+    line: "no-dhcp-interface={{ item }}"
+    dest: /etc/dnsmasq.conf
+  with_items:
+    "{{ consul_dnsmasq.no_dhcp_interface }}"
+
+- name: configure dnsmasq to delegate all Consul DNS requests to the Consul DNS port
+  ansible.builtin.copy:
+    content: 'server=/{{ consul_domain }}/{{ consul_client_addr }}#{{ consul_port_dns }}'
+    dest: /etc/dnsmasq.d/10-consul
+  notify:
+    - restart dnsmasq
+
+- name: create alternate upstream servers file for dnsmasq
+  ansible.builtin.template:
+    src: resolv_dnsmasq.conf.j2
+    dest: /etc/resolv_dnsmasq.conf
+  when: (consul_dnsmasq.upstream_servers is defined) and consul_dnsmasq.upstream_servers
+  notify:
+    - restart dnsmasq
+
+- name: configure dnsmasq to use alternate upstream servers file
+  ansible.builtin.copy:
+    content: resolv-file=/etc/resolv_dnsmasq.conf
+    dest: /etc/dnsmasq.d/20-upstream-servers
+  when: (consul_dnsmasq.upstream_servers is defined) and consul_dnsmasq.upstream_servers
+  notify:
+    - restart dnsmasq

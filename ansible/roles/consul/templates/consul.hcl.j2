@@ -1,6 +1,7 @@
 datacenter = "{{ consul_datacenter }}"
 data_dir   = "{{ consul_data_directory }}"
 node_name  = "{{ ansible_hostname }}"
+domain     = "{{ consul_domain }}"
 log_level  = "INFO"
 protocol   = {{ consul_protocol }}
 
@@ -8,27 +9,18 @@ protocol   = {{ consul_protocol }}
 encrypt = "{{ consul_gossip_key }}"
 {% endif %}
 
-{% if consul_acl_enabled %}
 acl {
   enabled        = true
   default_policy = "deny"
   down_policy    = "extend-cache"
-{% if consul_acl_agent_token is defined %}
-  tokens {
-    "agent" = "{{ consul_acl_agent_token }}"
-  }
-{% endif %}
 }
-{% endif %}
 
-{% if consul_tls_enabled %}
-ca_file                = "{{ consul_tls_directory }}/{{ consul_tls_ca_file | basename }}"
-cert_file              = "{{ consul_tls_directory }}/{{ consul_tls_cert_file | basename }}"
-key_file               = "{{ consul_tls_directory }}/{{ consul_tls_key_file | basename }}"
-verify_incoming        = {{ consul_tls_verify_incoming | lower }}
-verify_outgoing        = {{ consul_tls_verify_outgoing | lower }}
-verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
-{% endif %}
+ca_file                = "{{ consul_agent_ca_file }}"
+cert_file              = "{{ consul_cert_file }}/"
+key_file               = "{{ consul_key_file }}"
+verify_incoming        = true
+verify_outgoing        = true
+verify_server_hostname = true
 
 {% if consul_tls_cipher_suites is defined %}
 tls_cipher_suites = "{{ consul_tls_cipher_suites }}"

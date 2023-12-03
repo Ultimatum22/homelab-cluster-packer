@@ -55,7 +55,7 @@
   with_items:
     - "{{ consul_config_directory }}"
     - "{{ consul_data_directory }}"
-    - "{{ consul_tls_directory }}"
+    - "{{ consul_cert_directory }}"
 
 - name: Check for consul log directory
   ansible.builtin.stat:
@@ -70,7 +70,7 @@
     state: directory
   when: not consul_log_dir.stat.exists
 
-- name: Precreate log file
+- name: Pre-create log file
   ansible.builtin.file:
     path: "{{ consul_log_file }}"
     owner: "{{ consul_user }}"
@@ -78,20 +78,38 @@
     state: touch
   changed_when: false
 
+- name: Create TLS agent CA cert
+  no_log: True
+  ansible.builtin.copy:
+    content: "{{ consul_tls_agent_ca_cert }}"
+    dest: "{{ consul_agent_ca_file }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: "0600"
+  notify:
+    - restart consul
 
-# - name: copying over TLS certificates
-#   copy:
-#     src: "{{ item }}"
-#     dest: "{{ consul_tls_directory }}/{{ item | basename }}"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0640"
-#   with_items:
-#     - "{{ consul_tls_ca_file }}"
-#     - "{{ consul_tls_cert_file }}"
-#     - "{{ consul_tls_key_file }}"
-#   notify:
-#     - restart consul
+- name: Create TLS key
+  no_log: True
+  ansible.builtin.copy:
+    content: "{{ consul_tls_key }}"
+    dest: "{{ consul_key_file }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: "0600"
+  notify:
+    - restart consul
+
+- name: Create TLS cert
+  no_log: True
+  ansible.builtin.copy:
+    content: "{{ consul_tls_cert }}"
+    dest: "{{ consul_cert_file }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: "0600"
+  notify:
+    - restart consul
 
 - name: templating out consul configuration
   template:

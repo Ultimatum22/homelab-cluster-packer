@@ -4,3 +4,6 @@
 
 - name: Setup service
   ansible.builtin.include_tasks: ./service.yml
+
+- name: Setup dnsmasq
+  ansible.builtin.include_tasks: ./dnsmasq.yml

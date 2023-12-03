@@ -1,0 +1,1 @@
+{% for host in consul_dnsmasq.upstream_servers | difference(ansible_all_ipv4_addresses) %}nameserver {{host}}{% endfor %}

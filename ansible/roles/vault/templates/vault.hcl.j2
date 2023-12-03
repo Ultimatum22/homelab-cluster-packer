@@ -63,10 +63,10 @@ storage "consul" {
 {% endif %}
 {% if consul_tls_cert_file is defined and consul_tls_key_file is defined %}
 {% if consul_tls_ca_file is defined %}
-  tls_ca_file     = "{{ consul_tls_directory }}/{{ consul_tls_ca_file | basename }}"
+  tls_ca_file     = "{{ consul_cert_directory }}/{{ consul_tls_ca_file | basename }}"
 {% endif %}
-  tls_cert_file   = "{{ consul_tls_directory }}/{{ consul_tls_cert_file | basename }}"
-  tls_key_file    = "{{ consul_tls_directory }}/{{ consul_tls_key_file | basename }}"
+  tls_cert_file   = "{{ consul_cert_directory }}/{{ consul_tls_cert_file | basename }}"
+  tls_key_file    = "{{ consul_cert_directory }}/{{ consul_tls_key_file | basename }}"
   tls_skip_verify = "{{ consul_tls_skip_verify }}"
 {% endif %}
 }

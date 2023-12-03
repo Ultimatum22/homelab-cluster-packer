@@ -3,9 +3,16 @@
   systemd:
     name: consul
     state: restarted
+    enabled: true
 
 - name: reload consul daemon
   systemd:
     name: consul
     state: restarted
     daemon_reload: yes
+
+- name: restart dnsmasq
+  systemd:
+    name: dnsmasq
+    state: restarted
+    enabled: true
