@@ -14,9 +14,9 @@ arawn
 ogma
 
 [cluster]
-danu
+; danu
 # arawn
-# ogma
+ogma
 
 [bootstrap:vars]
 ansible_connection=ssh
@@ -24,14 +24,14 @@ ansible_ssh_user=system
 ansible_ssh_pass=system
 
 [consul_server]
-danu
+; danu
 # arawn
-# ogma
+ogma
 
 [consul_client]
 danu
 # arawn
-# ogma
+ogma
 
 [consul_cluster:children]
 consul_server

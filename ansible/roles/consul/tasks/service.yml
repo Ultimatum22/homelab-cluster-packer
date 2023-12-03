@@ -1,14 +1,17 @@
 ---
 - name: Copy systemd script
-  template:
+  ansible.builtin.template:
     src: consul.service.j2
     dest: /etc/systemd/system/consul.service
     owner: root
     group: root
     mode: "0640"
+  notify:
+    - reload systemd
+    - restart consul
 
 - name: Starting and enabling consul
-  systemd:
+  ansible.builtin.systemd:
     name: consul
     enabled: yes
     state: started

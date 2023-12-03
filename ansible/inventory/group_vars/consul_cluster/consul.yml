@@ -1,6 +1,6 @@
 ---
 datacenter_name: homelab
-consul_domain: homelab.
+consul_domain: consul.
 
 consul_protocol: 3
 
