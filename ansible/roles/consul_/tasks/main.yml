@@ -39,7 +39,6 @@
     group: "{{ consul_group }}"
     shell: /bin/false
     createhome: no
-    # home: "{{ consul_config_dir }}"
     system: yes
     state: present
 

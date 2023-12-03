@@ -7,7 +7,7 @@
 - name: Creating Vault user
   ansible.builtin.user:
     name: "{{ vault_user }}"
-    home: "{{ vault_config_directory }}"
+    createhome: no
     group: "{{ vault_group }}"
     shell: /sbin/nologin
     system: true
