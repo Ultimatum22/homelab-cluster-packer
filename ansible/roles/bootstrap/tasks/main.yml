@@ -14,6 +14,9 @@
 - name: Set Locale
   ansible.builtin.include_tasks: 04-locale.yml
 
+- name: Increase SWAP
+  ansible.builtin.include_tasks: 10-swap.yml
+
 - name: Set UFW
   ansible.builtin.include_tasks: 20-ufw.yml
 
