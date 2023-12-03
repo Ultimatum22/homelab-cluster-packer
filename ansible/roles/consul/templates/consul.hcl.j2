@@ -22,18 +22,10 @@ tls {
     key_file               = "{{ consul_key_file }}"
     verify_incoming        = true
     verify_outgoing        = true
+    tls_min_version        = "{{ consul_tls_min_version }}"
   }
   internal_rpc {
     verify_server_hostname = true
-  }
-}
-
-{% if consul_tls_cipher_suites is defined %}
-tls_cipher_suites = "{{ consul_tls_cipher_suites }}"
-{% endif %}
-tls {
-  defaults {
-    tls_min_version   = "{{ consul_tls_min_version }}"
   }
 }
 
