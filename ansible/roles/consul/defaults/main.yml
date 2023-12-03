@@ -22,13 +22,13 @@ consul_gossip_key: PcHsUpryiSwYSWfH/7zVtI1OrTOIeXGSAE4wj/XOUNw=
 consul_acl_enabled: false
 
 consul_tls_enabled: false
-consul_tls_ca_file: 'tls/consul-agent-ca.pem'
-consul_tls_cert_file: 'tls/dc1-server-consul-0.pem'
-consul_tls_key_file: 'tls/dc1-server-consul-0-key.pem'
+consul_tls_ca_file: tls/consul-agent-ca.pem
+consul_tls_cert_file: tls/dc1-server-consul-0.pem
+consul_tls_key_file: tls/dc1-server-consul-0-key.pem
 consul_tls_verify_incoming: true
 consul_tls_verify_outgoing: true
 consul_tls_verify_server_hostname: true
-consul_tls_min_version: 'tls12'
+consul_tls_min_version: TLSv1_3
 
 consul_port_dns: 8600
 consul_port_http: 8500
@@ -38,7 +38,7 @@ consul_port_serf_lan: 8301
 consul_port_serf_wan: 8302
 consul_port_server: 8300
 
-consul_client_addr: '0.0.0.0'
+consul_client_addr: 0.0.0.0
 consul_advertise_addr: '{{ ansible_default_ipv4.address }}'
 
 consul_raft_multiplier: 1

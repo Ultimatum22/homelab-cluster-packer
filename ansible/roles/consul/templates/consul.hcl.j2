@@ -32,7 +32,11 @@ verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
 {% if consul_tls_cipher_suites is defined %}
 tls_cipher_suites = "{{ consul_tls_cipher_suites }}"
 {% endif %}
-tls_min_version = "{{ consul_tls_min_version }}"
+tls {
+  defaults {
+    tls_min_version   = "{{ consul_tls_min_version }}"
+  }
+}
 
 ports {
   dns      = {{ consul_port_dns }}
@@ -44,13 +48,9 @@ ports {
   server   = {{ consul_port_server }}
 }
 
-retry_join = [
-{% for consul_server in groups['consul_server'] %}
-  "{{ consul_server }}"{% if not loop.last %},{% endif %}{{''}}
-{% endfor %}
-]
+retry_join = [{% for h in groups['consul_server']%}"{{ hostvars[h].ansible_host }}"{% if not loop.last %},{% endif %}{% endfor %}]
 
-client_addr    = "{{ consul_client_addr }}"
+client_addr    = "{{ consul_advertise_addr }}"
 advertise_addr = "{{ consul_advertise_addr }}"
 
 performance {

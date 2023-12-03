@@ -13,13 +13,19 @@ danu
 arawn
 # ogma
 
+
+[cluster]
+danu
+arawn
+# ogma
+
 [bootstrap:vars]
 ansible_connection=ssh
 ansible_ssh_user=system
 ansible_ssh_pass=system
 
 [consul_server]
-# danu
+danu
 arawn
 ; ogma
 
