@@ -1,2 +1,4 @@
 ---
 datacenter_name: homelab
+
+consul_protocol: 3
