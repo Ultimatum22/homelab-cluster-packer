@@ -9,15 +9,15 @@ ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_private_key_file=/home/dave/.ssh/homelab-infra
 
 [bootstrap]
-danu
-arawn
-ogma
-
-
-[cluster]
 # danu
 arawn
 # ogma
+
+
+[cluster]
+danu
+# arawn
+ogma
 
 [bootstrap:vars]
 ansible_connection=ssh
@@ -25,18 +25,15 @@ ansible_ssh_user=system
 ansible_ssh_pass=system
 
 [consul_server]
-# danu
-arawn
-; ogma
+danu
+# arawn
+ogma
 
 [consul_client]
-; danu
-arawn
-; ogma
+danu
+# arawn
+ogma
 
 [consul_cluster:children]
 consul_server
 consul_client
-
-[haproxy_master]
-arawn
