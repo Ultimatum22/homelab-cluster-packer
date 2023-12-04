@@ -119,6 +119,8 @@
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: "0640"
+  notify:
+    - restart consul
 
 - name: templating out consul server configuration
   template:
@@ -128,6 +130,16 @@
     group: "{{ consul_group }}"
     mode: "0640"
   when: "'consul_server' in group_names"
+
+- name: ACL policy configuration
+  template:
+    src: acl_policy.hcl.j2
+    dest: "{{ consul_config_directory }}/acl_policy.hcl"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: "0640"
+  notify:
+    - restart consul
 
 # - name: templating out consul client configuration
 #   template:

@@ -14,6 +14,8 @@ acl {
   default_policy            = "deny"
   down_policy               = "extend-cache"
   enable_token_persistence  = true
+  master_token              = "{{ consul_acl_master_token }}"
+  replication_token         = "{{ consul_acl_replication_token }}"
 }
 
 ports {
