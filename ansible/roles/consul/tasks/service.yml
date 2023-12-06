@@ -15,3 +15,8 @@
     name: consul
     enabled: yes
     state: started
+  notify:
+    -  systemctl daemon-reload
+
+- name: Flush handlers
+  meta: flush_handlers

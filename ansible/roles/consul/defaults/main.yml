@@ -12,8 +12,7 @@ consul_config_directory: /etc/consul
 consul_configd_directory: /etc/consul.d
 consul_data_directory: /var/lib/consul
 consul_install_directory: /usr/bin
-consul_home_directory: /opt/consul
-consul_cert_directory: "{{ consul_home_directory }}/cert"
+consul_cert_directory: "{{ consul_configd_directory }}/cert"
 
 consul_cert_file: "{{ consul_cert_directory }}/consul.crt"
 consul_key_file: "{{ consul_cert_directory }}/consul.key"

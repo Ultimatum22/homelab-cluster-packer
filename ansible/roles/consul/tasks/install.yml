@@ -10,7 +10,7 @@
     name: "{{ consul_user }}"
     group: "{{ consul_group }}"
     shell: /sbin/nologin
-    home: "{{ consul_home_directory }}"
+    create_home: false
     system: true
   when: consul_group_created.changed
 
@@ -53,7 +53,6 @@
     - "{{ consul_config_directory }}"
     - "{{ consul_configd_directory }}"
     - "{{ consul_data_directory }}"
-    - "{{ consul_home_directory }}"
     - "{{ consul_cert_directory }}"
 
 - name: Check for consul log directory
