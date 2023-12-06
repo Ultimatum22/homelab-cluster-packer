@@ -51,6 +51,7 @@
     mode: "0750"
   with_items:
     - "{{ consul_config_directory }}"
+    - "{{ consul_configd_directory }}"
     - "{{ consul_data_directory }}"
     - "{{ consul_home_directory }}"
     - "{{ consul_cert_directory }}"

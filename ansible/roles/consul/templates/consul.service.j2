@@ -9,7 +9,10 @@ ConditionFileNotEmpty={{ consul_config_directory }}/consul.hcl
 Type=notify
 User={{ consul_user }}
 Group={{ consul_group }}
-ExecStart={{ consul_install_directory }}/consul agent -config-dir={{ consul_config_directory }} -log-file={{ consul_log_file }}
+ExecStart={{ consul_install_directory }}/consul agent \
+    -config-file={{ consul_config_directory }} \
+    -config-dir={{ consul_configd_directory }} \
+    -log-file={{ consul_log_file }}
 ExecReload=/bin/kill --signal HUP $MAINPID
 KillMode=process
 KillSignal=SIGTERM

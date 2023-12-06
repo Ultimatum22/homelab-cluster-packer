@@ -35,7 +35,7 @@
 - name: Create ACL policy configuration
   ansible.builtin.template:
     src: configd_50acl_policy.hcl.j2
-    dest: "{{ consul_config_directory }}/50acl_policy.hcl"
+    dest: "{{ consul_configd_directory }}/50acl_policy.hcl"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: "0600"
