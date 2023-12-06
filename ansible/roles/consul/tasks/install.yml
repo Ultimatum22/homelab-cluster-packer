@@ -78,40 +78,7 @@
     mode: "0750"
   changed_when: false
 
-# - name: Create TLS agent CA cert
-#   no_log: true
-#   ansible.builtin.copy:
-#     content: "{{ consul_tls_agent_ca_cert }}"
-#     dest: "{{ consul_agent_ca_file }}"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0600"
-#   notify:
-#     - restart consul
-
-# - name: Create TLS key
-#   no_log: true
-#   ansible.builtin.copy:
-#     content: "{{ consul_tls_key }}"
-#     dest: "{{ consul_key_file }}"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0600"
-#   notify:
-#     - restart consul
-
-# - name: Create TLS cert
-#   no_log: true
-#   ansible.builtin.copy:
-#     content: "{{ consul_tls_cert }}"
-#     dest: "{{ consul_cert_file }}"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0600"
-#   notify:
-#     - restart consul
-
-- name: Templating out consul configuration
+- name: Create configuration
   ansible.builtin.template:
     src: consul.hcl.j2
     dest: "{{ consul_config_directory }}/consul.hcl"
@@ -120,31 +87,3 @@
     mode: "0640"
   notify:
     - restart consul
-
-# - name: Templating out consul server configuration
-#   ansible.builtin.template:
-#     src: server.hcl.j2
-#     dest: "{{ consul_config_directory }}/server.hcl"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0640"
-#   when: "'consul_server' in group_names"
-
-# - name: ACL policy configuration
-#   ansible.builtin.template:
-#     src: acl_policy.hcl.j2
-#     dest: "{{ consul_config_directory }}/acl_policy.hcl"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0640"
-#   notify:
-#     - restart consul
-
-# - name: templating out consul client configuration
-#   template:
-#     src: client.hcl.j2
-#     dest: "{{ consul_config_directory }}/client.hcl"
-#     owner: "{{ consul_user }}"
-#     group: "{{ consul_group }}"
-#     mode: "0640"
-#   when: "'consul_client' in group_names"
