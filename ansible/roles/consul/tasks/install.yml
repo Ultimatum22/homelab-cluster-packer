@@ -33,9 +33,6 @@
         path: "{{ consul_install_directory }}/consul"
         state: absent
 
-    - debug:
-        var: consul_download
-
     - name: Install Consul
       ansible.builtin.unarchive:
         src: "{{ consul_download }}"
@@ -55,20 +52,21 @@
   with_items:
     - "{{ consul_config_directory }}"
     - "{{ consul_data_directory }}"
-    - "{{ consul_home_directory}}"
+    - "{{ consul_home_directory }}"
     - "{{ consul_cert_directory }}"
 
 - name: Check for consul log directory
   ansible.builtin.stat:
-    path: "{{ consul_log_file|dirname }}"
+    path: "{{ consul_log_file | dirname }}"
   register: consul_log_dir
 
 - name: Create log directory if not exists
   ansible.builtin.file:
-    path: "{{ consul_log_file|dirname }}"
+    path: "{{ consul_log_file | dirname }}"
     owner: root
     group: root
     state: directory
+    mode: "0700"
   when: not consul_log_dir.stat.exists
 
 - name: Pre-create log file
@@ -77,43 +75,44 @@
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     state: touch
+    mode: "0750"
   changed_when: false
 
-- name: Create TLS agent CA cert
-  no_log: True
-  ansible.builtin.copy:
-    content: "{{ consul_tls_agent_ca_cert }}"
-    dest: "{{ consul_agent_ca_file }}"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    mode: "0600"
-  notify:
-    - restart consul
+# - name: Create TLS agent CA cert
+#   no_log: true
+#   ansible.builtin.copy:
+#     content: "{{ consul_tls_agent_ca_cert }}"
+#     dest: "{{ consul_agent_ca_file }}"
+#     owner: "{{ consul_user }}"
+#     group: "{{ consul_group }}"
+#     mode: "0600"
+#   notify:
+#     - restart consul
 
-- name: Create TLS key
-  no_log: True
-  ansible.builtin.copy:
-    content: "{{ consul_tls_key }}"
-    dest: "{{ consul_key_file }}"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    mode: "0600"
-  notify:
-    - restart consul
+# - name: Create TLS key
+#   no_log: true
+#   ansible.builtin.copy:
+#     content: "{{ consul_tls_key }}"
+#     dest: "{{ consul_key_file }}"
+#     owner: "{{ consul_user }}"
+#     group: "{{ consul_group }}"
+#     mode: "0600"
+#   notify:
+#     - restart consul
 
-- name: Create TLS cert
-  no_log: True
-  ansible.builtin.copy:
-    content: "{{ consul_tls_cert }}"
-    dest: "{{ consul_cert_file }}"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    mode: "0600"
-  notify:
-    - restart consul
+# - name: Create TLS cert
+#   no_log: true
+#   ansible.builtin.copy:
+#     content: "{{ consul_tls_cert }}"
+#     dest: "{{ consul_cert_file }}"
+#     owner: "{{ consul_user }}"
+#     group: "{{ consul_group }}"
+#     mode: "0600"
+#   notify:
+#     - restart consul
 
-- name: templating out consul configuration
-  template:
+- name: Templating out consul configuration
+  ansible.builtin.template:
     src: consul.hcl.j2
     dest: "{{ consul_config_directory }}/consul.hcl"
     owner: "{{ consul_user }}"
@@ -122,24 +121,24 @@
   notify:
     - restart consul
 
-- name: templating out consul server configuration
-  template:
-    src: server.hcl.j2
-    dest: "{{ consul_config_directory }}/server.hcl"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    mode: "0640"
-  when: "'consul_server' in group_names"
+# - name: Templating out consul server configuration
+#   ansible.builtin.template:
+#     src: server.hcl.j2
+#     dest: "{{ consul_config_directory }}/server.hcl"
+#     owner: "{{ consul_user }}"
+#     group: "{{ consul_group }}"
+#     mode: "0640"
+#   when: "'consul_server' in group_names"
 
-- name: ACL policy configuration
-  template:
-    src: acl_policy.hcl.j2
-    dest: "{{ consul_config_directory }}/acl_policy.hcl"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    mode: "0640"
-  notify:
-    - restart consul
+# - name: ACL policy configuration
+#   ansible.builtin.template:
+#     src: acl_policy.hcl.j2
+#     dest: "{{ consul_config_directory }}/acl_policy.hcl"
+#     owner: "{{ consul_user }}"
+#     group: "{{ consul_group }}"
+#     mode: "0640"
+#   notify:
+#     - restart consul
 
 # - name: templating out consul client configuration
 #   template:

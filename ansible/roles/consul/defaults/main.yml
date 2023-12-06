@@ -3,6 +3,10 @@ consul_user: consul
 consul_group: consul
 
 consul_datacenter: "{{ datacenter_name }}"
+consul_log_level: INFO
+
+consul_protocol: 3
+consul_raft_protocol: 3
 
 consul_config_directory: /etc/consul.d
 consul_data_directory: /var/lib/consul
@@ -15,28 +19,59 @@ consul_key_file: "{{ consul_cert_directory }}/consul.key"
 consul_agent_ca_file: "{{ consul_cert_directory }}/ca.crt"
 
 consul_log_file: /var/log/consul
+consul_log_rotate_bytes: 0
+consul_log_rotate_duration: 24h
+consul_log_rotate_max_files: 0
 
 consul_version: 1.17.0
 consul_architecture: "{{ architecture_map[ansible_architecture] }}"
 consul_archive: "consul_{{ consul_version }}_linux_{{ consul_architecture }}.zip"
 consul_download: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}"
 
-consul_gossip_key: PcHsUpryiSwYSWfH/7zVtI1OrTOIeXGSAE4wj/XOUNw=
+consul_encrypt_verify_incoming: true
+consul_encrypt_verify_outgoing: true
+
+consul_acl_default_policy: allow
+consul_acl_down_policy: extend-cache
+consul_acl_ttl: 30s
+consul_acl_token_persistence: true
 
 consul_tls_min_version: TLSv1_3
 
-consul_port_dns: 8600
-consul_port_http: 8500
-consul_port_https: -1
-consul_port_grpc: -1
-consul_port_serf_lan: 8301
-consul_port_serf_wan: 8302
-consul_port_server: 8300
+consul_ports:
+  dns: 8600
+  http: 8500
+  https: -1
+  grpc: -1
+  grpc_tls: -1
+  serf_lan: 8301
+  serf_wan: 8302
+  server: 8300
 
-consul_client_addr: 0.0.0.0
-consul_advertise_addr: '{{ ansible_default_ipv4.address }}'
+consul_retry_interval: 30s
+consul_retry_max: 0
+
+consul_bind_address: "{{ ansible_default_ipv4.address  }}"
+consul_advertise_address: "{{ consul_bind_address }}"
+consul_translate_wan_address: false
+consul_advertise_address_wan: "{{ consul_bind_address }}"
+
+consul_client_address: 127.0.0.1
+consul_addresses:
+  dns: "{{ consul_client_address }}"
+  http: "{{ consul_client_address }}"
+  https: "{{ consul_client_address }}"
+  rpc: "{{ consul_client_address }}"
+  grpc: "{{ consul_client_address }}"
+  grpc_tls: "{{ consul_client_address }}"
+
+
+# consul_client_addr: 0.0.0.0
+# consul_advertise_addr: '{{ ansible_default_ipv4.address }}'
 
 consul_raft_multiplier: 1
+consul_leave_drain_time: 5s
+consul_rpc_hold_timeout: 7s
 
 
 consul_dnsmasq:
