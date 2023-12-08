@@ -8,6 +8,7 @@ consul_log_level: INFO
 consul_protocol: 3
 consul_raft_protocol: 3
 
+
 consul_config_directory: /etc/consul
 consul_configd_directory: /etc/consul.d
 consul_data_directory: /var/lib/consul
@@ -27,6 +28,7 @@ consul_version: 1.17.0
 consul_architecture: "{{ architecture_map[ansible_architecture] }}"
 consul_archive: "consul_{{ consul_version }}_linux_{{ consul_architecture }}.zip"
 consul_download: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}"
+consul_run_path: /run/consul
 
 consul_encrypt_verify_incoming: true
 consul_encrypt_verify_outgoing: true

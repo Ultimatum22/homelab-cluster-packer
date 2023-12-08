@@ -32,12 +32,12 @@
   notify:
     - restart consul
 
-- name: Create ACL policy configuration
-  ansible.builtin.template:
-    src: configd_50acl_policy.json.j2
-    dest: "{{ consul_configd_directory }}/50acl_policy.json"
-    owner: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    mode: "0600"
-  notify:
-    - restart consul
+# - name: Create ACL policy configuration
+#   ansible.builtin.template:
+#     src: configd_50acl_policy.json.j2
+#     dest: "{{ consul_configd_directory }}/50acl_policy.json"
+#     owner: "{{ consul_user }}"
+#     group: "{{ consul_group }}"
+#     mode: "0600"
+#   notify:
+#     - restart consul
