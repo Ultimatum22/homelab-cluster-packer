@@ -58,7 +58,7 @@ consul_advertise_address: "{{ consul_bind_address }}"
 consul_translate_wan_address: false
 consul_advertise_address_wan: "{{ consul_bind_address }}"
 
-consul_client_address: 127.0.0.1
+consul_client_address: "{{ consul_bind_address }}"
 consul_addresses:
   dns: "{{ consul_client_address }}"
   http: "{{ consul_client_address }}"

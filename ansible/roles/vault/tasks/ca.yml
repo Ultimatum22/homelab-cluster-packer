@@ -66,3 +66,4 @@
     mode: "0660"
   notify:
     - Restart Vault
+  when: "'consul_server' in group_names"
