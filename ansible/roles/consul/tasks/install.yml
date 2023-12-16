@@ -1,19 +1,4 @@
 ---
-- name: Creating Consul group
-  ansible.builtin.group:
-    name: "{{ consul_group }}"
-    system: true
-  register: consul_group_created
-
-- name: Creating Consul user
-  ansible.builtin.user:
-    name: "{{ consul_user }}"
-    group: "{{ consul_group }}"
-    shell: /sbin/nologin
-    create_home: false
-    system: true
-  when: consul_group_created.changed
-
 - name: Ensure Consul is installed
   block:
     - name: Test Consul

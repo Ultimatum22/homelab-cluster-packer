@@ -1,0 +1,15 @@
+---
+- name: Creating Nomad group
+  ansible.builtin.group:
+    name: "{{ nomad_group }}"
+    system: true
+  register: nomad_group_created
+
+- name: Creating Nomad user
+  ansible.builtin.user:
+    name: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    shell: /sbin/nologin
+    create_home: false
+    system: true
+  when: nomad_group_created.changed
