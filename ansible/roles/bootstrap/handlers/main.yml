@@ -7,3 +7,8 @@
 - name: reload ufw
   ansible.builtin.ufw:
     state: reloaded
+
+- name: restart fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: restarted

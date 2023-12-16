@@ -11,7 +11,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: Restart fail2ban
+  notify: restart fail2ban
 
 - name: Start and enable fail2ban
   ansible.builtin.service:
