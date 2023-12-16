@@ -7,7 +7,6 @@
 
 - name: Setup service
   ansible.builtin.include_tasks: ./service.yml
-
 # - name: Setup service
 #   ansible.builtin.include_tasks: ./service.yml
 
