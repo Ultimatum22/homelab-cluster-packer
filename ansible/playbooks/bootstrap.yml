@@ -1,6 +1,6 @@
 ---
 - hosts: bootstrap
   become: true
-  strategy: free
+  # strategy: free
   roles:
     - role: bootstrap

@@ -39,7 +39,7 @@ ufw_rules:
   - { rule: allow, port: 8600, proto: udp, comment: consul DNS }
 
 ufw_redirect_rules:
-  - { rule: redirect, port: 8600, proto: udp, from_ip: any, to: any, to_port: 53, direction: PREROUTING, comment: Redirect UDP traffic on port 53 to port 8600 }
-  - { rule: redirect, port: 8600, proto: tcp, from_ip: any, to: any, to_port: 53, direction: PREROUTING, comment: Redirect TCP traffic on port 53 to port 8600 }
-  - { rule: redirect, port: 8600, proto: udp, from_ip: any, to: 127.0.0.1, to_port: 53, direction: PREROUTING, comment: Redirect UDP traffic on port 53 to port 8600 for localhost }
-  - { rule: redirect, port: 8600, proto: tcp, from_ip: any, to: 127.0.0.1, to_port: 53, direction: PREROUTING, comment: Redirect TCP traffic on port 53 to port 8600 for localhost }
+  - { rule: allow, port: 8600, proto: udp, from_ip: any, to: any, to_port: 53, direction: routed, comment: Redirect UDP traffic on port 53 to port 8600 }
+  - { rule: allow, port: 8600, proto: tcp, from_ip: any, to: any, to_port: 53, direction: routed, comment: Redirect TCP traffic on port 53 to port 8600 }
+  - { rule: allow, port: 8600, proto: udp, from_ip: any, to: 127.0.0.1, to_port: 53, direction: routed, comment: Redirect UDP traffic on port 53 to port 8600 for localhost }
+  - { rule: allow, port: 8600, proto: tcp, from_ip: any, to: 127.0.0.1, to_port: 53, direction: routed, comment: Redirect TCP traffic on port 53 to port 8600 for localhost }

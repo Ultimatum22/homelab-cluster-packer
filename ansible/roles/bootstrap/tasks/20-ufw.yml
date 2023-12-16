@@ -35,7 +35,7 @@
     port: "{{ item.port }}"
     proto: "{{ item.proto }}"
     from_ip: "{{ item.from_ip|default('any') }}"
-    comment: "{{ item.comment) }}"
+    comment: "{{ item.comment }}"
   with_items:
     - "{{ ufw_rules }}"
   when: ufw_rules|length > 0
@@ -48,9 +48,10 @@
     port: "{{ item.port }}"
     proto: "{{ item.proto }}"
     from_ip: "{{ item.from_ip|default('any') }}"
-    to_ip: "{{ item.to }}"
+    to_ip: "{{ item.to|default('any') }}"
     direction: "{{ item.direction }}"
     comment: "{{ item.comment }}"
+    route: true
   with_items:
     - "{{ ufw_redirect_rules }}"
   when: ufw_redirect_rules|length > 0
