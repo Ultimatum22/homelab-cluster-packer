@@ -1,3 +1,20 @@
 ---
 nomad_user: nomad
 nomad_group: nomad
+
+nomad_config_directory: /etc/nomad
+nomad_configd_directory: /etc/nomad.d
+nomad_data_directory: /var/lib/nomad
+nomad_install_directory: /usr/bin
+nomad_cert_directory: "{{ nomad_configd_directory }}/cert"
+
+nomad_version: 1.7.2
+nomad_architecture: "{{ architecture_map[ansible_architecture] }}"
+nomad_archive: "nomad_{{ nomad_version }}_linux_{{ nomad_architecture }}.zip"
+nomad_download: "https://releases.hashicorp.com/nomad/{{ nomad_version }}/{{ nomad_archive }}"
+nomad_run_path: /run/nomad
+
+nomad_log_file: /var/log/nomad
+nomad_log_rotate_bytes: 0
+nomad_log_rotate_duration: 24h
+nomad_log_rotate_max_files: 0

@@ -1,3 +1,6 @@
 ---
 - name: Setup user and group
   ansible.builtin.include_tasks: ./user_group.yml
+
+- name: Install Nomad
+  ansible.builtin.include_tasks: ./install.yml

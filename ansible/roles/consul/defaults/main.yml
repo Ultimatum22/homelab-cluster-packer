@@ -8,7 +8,6 @@ consul_log_level: INFO
 consul_protocol: 3
 consul_raft_protocol: 3
 
-
 consul_config_directory: /etc/consul
 consul_configd_directory: /etc/consul.d
 consul_data_directory: /var/lib/consul

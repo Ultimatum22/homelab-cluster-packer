@@ -1,0 +1,84 @@
+---
+- name: Ensure Nomad is installed
+  block:
+    - name: Test Nomad
+      ansible.builtin.command: nomad --version
+      register: nomad_version_test
+      changed_when: false
+
+    - name: Test if correct version is installed
+      ansible.builtin.assert:
+        that:
+          - nomad_version in nomad_version_test.stdout
+        success_msg: "Nomad version {{ nomad_version }} is installed"
+        fail_msg: Nomad was not successfully installed
+  rescue:
+    - name: Ensure old nomad is removed
+      ansible.builtin.file:
+        path: "{{ nomad_install_directory }}/nomad"
+        state: absent
+
+    - name: Install Nomad
+      ansible.builtin.unarchive:
+        src: "{{ nomad_download }}"
+        dest: "{{ nomad_install_directory }}"
+        owner: "{{ nomad_user }}"
+        group: "{{ nomad_group }}"
+        remote_src: true
+        mode: "0755"
+
+- name: Creating Nomad directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    state: directory
+    mode: "0750"
+  with_items:
+    - "{{ nomad_config_directory }}"
+    - "{{ nomad_configd_directory }}"
+    - "{{ nomad_data_directory }}"
+    - "{{ nomad_cert_directory }}"
+
+- name: Check for nomad log directory
+  ansible.builtin.stat:
+    path: "{{ nomad_log_file | dirname }}"
+  register: nomad_log_dir
+
+- name: Create log directory if not exists
+  ansible.builtin.file:
+    path: "{{ nomad_log_file | dirname }}"
+    owner: root
+    group: root
+    state: directory
+    mode: "0700"
+  when: not nomad_log_dir.stat.exists
+
+- name: Pre-create log file
+  ansible.builtin.file:
+    path: "{{ nomad_log_file }}"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    state: touch
+    mode: "0750"
+  changed_when: false
+
+- name: Create configuration
+  ansible.builtin.template:
+    src: nomad.hcl.j2
+    dest: "{{ nomad_config_directory }}/nomad.hcl"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode: "0640"
+  notify:
+    - restart nomad
+
+- name: Create server configuration
+  ansible.builtin.template:
+    src: server.hcl.j2
+    dest: "{{ nomad_config_directory }}/server.hcl"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode: "0640"
+  notify:
+    - restart nomad
