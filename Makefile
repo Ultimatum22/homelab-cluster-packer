@@ -53,6 +53,9 @@ packer.init:
 	$(PACKER_DOCKER_RUN) init $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
 # Ansible
+ansible.bootstrap:
+	cd ansible && ansible-playbook playbooks/bootstrap.yml
+
 ansible.cluster:
 	cd ansible && ansible-playbook playbooks/cluster.yml
 
