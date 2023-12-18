@@ -52,6 +52,11 @@ packer.validate:
 packer.init:
 	$(PACKER_DOCKER_RUN) init $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
+# Ansible
+ansible.cluster:
+	cd ansible && ansible-playbook playbooks/cluster.yml
+
+# Vagrant
 vagrant.up:
 	cd vagrant && vagrant up
 
@@ -63,6 +68,9 @@ vagrant.destroy:
 
 vars.generate: pipenv
 	python bin/generate-vars.py
+
+
+
 
 
 
