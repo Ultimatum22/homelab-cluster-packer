@@ -1,0 +1,22 @@
+server {
+    enabled = true
+    bootstrap_expect = {{ groups['nomad_server'] | length }}
+
+    rejoin_after_leave = {{ nomad_rejoin_after_leave | bool | lower }}
+
+    enabled_schedulers = [
+            {%- set comma = joiner(",") -%}
+            {% for scheduler in nomad_enabled_schedulers -%}
+                {{ comma() }}"{{ scheduler }}"
+            {%- endfor -%} ]
+    num_schedulers = {{ nomad_num_schedulers }}
+
+    node_gc_threshold = "{{ nomad_threshold.node_gc }}"
+    eval_gc_threshold = "{{ nomad_threshold.eval_gc }}"
+    job_gc_threshold = "{{ nomad_threshold.job_gc }}"
+    deployment_gc_threshold = "{{ nomad_threshold.deployment_gc }}"
+
+    {# encrypt = "{{ nomad_encrypt | bool | lower }}" #}
+
+    raft_protocol = {{ nomad_raft_protocol }}
+}

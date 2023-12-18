@@ -28,3 +28,19 @@ nomad_ports:
   http: 4646
   rpc: 4647
   serf: 4648
+
+nomad_rejoin_after_leave: false
+nomad_enabled_schedulers:
+  - service
+  - batch
+  - system
+nomad_num_schedulers: "{{ ansible_processor_vcpus }}"
+
+nomad_threshold:
+  node_gc: 24h
+  eval_gc: 4h
+  job_gc: 1h
+  deployment_gc: 1h
+
+nomad_encrypt: false
+nomad_raft_protocol: "{{ raft_protocol }}"

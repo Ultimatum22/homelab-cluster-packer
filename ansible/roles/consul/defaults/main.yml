@@ -5,7 +5,7 @@ consul_group: consul
 consul_datacenter: "{{ datacenter_name }}"
 
 consul_protocol: 3
-consul_raft_protocol: 3
+consul_raft_protocol: "{{ raft_protocol }}"
 
 consul_config_directory: /etc/consul
 consul_configd_directory: /etc/consul.d

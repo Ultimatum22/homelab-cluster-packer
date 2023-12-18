@@ -1,2 +1,3 @@
 ---
 datacenter_name: homelab
+raft_protocol: 3

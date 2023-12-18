@@ -36,3 +36,17 @@ ogma
 [consul_cluster:children]
 consul_server
 consul_client
+
+[nomad_server]
+danu
+arawn
+ogma
+
+[nomad_client]
+danu
+arawn
+ogma
+
+[nomad_cluster:children]
+nomad_server
+nomad_client

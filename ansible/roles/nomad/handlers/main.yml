@@ -1,4 +1,4 @@
----
+
 - name: restart nomad
   systemd:
     name: nomad
@@ -15,7 +15,7 @@
   become: true
   command: systemctl daemon-reload
 
-- name: systemctl daemon-reload
+- name: Systemctl daemon-reload
   systemd:
     daemon_reload: true
   become: true
