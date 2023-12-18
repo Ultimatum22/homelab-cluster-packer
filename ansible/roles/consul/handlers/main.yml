@@ -21,9 +21,8 @@
   become: true
   command: systemctl daemon-reload
 
-
 - name: Systemctl daemon-reload
   systemd:
     daemon_reload: true
   become: true
-  listen: 'systemctl daemon-reload'
+  listen: systemctl daemon-reload

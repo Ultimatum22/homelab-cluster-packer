@@ -1,0 +1,22 @@
+---
+- name: restart nomad
+  systemd:
+    name: nomad
+    state: restarted
+    enabled: true
+
+- name: reload nomad daemon
+  systemd:
+    name: nomad
+    state: restarted
+    daemon_reload: yes
+
+- name: reload systemd
+  become: true
+  command: systemctl daemon-reload
+
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: true
+  listen: systemctl daemon-reload

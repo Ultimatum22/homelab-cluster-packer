@@ -1,0 +1,22 @@
+---
+- name: Copy systemd script
+  ansible.builtin.template:
+    src: nomad.service.j2
+    dest: /etc/systemd/system/nomad.service
+    owner: root
+    group: root
+    mode: "0640"
+  notify:
+    # - reload systemd
+    - restart nomad
+
+- name: Starting and enabling nomad
+  ansible.builtin.systemd:
+    name: nomad
+    enabled: yes
+    state: started
+  # notify:
+  #   - systemctl daemon-reload
+
+- name: Flush handlers
+  meta: flush_handlers

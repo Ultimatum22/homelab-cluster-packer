@@ -35,10 +35,8 @@
     state: directory
     mode: "0750"
   with_items:
-    - "{{ nomad_config_directory }}"
     - "{{ nomad_configd_directory }}"
     - "{{ nomad_data_directory }}"
-    - "{{ nomad_cert_directory }}"
 
 - name: Check for nomad log directory
   ansible.builtin.stat:
@@ -66,19 +64,19 @@
 - name: Create configuration
   ansible.builtin.template:
     src: nomad.hcl.j2
-    dest: "{{ nomad_config_directory }}/nomad.hcl"
+    dest: "{{ nomad_configd_directory }}/nomad.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode: "0640"
   notify:
     - restart nomad
 
-- name: Create server configuration
-  ansible.builtin.template:
-    src: server.hcl.j2
-    dest: "{{ nomad_config_directory }}/server.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-    mode: "0640"
-  notify:
-    - restart nomad
+# - name: Create server configuration
+#   ansible.builtin.template:
+#     src: server.hcl.j2
+#     dest: "{{ nomad_configd_directory }}/server.hcl"
+#     owner: "{{ nomad_user }}"
+#     group: "{{ nomad_group }}"
+#     mode: "0640"
+#   notify:
+#     - restart nomad
