@@ -8,13 +8,15 @@ ansible = "*"
 netaddr = "*"
 pre-commit = "*"
 pre-commit-hooks = "*"
-molecule = "*"
 molecule-vagrant = "*"
 yamllint = "*"
 ansible-lint = "*"
 jsondiff = "*"
 zfs-autobackup = "*"
 jmespath = "*"
+molecule = {extras = ["docker"], version = "*"}
+molecule-plugins = {extras = ["docker"], version = "*"}
+ansible-core = "*"
 
 [dev-packages]
 docker = "*"
