@@ -11,6 +11,7 @@ vault.txt
 # ansible
 **/test.yml
 **/testca/vault/vault*
+**/.galaxy
 
 # terraform
 **.terraform/*

@@ -1,22 +1,5 @@
+---
+# File: main.yml handlers file for nomad
 
 - name: restart nomad
-  systemd:
-    name: nomad
-    state: restarted
-    enabled: true
-
-- name: reload nomad daemon
-  systemd:
-    name: nomad
-    state: restarted
-    daemon_reload: yes
-
-- name: reload systemd
-  become: true
-  command: systemctl daemon-reload
-
-- name: Systemctl daemon-reload
-  systemd:
-    daemon_reload: true
-  become: true
-  listen: systemctl daemon-reload
+  service: name=nomad state=restarted

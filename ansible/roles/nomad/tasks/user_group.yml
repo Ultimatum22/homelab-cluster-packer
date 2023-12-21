@@ -1,15 +1,18 @@
 ---
-- name: Creating Nomad group
-  ansible.builtin.group:
-    name: "{{ nomad_group }}"
-    system: true
-  register: nomad_group_created
+# File: user_group.yml - User and group settings
 
-- name: Creating Nomad user
-  ansible.builtin.user:
+- name: Add Nomad group
+  group:
+    name: "{{ nomad_group }}"
+    state: present
+  when:
+    - nomad_manage_group | bool
+
+- name: Add Nomad user
+  user:
     name: "{{ nomad_user }}"
+    comment: "Nomad user"
     group: "{{ nomad_group }}"
-    shell: /sbin/nologin
-    create_home: false
-    system: true
-  when: nomad_group_created.changed
+    system: yes
+  when:
+    - nomad_manage_user | bool

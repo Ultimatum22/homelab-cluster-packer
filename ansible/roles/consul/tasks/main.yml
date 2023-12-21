@@ -1,17 +1,43 @@
 ---
-- name: Setup user and group
-  ansible.builtin.include_tasks: ./user_group.yml
+# File: main.yml - Main tasks for Consul
+- name: Looking up latest version of Consul
+  set_fact:
+    consul_version: "{{ (lookup('url', 'https://api.github.com/repos/hashicorp/consul/releases/latest', split_lines=False) |
+                    from_json).get('tag_name') | replace('v', '') }}"
+  when: 'consul_version == "latest"'
 
-- name: Install Consul
-  ansible.builtin.include_tasks: ./install.yml
+- name: Include checks/asserts
+  import_tasks: asserts.yml
 
-- name: Configure ACL
-  ansible.builtin.include_tasks: ./acl.yml
+- name: Include OS-specific variables
+  include_vars: "{{ vars_file_item }}"
+  with_first_found:
+    - files:
+        - '{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml'
+        - "{{ ansible_os_family }}.yml"
+  loop_control:
+    loop_var: vars_file_item
+  tags: always
 
-- name: Setup service
-  ansible.builtin.include_tasks: ./service.yml
-# - name: Setup service
-#   ansible.builtin.include_tasks: ./service.yml
+# -----------------------------------------------------------------------
+# Tasks for all *NIX operating systems
+# -----------------------------------------------------------------------
+- name: Include NIX tasks
+  include_tasks: nix.yml
+  when: ansible_os_family != 'Windows'
 
-# - name: Setup dnsmasq
-#   ansible.builtin.include_tasks: ./dnsmasq.yml
+# -----------------------------------------------------------------------
+# Tasks for Windows
+# -----------------------------------------------------------------------
+- name: Include Windows tasks
+  include_tasks: windows.yml
+  when: ansible_os_family == 'Windows'
+
+- name: Include services management
+  import_tasks: services.yml
+  when: consul_services is defined and consul_services|length>0
+  tags:
+    - consul_services
+
+- name: Flush handlers
+  meta: flush_handlers

@@ -1,3 +1,8 @@
 ---
 datacenter_name: homelab
 raft_protocol: 3
+
+consul_raw_key: e9TsdesAtWtn4/NQE3lTpcALiN6egmc2guHPyMo15mc=
+
+nomad_encrypt_enable: true
+nomad_encrypt: nZ0Z6ElnFOBH6DfwpLmxUw5mozlU1p9iqDcIwrbfMP8=

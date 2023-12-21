@@ -1,0 +1,17 @@
+---
+# File: asserts.yml - Asserts for this playbook
+
+- name: ping hosts
+  ping:
+
+- name: ensure all hosts are reachable
+  run_once: yes
+  assert:
+    that:
+      - ansible_play_hosts == ansible_play_hosts_all
+  when: not nomad_skip_ensure_all_hosts | bool
+
+- name: Check nomad_group_name is included in groups
+  fail:
+    msg: "nomad_group_name must be included in groups."
+  when: nomad_group_name not in groups

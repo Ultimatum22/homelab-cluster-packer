@@ -1,7 +1,7 @@
 [all]
-ogma ansible_host=192.168.2.221
-danu ansible_host=192.168.2.222
-arawn ansible_host=192.168.2.223
+ogma ansible_host=192.168.2.221 consul_node_role=bootstrap nomad_node_role=both consul_iface=eth0
+danu ansible_host=192.168.2.222 consul_node_role=bootstrap nomad_node_role=both consul_iface=eth0
+arawn ansible_host=192.168.2.223 consul_node_role=bootstrap nomad_node_role=both consul_iface=eth0
 
 [all:vars]
 ansible_user=system
@@ -20,33 +20,23 @@ ansible_ssh_pass=system
 
 [cluster]
 danu
-arawn
-ogma
 
-[consul_server]
+[consul_instances]
 danu
-arawn
-ogma
 
-[consul_client]
+[nomad_instances]
 danu
-arawn
-ogma
 
-[consul_cluster:children]
-consul_server
-consul_client
+; [nomad_server]
+; danu
+; arawn
+; ogma
 
-[nomad_server]
-danu
-arawn
-ogma
+; [nomad_client]
+; danu
+; arawn
+; ogma
 
-[nomad_client]
-danu
-arawn
-ogma
-
-[nomad_cluster:children]
-nomad_server
-nomad_client
+; [nomad_cluster:children]
+; nomad_server
+; nomad_client

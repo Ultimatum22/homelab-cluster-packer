@@ -1,15 +1,22 @@
 ---
-- name: Creating Consul group
-  ansible.builtin.group:
-    name: "{{ consul_group }}"
-    system: true
-  register: consul_group_created
+# File: user_group.yml - User and group settings
 
-- name: Creating Consul user
-  ansible.builtin.user:
+# Add group
+- name: Add Consul group
+  group:
+    name: "{{ consul_group }}"
+    state: present
+  when:
+    - consul_manage_group | bool
+    - not consul_install_from_repo | bool
+
+# Add user
+- name: Add Consul user
+  user:
     name: "{{ consul_user }}"
+    comment: "Consul user"
     group: "{{ consul_group }}"
-    shell: /sbin/nologin
-    create_home: false
     system: true
-  when: consul_group_created.changed
+  when:
+    - consul_manage_user | bool
+    - not consul_install_from_repo | bool
