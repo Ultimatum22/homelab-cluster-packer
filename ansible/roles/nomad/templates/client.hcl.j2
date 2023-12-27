@@ -1,6 +1,6 @@
 client {
   enabled = true
-  servers = [{% for h in groups['nomad_instances']%}"{{ hostvars[h].ansible_host }}"{% if not loop.last %},{% endif %}{% endfor %}]
+  servers = [{% for h in groups['nomad_instances']%}"{{ hostvars[h].ansible_host }}:4646"{% if not loop.last %},{% endif %}{% endfor %}]
   meta {
   }
 }
