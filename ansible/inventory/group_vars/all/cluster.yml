@@ -1,5 +1,5 @@
 ---
-datacenter_name: homelab
+datacenter_name: global
 raft_protocol: 3
 
 consul_raw_key: e9TsdesAtWtn4/NQE3lTpcALiN6egmc2guHPyMo15mc=

@@ -20,12 +20,18 @@ ansible_ssh_pass=system
 
 [cluster]
 danu
+arawn
+ogma
 
 [consul_instances]
 danu
+arawn
+ogma
 
 [nomad_instances]
 danu
+arawn
+ogma
 
 ; [nomad_server]
 ; danu
