@@ -3,5 +3,5 @@
   become: true
   roles:
     # - role: docker
-    - role: consul
-    # - role: nomad
+    # - role: consul
+    - role: nomad
