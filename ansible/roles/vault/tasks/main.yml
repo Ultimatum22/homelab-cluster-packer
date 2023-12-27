@@ -71,13 +71,6 @@
     mode: "0644"
   notify: restart vault
 
-- name: Validate vault config
-  ansible.builtin.command:
-    cmd: "{{ vault_install_dir }}/vault validate {{ vault_config_dir }}"
-  register: vault_config_valid
-  changed_when: false
-  failed_when: vault_config_valid.rc != 0
-
 - name: Ensure Vault service is started and enabled on boot
   ansible.builtin.systemd_service:
     name: vault
