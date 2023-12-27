@@ -2,6 +2,6 @@
 - hosts: cluster
   become: true
   roles:
-    # - role: docker
-    # - role: consul
+    - role: docker
+    - role: consul
     - role: nomad
