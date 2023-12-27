@@ -22,10 +22,10 @@ ssh_public_keys:
 
 ufw_rules:
   - { rule: allow, port: 22, proto: tcp, comment: ssh }
-  # - { rule: allow, port: 4646, proto: tcp, comment: nomad HTTP }
-  # - { rule: allow, port: 4647, proto: tcp, comment: nomad RPC }
-  # - { rule: allow, port: 4648, proto: tcp, comment: nomad Serf WAN } # server only
-  # - { rule: allow, port: 4648, proto: udp, comment: nomad Serf WAN } # server only
+  - { rule: allow, port: 4646, proto: tcp, comment: nomad HTTP }
+  - { rule: allow, port: 4647, proto: tcp, comment: nomad RPC }
+  - { rule: allow, port: 4648, proto: tcp, comment: nomad Serf WAN } # server only
+  - { rule: allow, port: 4648, proto: udp, comment: nomad Serf WAN } # server only
   # - { rule: allow, port: 8200, proto: tcp, comment: vault UI }
   - { rule: allow, port: 8300, proto: tcp, comment: consul RPC } # server only
   - { rule: allow, port: 8301, proto: tcp, comment: consul Serf LAN }
