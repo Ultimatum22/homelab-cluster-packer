@@ -2,8 +2,12 @@ name = "{{ inventory_hostname }}"
 region = "global"
 datacenter = "{{ nomad_datacenter }}"
 
+ports {
+  http = 4646
+}
+
 advertise {
-    http = "I{{ ansible_default_ipv4.address }}"
+    http = "{{ ansible_default_ipv4.address }}"
     rpc = "{{ ansible_default_ipv4.address }}"
     serf = "{{ ansible_default_ipv4.address }}"
 }

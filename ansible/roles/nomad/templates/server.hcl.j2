@@ -1,5 +1,5 @@
 server {
     enabled = true
     raft_protocol = 3
-    bootstrap_expect = {{ groups['consul_instances'] | length }}
+    bootstrap_expect = {{ groups['nomad_instances'] | length }}
 }
