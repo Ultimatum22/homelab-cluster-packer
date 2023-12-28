@@ -52,6 +52,7 @@
   with_items:
     - "{{ vault_config_dir }}"
     - "{{ vault_data_dir }}"
+    - "{{ vault_config_dir }}/services.d/"
 
 - name: Create vault.service configuration
   template:
@@ -71,9 +72,104 @@
     mode: "0644"
   notify: restart vault
 
+- name: Copy vault-unseal.sh scripts
+  copy:
+    src: vault-unseal.sh
+    dest: "{{ vault_install_dir }}"
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: Ensure Vault service is started and enabled on boot
   ansible.builtin.systemd_service:
     name: vault
     state: started
     enabled: yes
     daemon_reload: true
+
+- name: Waiting for service to start up
+  ansible.builtin.pause:
+    seconds: 5
+
+- name: initialize vault
+  shell: "export VAULT_ADDR=http://{{ ansible_default_ipv4.address }}:8200; vault operator init"
+  register: initialize_vault
+  run_once: true
+
+- name: save vault init secrets
+  ansible.builtin.copy:
+    content="{{ result.stdout }}"
+    dest="{{ vault_init_secrets_file }}"
+    owner=root
+    group=root
+    mode=600
+  run_once: true
+  when: initialize_vault | success
+
+- debug:
+    vars: initialize_vault
+
+# Consul Service Discovery
+- name: register service within consul
+  template:
+    src="{{ item }}"
+    dest="{{ consul.config_dir }}/services.d/"
+    owner=consul
+    group=root
+    mode=0640
+  with_fileglob:
+    - ../templates/services.d/*.json
+  ignore_errors: true
+  register: result
+
+- name: restart consul
+  service:
+    name="consul"
+    sleep=5
+    state=restarted
+  ignore_errors: true
+  when: result|success
+
+- name: unseal vault
+  command: "{{ vault_install_dir }}/vault-unseal.sh"
+  run_once: true
+
+- name: reset audit backend
+  shell: source /etc/profile; vault audit-disable file >/dev/null
+  ignore_errors: true
+  run_once: true
+
+- name: enable audit backend
+  shell: "source /etc/profile; vault audit-enable file path={{ vault.log_dir }}/vault-audit.log"
+  run_once: true
+
+# - name: find all policies
+#   find:
+#     paths: "{{ vault.config_dir }}/policies"
+#     patterns: "*.hcl"
+#   register: policies_glob
+#   run_once: true
+
+# - name: find all policies
+#   command: find . -name "*.hcl"
+#   args:
+#     chdir: "{{ vault.config_dir }}/policies"
+#   register: policies_glob
+#   run_once: true
+#
+# - debug: var=policies_glob
+#
+#
+# - name: configure audit backend
+#   shell: "source /etc/profile; vault policy-write {{ item.path.split('/')[-1] | replace('.hcl', '') }} {{ item.path }}"
+#   with_items:
+#     - "{{ policies_glob.files }}"
+#   run_once: true
+
+# - name: configure audit backend
+#   shell: "source /etc/profile; vault policy-write {{ item | replace('.hcl', '') }} {{ item }}"
+#   args:
+#     chdir: "{{ vault.config_dir }}/policies"
+#   with_items:
+#     - "{{ policies_glob.stdout_lines }}"
+#   run_once: true
