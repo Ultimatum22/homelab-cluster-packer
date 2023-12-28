@@ -9,7 +9,7 @@ advertise_addr = "{{ ansible_default_ipv4.address }}"
 
 bind_addr = "0.0.0.0"
 
-bootstrap_expect = {{ groups['consul_instances'] | length }}
+bootstrap_expect = {{ groups['consul_cluster'] | length }}
 
 client_addr = "0.0.0.0"
 
@@ -39,7 +39,7 @@ ports = {
 
 raft_protocol = 3
 retry_interval = "30s"
-retry_join = [{% for h in groups['consul_instances']%}"{{ hostvars[h].ansible_host }}"{% if not loop.last %},{% endif %}{% endfor %}]
+retry_join = [{% for h in groups['consul_cluster']%}"{{ hostvars[h].ansible_host }}"{% if not loop.last %},{% endif %}{% endfor %}]
 
 server = true
 

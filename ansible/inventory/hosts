@@ -23,12 +23,17 @@ danu
 arawn
 ogma
 
-[consul_instances]
+[consul_cluster]
 danu
 arawn
 ogma
 
-[nomad_instances]
+[nomad_cluster]
+danu
+arawn
+ogma
+
+[vault_cluster]
 danu
 arawn
 ogma

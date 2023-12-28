@@ -59,6 +59,9 @@ ansible.bootstrap:
 ansible.cluster:
 	cd ansible && ansible-playbook playbooks/cluster.yml
 
+ansible.vault-init-unseal:
+	cd ansible && ansible-playbook playbooks/vault-init-unseal.yml
+
 # Vagrant
 vagrant.up:
 	cd vagrant && vagrant up
