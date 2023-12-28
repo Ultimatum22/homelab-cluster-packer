@@ -13,6 +13,8 @@ vault_config_dir: /etc/vault.d
 vault_data_dir: /opt/vault
 vault_init_secrets_file: "{{ vault_config_dir }}/vault-init-secrets.txt"
 
+consul_config_dir: /etc/consul.d
+
 arch:
   x86_64: amd64
   aarch64: arm64

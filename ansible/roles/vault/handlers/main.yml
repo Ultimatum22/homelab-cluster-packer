@@ -8,3 +8,8 @@
   service:
     name: vault
     state: reloaded
+
+- name: restart consul
+  service:
+    name: consul
+    state: restarted

@@ -13,7 +13,7 @@ token=$(egrep 'Initial Root Token' $secretsfile | awk '{print $4}')
 source /etc/profile
 
 for k in $keys; do
-    vault unseal $k >/dev/null
+    vault operator unseal $k >/dev/null
 done
 
 sleep 2
@@ -24,7 +24,7 @@ if [ "$(vault status | grep Sealed | awk '{print $2}')" == "true" ]; then
 fi
 
 # authenticate using the root token
-vault auth $token >/dev/null
+vault login $token >/dev/null
 
 [[ $? -gt 0 ]] && echo "ERROR: vault auth failed" && exit 3
 

@@ -2,17 +2,17 @@ disable_mlock = true
 
 ui = true
 
-address       = "{{ ansible_default_ipv4.address }}:8200"
-cluster_addr  = "{{ ansible_default_ipv4.address }}:8201"
+cluster_addr  = "http://127.0.0.1:8201"
+api_addr      = "http://127.0.0.1:8200"
 
 backend "consul" {
-  address = "{{ ansible_default_ipv4.address }}:8500"
+  address = "127.0.0.1:8500"
   scheme = "http"
   path = "vault/"
 }
 
 listener "tcp" {
-  address = "{{ ansible_default_ipv4.address }}:8200"
+  address       = "127.0.0.1:8200"
   tls_disable = 1
   telemetry {
     unauthenticated_metrics_access = true
