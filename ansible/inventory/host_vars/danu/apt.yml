@@ -1,4 +1,3 @@
 ---
 apt_new_packages:
   - software-properties-common
-  - glusterfs-server

@@ -1,38 +1,38 @@
 ---
-# - name: Upgrade system
-#   ansible.builtin.include_tasks: 00-apt.yml
+- name: Upgrade system
+  ansible.builtin.include_tasks: 00-apt.yml
 
-# - name: Set hostname
-#   ansible.builtin.include_tasks: 01-hostname.yml
+- name: Set hostname
+  ansible.builtin.include_tasks: 01-hostname.yml
 
-# - name: Set timezone
-#   ansible.builtin.include_tasks: 02-timezone.yml
+- name: Set timezone
+  ansible.builtin.include_tasks: 02-timezone.yml
 
-# - name: Set keyboard
-#   ansible.builtin.include_tasks: 03-keyboard.yml
+- name: Set keyboard
+  ansible.builtin.include_tasks: 03-keyboard.yml
 
-# - name: Set Locale
-#   ansible.builtin.include_tasks: 04-locale.yml
+- name: Set Locale
+  ansible.builtin.include_tasks: 04-locale.yml
 
-# - name: Increase SWAP
-#   ansible.builtin.include_tasks: 10-swap.yml
+- name: Increase SWAP
+  ansible.builtin.include_tasks: 10-swap.yml
 
-# - name: up UFW
-#   ansible.builtin.include_tasks: 20-ufw.yml
+- name: up UFW
+  ansible.builtin.include_tasks: 20-ufw.yml
 
-# - name: Setup fail2ban
-#   ansible.builtin.include_tasks: 21-fail2ban.yml
-#   tags: ban
+- name: Setup fail2ban
+  ansible.builtin.include_tasks: 21-fail2ban.yml
+  tags: ban
 
-# - name: Mount usb drives
-#   ansible.builtin.include_tasks: 30-usb-mount.yml
+- name: Mount usb drives
+  ansible.builtin.include_tasks: 30-usb-mount.yml
 
 - name: Install glusterFS
   ansible.builtin.include_tasks: 31-glusterfs.yml
 
-# - name: SSH hardening
-#   ansible.builtin.include_tasks: 99-hardening.yml
+- name: SSH hardening
+  ansible.builtin.include_tasks: 99-hardening.yml
 
-# - name: reboot host
-#   ansible.builtin.reboot:
-#     msg: Rebooting machine in 5 seconds
+- name: reboot host
+  ansible.builtin.reboot:
+    msg: Rebooting machine in 5 seconds
