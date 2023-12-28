@@ -2,7 +2,7 @@
 - hosts: cluster
   become: true
   roles:
-    # - role: docker
-    # - role: consul
-    # - role: nomad
+    - role: docker
+    - role: consul
+    - role: nomad
     - role: vault
