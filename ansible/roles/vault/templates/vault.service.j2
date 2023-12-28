@@ -7,8 +7,8 @@ Wants=consul.service
 After=consul.service
 
 [Service]
-User=vault
-Group=vault
+User={{ vault_user }}
+Group={{ vault_group }}
 ExecStart={{ vault_install_dir }}/vault server -config {{ vault_config_dir }}/vault.hcl
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM

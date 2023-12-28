@@ -94,10 +94,6 @@
 - name: initialize vault
   shell: export VAULT_ADDR=http://127.0.0.1:8200; vault operator init
   register: initialize_vault_result
-  run_once: true
-
-- debug:
-    var: initialize_vault_result
 
 - name: save vault init secrets
   ansible.builtin.copy:
@@ -106,7 +102,6 @@
     owner: "{{ vault_user }}"
     group: "{{ vault_group }}"
     mode: "600"
-  run_once: true
   when: initialize_vault_result.rc == 0
 
 # Consul Service Discovery
@@ -127,14 +122,14 @@
   become: true
   run_once: true
 
-- name: reset audit backend
-  shell: source /etc/profile; vault audit-disable file >/dev/null
-  ignore_errors: true
-  run_once: true
+# - name: reset audit backend
+#   shell: source /etc/profile; vault audit-disable file >/dev/null
+#   ignore_errors: true
+#   run_once: true
 
-- name: enable audit backend
-  shell: "source /etc/profile; vault audit-enable file path={{ vault.log_dir }}/vault-audit.log"
-  run_once: true
+# - name: enable audit backend
+#   shell: "source /etc/profile; vault audit-enable file path={{ vault.log_dir }}/vault-audit.log"
+#   run_once: true
 
 # - name: find all policies
 #   find:
