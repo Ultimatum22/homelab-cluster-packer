@@ -1,0 +1,4 @@
+---
+mounts:
+  - uuid: 415c0e16-6776-46bc-a181-0dd83c177d64
+    mountpoint: /mnt/storage

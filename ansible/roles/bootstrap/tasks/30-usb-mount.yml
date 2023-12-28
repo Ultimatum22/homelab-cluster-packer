@@ -1,0 +1,17 @@
+---
+- name: Create mountpoint directory
+  ansible.builtin.file:
+    path: "{{ item.mountpoint }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+    state: directory
+  loop: "{{ mounts }}"
+
+- name: Add mount to /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: "UUID={{ item.uuid }}\t{{ item.mountpoint }}\tauto\tnosuid,nodev,nofail\t0\t0"
+  loop: "{{ mounts }}"
+  notify:
+    - Mount drives

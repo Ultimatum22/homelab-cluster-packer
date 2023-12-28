@@ -4,6 +4,7 @@ collections:
   - name: https://github.com/kencx/ansible-collection.git
     type: git
     version: HEAD
+  - name: gluster.gluster
 roles:
   - name: geerlingguy.docker
     version: 7.0.2

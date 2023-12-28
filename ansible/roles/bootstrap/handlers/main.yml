@@ -12,3 +12,6 @@
   ansible.builtin.service:
     name: fail2ban
     state: restarted
+
+- name: Mount drives
+  ansible.builtin.command: mount -a -t nofuse.mergerfs

@@ -37,7 +37,12 @@ ufw_rules:
   - { rule: allow, port: 8501, proto: tcp, comment: Consul HTTPS }
   - { rule: allow, port: 8503, proto: tcp, comment: Consul gRPC }
   - { rule: allow, port: 8600, proto: tcp, comment: Consul DNS }
-  - { rule: allow, port: 8600, proto: udp, comment: Consul DNS }
+  - { rule: allow, port: 111, proto: tcp, comment: Gluster Portmapper }
+  - { rule: allow, port: 24007, proto: tcp, comment: Gluster Daemon }
+  - { rule: allow, port: 49152, proto: tcp, comment: Gluster Brick 1 }
+  - { rule: allow, port: 49153, proto: tcp, comment: Gluster Brick 2 }
+  - { rule: allow, port: 49154, proto: tcp, comment: Gluster Brick 3 }
+  - { rule: allow, port: 49155, proto: tcp, comment: Gluster Brick 4 }
 
 ufw_redirect_rules:
   - { rule: allow, port: 8600, proto: udp, from_ip: any, to: any, to_port: 53, direction: routed, comment: Redirect UDP traffic on port 53 to port 8600 }

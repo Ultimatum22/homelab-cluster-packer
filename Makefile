@@ -14,7 +14,7 @@ PACKER_BOARD_DIR = packer/armhf/
 
 # Development
 
-install: pipenv pre-commit.install apt.install
+install: pipenv pre-commit.install apt.install ansible.install
 
 apt.install:
 	apt-get install parted
@@ -53,6 +53,9 @@ packer.init:
 	$(PACKER_DOCKER_RUN) init $(PACKER_VARS) $(PACKER_BOARD_DIR)
 
 # Ansible
+ansible.install:
+	cd ansible && ansible-galaxy install -r requirements.yml
+
 ansible.bootstrap:
 	cd ansible && ansible-playbook playbooks/bootstrap.yml
 
