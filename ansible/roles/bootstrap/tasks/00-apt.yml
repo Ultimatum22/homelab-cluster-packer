@@ -3,21 +3,21 @@
   ansible.builtin.apt:
     update_cache: yes
 
-- name: Get list of old Linux images and headers
-  ansible.builtin.shell: "dpkg-query -W -f='${binary:Package}\n' 'linux-image*' 'linux-headers*' | grep -v $(uname -r)"
-  register: old_packages
-  ignore_errors: true
+# - name: Get list of old Linux images and headers
+#   ansible.builtin.shell: "dpkg-query -W -f='${binary:Package}\n' 'linux-image*' 'linux-headers*' | grep -v $(uname -r)"
+#   register: old_packages
+#   ignore_errors: true
 
-- name: Display old packages
-  ansible.builtin.debug:
-    var: old_packages.stdout_lines
+# - name: Display old packages
+#   ansible.builtin.debug:
+#     var: old_packages.stdout_lines
 
-- name: Purge old packages
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: absent
-    purge: true
-  with_items: "{{ old_packages.stdout_lines }}"
+# - name: Purge old packages
+#   ansible.builtin.apt:
+#     name: "{{ item }}"
+#     state: absent
+#     purge: true
+#   with_items: "{{ old_packages.stdout_lines }}"
 
 - name: List upgradable packages
   ansible.builtin.command: apt list --upgradable
