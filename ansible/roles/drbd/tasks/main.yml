@@ -1,0 +1,20 @@
+---
+# - include_tasks: install.yml
+#   tags:
+#     - drbd
+
+# - include_tasks: disks.yml
+#   tags:
+#     - drbd
+#     - drbd-config
+#     - drbd-disks
+
+- include_tasks: config.yml
+  tags:
+    - drbd
+    - drbd-config
+
+- include_tasks: services.yml
+  tags:
+    - drbd
+    - drbd-services

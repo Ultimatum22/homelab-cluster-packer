@@ -24,8 +24,8 @@
   ansible.builtin.include_tasks: 21-fail2ban.yml
   tags: ban
 
-- name: Mount usb drives
-  ansible.builtin.include_tasks: 30-usb-mount.yml
+# - name: Mount usb drives
+#   ansible.builtin.include_tasks: 30-usb-mount.yml
 
 - name: SSH hardening
   ansible.builtin.include_tasks: 99-hardening.yml

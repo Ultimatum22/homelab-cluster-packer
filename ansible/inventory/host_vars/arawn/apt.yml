@@ -1,3 +1,4 @@
 ---
 apt_new_packages:
   - software-properties-common
+  - python3-pexpect

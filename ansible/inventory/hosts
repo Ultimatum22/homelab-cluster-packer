@@ -38,6 +38,11 @@ danu
 arawn
 ogma
 
+[drbd_cluster]
+arawn
+danu
+ogma
+
 ; [nomad_server]
 ; danu
 ; arawn
