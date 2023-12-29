@@ -35,7 +35,7 @@
   expect:
     command: drbdadm create-md {{ item['item']['resource'] }}
     responses:
-      "[need to type 'yes' to confirm]": yes
+      "[need to type 'yes' to confirm]": "yes"
   become: true
   register: _drbd_mirror_device_created
   with_items: "{{ _drbd_mirror_device_creation_status['results'] }}"
