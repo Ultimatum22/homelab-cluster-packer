@@ -1,14 +1,21 @@
-{% for disk in drbd_disks %}
-resource "{{ disk['resource'] }}" {
+resource r0 {
 
-{% for h in groups['drbd_cluster'] %}
-  on {{ hostvars[h]['inventory_hostname_short'] }} {
-    device {{ disk['device'] }};
-    disk {{ disk['use_partition'] }};
-    meta-disk internal;
-    address {{ hostvars[h]['ansible_eth0']['ipv4']['address'] }}:7788;
+  syncer {
+    rate 100M;
+    al-extents 257;
   }
-{% endfor %}
 
+  on arawn {
+    device    /dev/drbd0;
+    disk      /dev/sda1;
+    address   192.168.2.223:7788;
+    meta-disk internal;
+  }
+
+  on danu {
+    device    /dev/drbd0;
+    disk      /dev/sda1;
+    address   192.168.2.222:7788;
+    meta-disk internal;
+  }
 }
-{% endfor %}

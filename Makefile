@@ -62,6 +62,9 @@ ansible.bootstrap:
 ansible.cluster:
 	cd ansible && ansible-playbook playbooks/cluster.yml
 
+ansible.drbd:
+	cd ansible && ansible-playbook playbooks/drbd.yml
+
 ansible.vault-init-unseal:
 	cd ansible && ansible-playbook playbooks/vault-init-unseal.yml
 

@@ -1,6 +1,5 @@
 ---
 - hosts: bootstrap
   become: true
-  strategy: free
   roles:
-    - role: bootstrap
+    - role: drbd

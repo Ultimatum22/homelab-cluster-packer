@@ -41,7 +41,7 @@ ogma
 [drbd_cluster]
 arawn
 danu
-ogma
+# ogma
 
 ; [nomad_server]
 ; danu

@@ -1,6 +1,7 @@
 ---
-drbd_deb_packages: 
+drbd_deb_packages:
   - drbd-utils
+  - heartbeat
 
 drbd_network_shared_secret: sJyX2JM5
 
