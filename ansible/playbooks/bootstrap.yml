@@ -3,5 +3,5 @@
   become: true
   # strategy: free
   roles:
-    - role: bootstrap
-    # - role: drbd
+    # - role: bootstrap
+    - role: drbd
