@@ -1,4 +1,8 @@
 ---
+# - name: Display all variables/facts known for a host
+#   debug:
+#     var: hostvars[inventory_hostname]
+
 - include_tasks: install.yml
   tags:
     - drbd
@@ -8,6 +12,11 @@
     - drbd
     - drbd-config
     - drbd-disks
+
+- include_tasks: heartbeat.yml
+  tags:
+    - drbd
+    - drbd-heartbeat
 
 - include_tasks: config.yml
   tags:

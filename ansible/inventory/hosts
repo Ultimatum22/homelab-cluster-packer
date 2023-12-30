@@ -39,9 +39,9 @@ arawn
 ogma
 
 [drbd_cluster]
-arawn
-danu
-# ogma
+arawn drbd_node=primary
+danu drbd_node=secondary
+ogma drbd_node=backup
 
 ; [nomad_server]
 ; danu

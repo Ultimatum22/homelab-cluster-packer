@@ -1,0 +1,3 @@
+{% for item in drbd_disks %}
+{{ hostvars[groups['drbd_cluster'][0]]['inventory_hostname_short'] }} {{ drbd_vip }} drbddisk::{{ item['resource'] }} Filesystem::{{ item['device'] }}::{{ item['mountpoint'] }}::{{ item['filesystem'] }}::noatime
+{% endfor %}

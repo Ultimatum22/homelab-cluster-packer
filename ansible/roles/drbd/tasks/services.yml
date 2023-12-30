@@ -5,9 +5,8 @@
     enabled: true
   become: true
 
-# - name: Ensuring heartbeat Service Is Enabled On Boot
-#   service:
-#     name: heartbeat
-#     enabled: true
-#   become: true
-#   when: drbd_use_heartbeat
+- name: Ensuring heartbeat Service Is Enabled On Boot
+  service:
+    name: heartbeat
+    enabled: true
+  become: true

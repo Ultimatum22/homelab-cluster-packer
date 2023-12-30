@@ -39,7 +39,9 @@
   become: true
   register: _drbd_mirror_device_created
   with_items: "{{ _drbd_mirror_device_creation_status['results'] }}"
-  when: not item['stat']['exists']
+  when:
+    - not item['stat']['exists']
+    - not '"backup" in rbd_node'
 
 - name: Marking DRDB Mirror Devices Created
   file:
@@ -64,7 +66,7 @@
   with_items: "{{ drbd_disks }}"
   when: >
         _drbd_mirror_device_up['changed'] and
-        inventory_hostname == groups[drbd_cluster][0]
+        inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Waiting For DRBD Sync To Complete
   command: drbd-overview
@@ -75,7 +77,7 @@
   delay: 30
   when: >
         _drbd_primary['changed'] and
-        inventory_hostname == groups[drbd_cluster][0]
+        inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Partitioning DRBD Device
   filesystem:
@@ -84,7 +86,7 @@
   become: true
   with_items: "{{ drbd_disks }}"
   when: >
-        inventory_hostname == groups[drbd_cluster][0] and
+        inventory_hostname == groups['drbd_cluster'][0] and
         _drbd_sync['changed']
 
 - name: Creating DRBD Mountpoint

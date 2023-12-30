@@ -29,3 +29,6 @@ drbd_disks:
     resource: r0
     state: present
     use_partition: /dev/sda1
+
+drbd_vip: 192.168.2.220
+drbd_unicast_port: 694

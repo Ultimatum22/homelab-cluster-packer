@@ -19,3 +19,20 @@ resource r0 {
     meta-disk internal;
   }
 }
+
+resource r10 {
+
+  protocol A;
+
+  stacked-on-top-of r0 {
+    device    /dev/drbd10;
+    address   {{ drbd_vip }}:7788;
+  }
+
+  on server-dr {
+    device    /dev/drbd10;
+    disk      /dev/sda1;
+    address   192.168.1.221:7788;
+    meta-disk internal;
+  }
+}

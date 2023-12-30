@@ -1,5 +1,5 @@
 ---
-- hosts: bootstrap
+- hosts: drbd_cluster
   become: true
   roles:
     - role: drbd

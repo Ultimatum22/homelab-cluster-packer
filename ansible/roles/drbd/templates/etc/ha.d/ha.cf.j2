@@ -1,0 +1,23 @@
+logfile /var/log/ha-log
+logfacility local0
+
+keepalive 2
+
+deadtime 15
+
+initdead 60
+
+auto_failback off
+
+# udpport {{ drbd_unicast_port }}
+# {% for h in groups['drbd_cluster'] %}
+# ucast eth0 {{ hostvars[h]['ansible_eth0']['ipv4']['address'] }}
+# {% endfor %}
+
+bcast eth0
+
+{% for h in groups['drbd_cluster'] %}
+{% if hostvars[h]['drbd_node'] == 'primary' or hostvars[h]['drbd_node'] =='secondary' %}
+node {{ hostvars[h]['inventory_hostname_short'] }}
+{%endif%}
+{% endfor %}

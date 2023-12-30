@@ -1,1 +1,12 @@
 ---
+- name: restart drbd
+  service:
+    name: drbd
+    state: restarted
+  become: true
+
+- name: restart heartbeat
+  service:
+    name: heartbeat
+    state: restarted
+  become: true
