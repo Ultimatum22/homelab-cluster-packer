@@ -9,7 +9,7 @@ cluster = {
 vm_box = "debian/bullseye64"
 
 # required_plugins = %w(vagrant-share vagrant-vbguest vagrant-libvirt vagrant-cachier)
-required_plugins = %w(vagrant-share vagrant-libvirt vagrant-cachier)
+required_plugins = %w(vagrant-share vagrant-cachier)
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 

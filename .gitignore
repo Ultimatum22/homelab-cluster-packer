@@ -28,7 +28,8 @@ output/*
 logs/*
 
 # vagrant
-**/.vagrant/*
+vagrant/.vagrant
+vagrant/*.vdi
 
 # nomad
 input.vars
