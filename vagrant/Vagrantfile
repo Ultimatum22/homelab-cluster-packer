@@ -8,7 +8,20 @@ cluster = {
 }
 vm_box = "debian/bullseye64"
 
+# required_plugins = %w(vagrant-share vagrant-vbguest vagrant-libvirt vagrant-cachier)
+required_plugins = %w(vagrant-share vagrant-libvirt vagrant-cachier)
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  plugins_to_install = required_plugins.select { |plugin| not Vagrant.has_plugin? plugin }
+  if not plugins_to_install.empty?
+    puts "Installing plugins: #{plugins_to_install.join(' ')}"
+    if system "vagrant plugin install #{plugins_to_install.join(' ')}"
+      exec "vagrant #{ARGV.join(' ')}"
+    else
+      abort "Installation of one or more plugins has failed. Aborting."
+    end
+  end
 
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :machine
@@ -23,10 +36,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.provider :virtualbox do |vb, override|
         config.vm.box = vm_box
         override.vm.network :private_network, ip: "#{info[:ip]}"
-        override.vm.hostname = hostname
 
         vb.name = 'vagrant-' + hostname
         vb.customize ["modifyvm", :id, "--memory", info[:mem], "--cpus", info[:cpus], "--hwvirtex", "on" ]
+
+        disk = "storage-#{hostname}.vdi"
+        unless File.exist?(disk)        
+          vb.customize ['createhd', '--filename', disk,'--variant', 'Fixed', '--size', 20 * 1024]
+          vb.customize ['storageattach', :id, '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]  
+        end
+      end
+      
+
+      cfg.vm.provision "shell" do |s|
+        ssh_insecure_key = File.readlines("#{Dir.home}/.vagrant.d/insecure_private_key").first.strip
+        s.inline = <<-SHELL
+          echo "Copying ansible-vm public SSH Keys to the VM"
+          echo #{ssh_insecure_key} >> /home/vagrant/.ssh/id_rsa
+          chown vagrant /home/vagrant/.ssh/id_rsa
+          chmod 400 /home/vagrant/.ssh/id_rsa
+        SHELL
       end
 
       # provision nodes with ansible
@@ -34,10 +63,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         cfg.vm.provision :ansible do |ansible|
           # ansible.verbose = "vvvv"
 
-          ansible.config_file = './ansible.cfg'
-          ansible.inventory_path = 'inventory/hosts'
-          ansible.playbook = './../ansible/playbooks/bootstrap.yml'
-          ansible.limit = 'all'# "#{info[:ip]}" # Ansible hosts are identified by ip
+          ansible.config_file = "./ansible.cfg"
+          ansible.inventory_path = "inventory/hosts"
+          ansible.playbook = "./../ansible/playbooks/bootstrap.yml"
+          ansible.limit = "all"# "#{info[:ip]}" # Ansible hosts are identified by ip
         end # end provision
       end #end if
 

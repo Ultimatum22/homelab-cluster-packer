@@ -15,8 +15,8 @@ node3
 
 [bootstrap:vars]
 ansible_connection=ssh
-ansible_ssh_user=system
-ansible_ssh_pass=system
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant
 
 [cluster]
 node1 consul_node_role=bootstrap nomad_node_role=both consul_iface=eth0
