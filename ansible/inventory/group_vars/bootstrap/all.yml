@@ -18,6 +18,7 @@ locale_options:
 
 ufw_rules:
   - { rule: allow, port: 22, proto: tcp, comment: SSH }
+  - { rule: allow, port: 2222, proto: tcp, comment: SSH Vagrant }
   - { rule: allow, port: 694, proto: udp, comment: DRBD unicast }
   - { rule: allow, port: 4646, proto: tcp, comment: Nomad HTTP }
   - { rule: allow, port: 4647, proto: tcp, comment: Nomad RPC }
