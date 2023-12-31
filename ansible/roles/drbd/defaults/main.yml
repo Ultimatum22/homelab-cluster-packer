@@ -12,11 +12,12 @@ drbd_common:
     cram-hmac-alg sha1;
     shared-secret "{{ drbd_network_shared_secret }}";
   handlers: ''
-  startup: |
-    # wfc-timeout degr-wfc-timeout outdated-wfc-timeout
-    # wait-after-sb;
-    wfc-timeout 100;
-    degr-wfc-timeout 120;
+  startup: ''
+  # startup: |
+  #   # wfc-timeout degr-wfc-timeout outdated-wfc-timeout
+  #   # wait-after-sb;
+  #   wfc-timeout 100;
+  #   degr-wfc-timeout 120;
   options: ''
 
 drbd_disks:

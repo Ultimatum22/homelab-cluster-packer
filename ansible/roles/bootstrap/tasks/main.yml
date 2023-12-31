@@ -16,6 +16,7 @@
 
 - name: Increase SWAP
   ansible.builtin.include_tasks: 10-swap.yml
+  when: "'ansible_architecture' in ['armv6l', 'armv7l', 'aarch64']"
 
 - name: up UFW
   ansible.builtin.include_tasks: 20-ufw.yml
