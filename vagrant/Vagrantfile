@@ -32,6 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define hostname do |cfg|
 
       cfg.ssh.insert_key = false
+      cfg.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', './_keys/id_rsa']
 
       cfg.vm.provider :virtualbox do |vb, override|
         config.vm.box = vm_box
@@ -40,23 +41,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.name = 'vagrant-' + hostname
         vb.customize ["modifyvm", :id, "--memory", info[:mem], "--cpus", info[:cpus], "--hwvirtex", "on" ]
 
-        disk = "storage-disk-#{hostname}.vdi"
         # Create a second disk (2G)
+        disk = "storage-disk-#{hostname}.vdi"
         unless File.exist? (disk)		    
           vb.customize ['createhd', '--filename', disk, '--size', 2 * 1024]
         end
         vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type',  'hdd', '--medium', disk]
       end
       
-      cfg.vm.provision "shell" do |s|
-        ssh_insecure_key = File.readlines("#{Dir.home}/.vagrant.d/insecure_private_key").first.strip
-        s.inline = <<-SHELL
-          echo "Copying ansible-vm public SSH Keys to the VM"
-          echo #{ssh_insecure_key} >> /home/vagrant/.ssh/id_rsa
-          chown vagrant /home/vagrant/.ssh/id_rsa
-          chmod 400 /home/vagrant/.ssh/id_rsa
-        SHELL
-      end
+
+      # cfg.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
+
+      # cfg.vm.provision "shell" do |s|
+      #   ssh_insecure_key = File.readlines("_keys/id_rsa")
+      #   s.inline = <<-SHELL
+      #     echo "Copying ansible-vm public SSH Keys to the VM"
+      #     echo #{ssh_insecure_key} >> /home/vagrant/.ssh/id_rsa
+      #     chown vagrant /home/vagrant/.ssh/id_rsa
+      #     chmod 400 /home/vagrant/.ssh/id_rsa
+      #   SHELL
+      # end
 
       # provision nodes with ansible
       if index == cluster.size - 1
@@ -67,6 +71,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.inventory_path = "inventory/hosts"
           ansible.playbook = "./../ansible/playbooks/bootstrap.yml"
           ansible.limit = "all"# "#{info[:ip]}" # Ansible hosts are identified by ip
+          ansible.extra_vars = {
+            ssh_public_keys: ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtaxksKXfCx2OK1cXe0QnNBI0XSWpQ+8l3PqLqJnVpU88XSm1n9VrVC49vblReY59k/djmliuSs0DStox/N5utPvWY4+5jw4xkhWZ+rdSTf0xXBg0QvGHK0QnoJTCeKR3bDTE8+1KnbDwiSmzc8LyzLI0HdmRsaVzNamLwVY19rF0iPP0qkG4PZ7ZSU1psravxGuMNUv9o7ykatb9lLhjgs0Wn3nzfOUupY7kT1eyOi6t0S/z1JBFgkwPx/5xe84cmR5FeShwCq+YuoMY6kc75u4el0JOvWHTADRju416e4fwfEpixDv2xJ6HR5R1Z7xsXuPB1TBikG7ZelnyAPCzGPGnyq4zZsVVLQKVXQlZXHfRrHvQm8eMX826Yv42QDjmzCDkdSpVFmzi2qbe7udTj0SzQX2nW52FeLhPgNum8yCX3nVHZiPeq1mrq8yt07AmBNvcFO7XAiEyUZMwtr71wvwXdnn2XvqX2WUTwLiLGDEv5lIAHaOEScTkn0HNO6pM= dave@ares"],
+          }
         end # end provision
       end #end if
 

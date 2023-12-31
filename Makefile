@@ -75,6 +75,9 @@ vagrant.up:
 vagrant.provision:
 	cd vagrant && vagrant provision
 
+vagrant.reload:
+	cd vagrant && vagrant reload
+
 vagrant.destroy:
 	cd vagrant && vagrant destroy -f
 
