@@ -40,14 +40,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.name = 'vagrant-' + hostname
         vb.customize ["modifyvm", :id, "--memory", info[:mem], "--cpus", info[:cpus], "--hwvirtex", "on" ]
 
-        disk = "storage-#{hostname}.vdi"
-        unless File.exist?(disk)        
-          vb.customize ['createhd', '--filename', disk,'--variant', 'Fixed', '--size', 20 * 1024]
-          vb.customize ['storageattach', :id, '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]  
+        disk = "storage-disk-#{hostname}.vdi"
+        # Create a second disk (20G)
+        unless File.exist? (disk)		    
+          vb.customize ['createhd', '--filename', disk, '--size', 20 * 1024]
         end
+        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type',  'hdd', '--medium', disk]
       end
       
-
       cfg.vm.provision "shell" do |s|
         ssh_insecure_key = File.readlines("#{Dir.home}/.vagrant.d/insecure_private_key").first.strip
         s.inline = <<-SHELL
