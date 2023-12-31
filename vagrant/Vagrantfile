@@ -32,7 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define hostname do |cfg|
 
       cfg.ssh.insert_key = false
-      cfg.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', './_keys/id_rsa']
+      cfg.ssh.private_key_path = ['./_keys/id_rsa']
 
       cfg.vm.provider :virtualbox do |vb, override|
         config.vm.box = vm_box
