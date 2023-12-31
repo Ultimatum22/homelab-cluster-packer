@@ -49,19 +49,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type',  'hdd', '--medium', disk]
       end
       
-
-      # cfg.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
-
-      # cfg.vm.provision "shell" do |s|
-      #   ssh_insecure_key = File.readlines("_keys/id_rsa")
-      #   s.inline = <<-SHELL
-      #     echo "Copying ansible-vm public SSH Keys to the VM"
-      #     echo #{ssh_insecure_key} >> /home/vagrant/.ssh/id_rsa
-      #     chown vagrant /home/vagrant/.ssh/id_rsa
-      #     chmod 400 /home/vagrant/.ssh/id_rsa
-      #   SHELL
-      # end
-
       # provision nodes with ansible
       if index == cluster.size - 1
         cfg.vm.provision :ansible do |ansible|
