@@ -1,0 +1,7 @@
+---
+# Generic mapping used for multiple roles
+architecture_map:
+  amd64: amd64
+  x86_64: amd64
+  armv7l: arm
+  aarch64: arm64
