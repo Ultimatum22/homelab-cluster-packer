@@ -64,7 +64,7 @@
   register: _drbd_primary
   with_items: "{{ drbd_disks }}"
   when:
-    - _drbd_mirror_device_up['changed'] and
+    - _drbd_mirror_device_up['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
 # - name: Waiting For DRBD Sync To Complete
