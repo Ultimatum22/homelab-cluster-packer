@@ -10,7 +10,7 @@
   no_log: true
   when: >
         not _drbd_heartbeat_authkey_check['stat']['exists'] and
-        inventory_hostname == groups['drbd_cluster'][0]
+        inventory_hostname == groups['heartbeat_cluster'][0]
 
 - name: Setting Heartbeat Authkey On Master
   set_fact:
@@ -18,21 +18,21 @@
   no_log: true
   when: >
         not _drbd_heartbeat_authkey_check['stat']['exists'] and
-        inventory_hostname == groups['drbd_cluster'][0]
+        inventory_hostname == groups['heartbeat_cluster'][0]
 
 - name: Setting Heartbeat Authkey On Master
   set_fact:
-    drbd_heartbeat_authkey: "{{ hostvars[groups['drbd_cluster'][0]]['drbd_heartbeat_authkey'] }}"
+    drbd_heartbeat_authkey: "{{ hostvars[groups['heartbeat_cluster'][0]]['drbd_heartbeat_authkey'] }}"
   no_log: true
   when: >
         not _drbd_heartbeat_authkey_check['stat']['exists'] and
-        inventory_hostname != groups['drbd_cluster'][0]
+        inventory_hostname != groups['heartbeat_cluster'][0]
 
 - name: Configuring Heartbeat Authkey
   template:
     src: etc/ha.d/authkeys.j2
     dest: /etc/ha.d/authkeys
-    mode: "u=rw,g=,o="
+    mode: u=rw,g=,o=
   become: true
   notify: restart heartbeat
   when: not _drbd_heartbeat_authkey_check['stat']['exists']

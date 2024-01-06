@@ -1,23 +1,19 @@
 logfile /var/log/ha-log
 logfacility local0
 
-keepalive 2
-
-deadtime 15
-
+keepalive 1
+deadtime 10
+warntime 5
 initdead 60
 
+udpport {{ drbd_unicast_port }}
+{% for h in groups['heartbeat_cluster'] %}
+ucast {{ drbd_iface }} {{ hostvars[h]['ansible_'+ drbd_iface]['ipv4']['address'] }}
+{% endfor %}
+
+bcast {{ drbd_iface }}
 auto_failback off
 
-# udpport {{ drbd_unicast_port }}
-# {% for h in groups['drbd_cluster'] %}
-# ucast eth0 {{ hostvars[h]['ansible_eth0']['ipv4']['address'] }}
-# {% endfor %}
-
-bcast eth0
-
-{% for h in groups['drbd_cluster'] %}
-{% if hostvars[h]['drbd_node'] == 'primary' or hostvars[h]['drbd_node'] =='secondary' %}
+{% for h in groups['heartbeat_cluster'] %}
 node {{ hostvars[h]['inventory_hostname_short'] }}
-{%endif%}
 {% endfor %}

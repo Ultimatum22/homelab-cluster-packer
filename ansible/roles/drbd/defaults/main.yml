@@ -23,13 +23,10 @@ drbd_common:
 drbd_disks:
   - device: /dev/drbd0
     disk: /dev/sda
-    filesystem: ext4
     partitions: 1
-    mountpoint: /mnt/storage
-    mountopts: defaults
-    resource: r0
     state: present
-    use_partition: /dev/sda1
 
 drbd_vip: 192.168.2.220
 drbd_unicast_port: 694
+
+drbd_iface: eth0

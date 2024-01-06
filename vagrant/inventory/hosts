@@ -42,3 +42,7 @@ node3
 node1 drbd_node=primary
 node2 drbd_node=secondary
 node3 drbd_node=backup
+
+[heartbeat_cluster]
+node1
+node2

@@ -43,6 +43,10 @@ arawn drbd_node=primary
 danu drbd_node=secondary
 ogma drbd_node=backup
 
+[heartbeat_cluster]
+arawn
+danu
+
 ; [nomad_server]
 ; danu
 ; arawn

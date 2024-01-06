@@ -1,3 +1,1 @@
-{% for item in drbd_disks %}
-{{ hostvars[groups['drbd_cluster'][0]]['inventory_hostname_short'] }} {{ drbd_vip }} drbddisk::{{ item['resource'] }} Filesystem::{{ item['device'] }}::{{ item['mountpoint'] }}::{{ item['filesystem'] }}::noatime
-{% endfor %}
+{{ hostvars[groups['heartbeat_cluster'][0]]['inventory_hostname_short'] }} IPaddr::{{ drbd_vip }}/24/{{ drbd_iface }}
