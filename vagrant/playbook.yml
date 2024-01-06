@@ -1,0 +1,6 @@
+---
+- name: Include bootstrap
+  ansible.builtin.import_playbook: ./../ansible/playbooks/bootstrap.yml
+
+- name: Include drbd
+  ansible.builtin.import_playbook: ./../ansible/playbooks/drbd.yml
