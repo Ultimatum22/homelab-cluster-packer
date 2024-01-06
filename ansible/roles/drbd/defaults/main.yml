@@ -27,6 +27,7 @@ drbd_disks:
     state: present
     resource: r0
     filesystem: ext4
+    mountpoint: /mnt
 
 drbd_vip: 192.168.2.220
 drbd_unicast_port: 694
