@@ -67,26 +67,30 @@
     - _drbd_mirror_device_up['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
-# - name: Waiting For DRBD Sync To Complete
-#   command: drbdmon
-#   become: true
-#   register: _drbd_sync
-#   until: ('Inconsistent' not in _drbd_sync['stdout'])
-#   retries: 100
-#   delay: 30
-#   when: >
-#         _drbd_primary['changed'] and
-#         inventory_hostname == groups['drbd_cluster'][0]
+- name: Waiting For DRBD Sync To Complete
+  command: drbdadm status
+  become: true
+  register: _drbd_sync
+  until: ('Inconsistent' not in _drbd_sync['stdout'])
+  retries: 100
+  delay: 30
+  when:
+    - _drbd_primary['changed']
+    - inventory_hostname == groups['drbd_cluster'][0]
 
-# - name: Partitioning DRBD Device
-#   filesystem:
-#     fstype: "{{ item['filesystem'] }}"
-#     dev: "{{ item['device'] }}"
-#   become: true
-#   with_items: "{{ drbd_disks }}"
-#   when: >
-#         inventory_hostname == groups['drbd_cluster'][0] and
-#         _drbd_sync['changed']
+- name: Debug DRBD
+  debug:
+    var: _drbd_sync
+
+- name: Partitioning DRBD Device
+  filesystem:
+    fstype: "{{ item['filesystem'] }}"
+    dev: "{{ item['device'] }}"
+  become: true
+  with_items: "{{ drbd_disks }}"
+  when:
+    - _drbd_sync['changed']
+    - inventory_hostname == groups['drbd_cluster'][0]
 
 # - name: Creating DRBD Mountpoint
 #   file:

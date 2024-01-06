@@ -26,6 +26,7 @@ drbd_disks:
     partitions: 1
     state: present
     resource: r0
+    filesystem: ext4
 
 drbd_vip: 192.168.2.220
 drbd_unicast_port: 694
