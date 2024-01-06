@@ -41,7 +41,7 @@
   with_items: "{{ _drbd_mirror_device_creation_status['results'] }}"
   when:
     - not item['stat']['exists']
-    - not '"backup" in rbd_node'
+    # - not '"backup" in rbd_node'
 
 - name: Marking DRDB Mirror Devices Created
   file:
@@ -69,7 +69,7 @@
         inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Waiting For DRBD Sync To Complete
-  command: drbd-overview
+  command: drbdmon
   become: true
   register: _drbd_sync
   until: ('Inconsistent' not in _drbd_sync['stdout'])
@@ -96,12 +96,12 @@
   become: true
   with_items: "{{ drbd_disks }}"
 
-- name: Updating /etc/fstab Mounts
-  mount:
-    path: "{{ item['mountpoint'] }}"
-    src: "{{ item['device'] }}"
-    fstype: "{{ item['filesystem'] }}"
-    opts: "{{ item['mountopts'] }}"
-    state: present
-  become: true
-  with_items: "{{ drbd_disks }}"
+# - name: Updating /etc/fstab Mounts
+#   mount:
+#     path: "{{ item['mountpoint'] }}"
+#     src: "{{ item['device'] }}"
+#     fstype: "{{ item['filesystem'] }}"
+#     opts: "{{ item['mountopts'] }}"
+#     state: present
+#   become: true
+#   with_items: "{{ drbd_disks }}"

@@ -4,3 +4,4 @@ apt_new_packages:
   - python3-pexpect
   - git
   - keyboard-configuration
+  - parted

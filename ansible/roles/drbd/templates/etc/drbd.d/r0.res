@@ -5,19 +5,17 @@ resource r0 {
     al-extents 257;
   }
 
-  on arawn {
-    device    /dev/drbd0;
-    disk      /dev/sda1;
-    address   192.168.2.223:7788;
+{% for h in groups['drbd_cluster'] %}
+{% if hostvars[h]['drbd_node'] == 'primary' or hostvars[h]['drbd_node'] =='secondary' %}
+  on {{ hostvars[h]['inventory_hostname_short'] }} {
+    device /dev/drbd0;
+    disk /dev/sda1;
+    address {{ hostvars[h]['ansible_eth0']['ipv4']['address'] }}:7788;
     meta-disk internal;
   }
 
-  on danu {
-    device    /dev/drbd0;
-    disk      /dev/sda1;
-    address   192.168.2.222:7788;
-    meta-disk internal;
-  }
+{% endif %}
+{% endfor %}
 }
 
 resource r10 {
@@ -29,10 +27,15 @@ resource r10 {
     address   {{ drbd_vip }}:7788;
   }
 
-  on server-dr {
-    device    /dev/drbd10;
-    disk      /dev/sda1;
-    address   192.168.1.221:7788;
+{% for h in groups['drbd_cluster'] %}
+{% if hostvars[h]['drbd_node'] == 'backup' %}
+  on {{ hostvars[h]['inventory_hostname_short'] }} {
+    device /dev/drbd10;
+    disk /dev/sda1;
+    address {{ hostvars[h]['ansible_eth0']['ipv4']['address'] }}:7788;
     meta-disk internal;
   }
+
+{% endif %}
+{% endfor %}
 }
