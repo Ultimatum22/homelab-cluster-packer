@@ -1,8 +1,4 @@
 ---
-# - name: Display all variables/facts known for a host
-#   debug:
-#     var: hostvars[inventory_hostname]
-
 - include_tasks: install.yml
   tags:
     - drbd
@@ -19,12 +15,12 @@
     - drbd-heartbeat
   when: "'heartbeat_cluster' in group_names"
 
-# - include_tasks: config.yml
-#   tags:
-#     - drbd
-#     - drbd-config
+- include_tasks: config.yml
+  tags:
+    - drbd
+    - drbd-config
 
-# - include_tasks: services.yml
-#   tags:
-#     - drbd
-#     - drbd-services
+- include_tasks: services.yml
+  tags:
+    - drbd
+    - drbd-services

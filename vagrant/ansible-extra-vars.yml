@@ -4,9 +4,10 @@ ssh_public_keys:
 
 drbd_disks:
   - device: /dev/drbd0
-    disk: /dev/sda
+    disk: /dev/sdb
     partitions: 1
     state: present
+    resource: r0
 
 drbd_vip: 192.168.56.10
 

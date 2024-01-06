@@ -25,6 +25,7 @@ drbd_disks:
     disk: /dev/sda
     partitions: 1
     state: present
+    resource: r0
 
 drbd_vip: 192.168.2.220
 drbd_unicast_port: 694
