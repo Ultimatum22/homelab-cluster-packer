@@ -64,7 +64,7 @@
   register: _drbd_primary
   with_items: "{{ drbd_disks }}"
   when:
-    - _drbd_mirror_device_up['changed']
+    # - _drbd_mirror_device_up['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Waiting For DRBD Sync from Primary to Secondary To Complete
@@ -75,7 +75,7 @@
   retries: 100
   delay: 30
   when:
-    - _drbd_primary['changed']
+    # - _drbd_primary['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Defining DRBD r0-U on primary
@@ -93,25 +93,25 @@
   register: _drbd_r0_U_backup
   with_items: "{{ drbd_disks }}"
   when:
-    - _drbd_r0_U_stacked['changed']
+    # - _drbd_r0_U_stacked['changed']
     - drbd_node == 'backup'
 
 - name: Defining DRBD r0-U stacked resource
   command: drbdadm --stacked adjust {{ item['resource'] }}-U
   become: true
-  register: _drbd_r0_U_primary-stacked
+  register: _drbd_r0_U_primary_stacked
   with_items: "{{ drbd_disks }}"
   when:
-    -  _drbd_r0_U_backup['changed']
+    # -  _drbd_r0_U_backup['changed']
     - drbd_node == 'primary'
 
 - name: Defining DRBD r0-U stacked on backup
   command: drbdadm adjust {{ item['resource'] }}-U
   become: true
-  register: _drbd_r0_U_backup-stacked
+  register: _drbd_r0_U_backup_stacked
   with_items: "{{ drbd_disks }}"
   when:
-    - _drbd_r0_U_primary-stacked['changed']
+    # - _drbd_r0_U_primary_stacked['changed']
     - drbd_node == 'backup'
 
 - name: Defining DRBD Primary on r0-U
@@ -120,7 +120,7 @@
   register: _drbd_r0_U_primary
   with_items: "{{ drbd_disks }}"
   when:
-    - _drbd_r0_U_backup-stacked['changed']
+    # - _drbd_r0_U_backup_stacked['changed']
     - drbd_node == 'backup'
 
 - name: Waiting For DRBD Sync from Primary to Backup To Complete
@@ -131,7 +131,7 @@
   retries: 100
   delay: 30
   when:
-    - _drbd_r0_U_primary['changed']
+    # - _drbd_r0_U_primary['changed']
     - drbd_node == 'backup'
 
 - name: Partitioning DRBD Device
@@ -141,7 +141,7 @@
   become: true
   with_items: "{{ drbd_disks }}"
   when:
-    - _drbd_primary_backup_sync['changed']
+    # - _drbd_primary_backup_sync['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Creating DRBD Mountpoint
@@ -151,13 +151,12 @@
   become: true
   with_items: "{{ drbd_disks }}"
 
-
-- name: Updating /etc/fstab Mounts
-  mount:
-    path: /mnt
-    src: "{{ item['device'] }}"
-    fstype: "{{ item['filesystem'] }}"
-    opts: default
-    state: present
-  become: true
-  with_items: "{{ drbd_disks }}"
+# - name: Updating /etc/fstab Mounts
+#   mount:
+#     path: /mnt
+#     src: "{{ item['device'] }}"
+#     fstype: "{{ item['filesystem'] }}"
+#     opts: default
+#     state: present
+#   become: true
+#   with_items: "{{ drbd_disks }}"
