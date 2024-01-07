@@ -69,9 +69,18 @@
   register: _drbd_primary_secondary_sync
   until: ('Inconsistent' not in _drbd_primary_secondary_sync['stdout'])
   retries: 100
-  delay: 30
+  delay: 60
   when:
     #- _drbd_mirror_device_up['changed']
+    - inventory_hostname == groups['drbd_cluster'][0]
+
+- name: Partitioning DRBD Device
+  filesystem:
+    fstype: "{{ drbd_disk_filesystem }}"
+    dev: "{{ drbd_disk['device'] }}"
+  become: true
+  when:
+    - _drbd_primary_secondary_sync['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Defining DRBD {{ drbd_resource_upper }} on primary
@@ -128,19 +137,10 @@
   register: _drbd_primary_backup_sync
   until: ('Inconsistent' not in _drbd_primary_backup_sync['stdout'])
   retries: 100
-  delay: 30
+  delay: 60
   when:
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'primary'
-
-- name: Partitioning DRBD Device
-  filesystem:
-    fstype: "{{ drbd_disk_filesystem }}"
-    dev: "{{ drbd_disk['device'] }}"
-  become: true
-  when:
-    - _drbd_primary_backup_sync['changed']
-    - inventory_hostname == groups['drbd_cluster'][0]
 
 - name: Creating DRBD Mountpoint
   file:
@@ -148,11 +148,11 @@
     state: directory
   become: true
 
-- name: Updating /etc/fstab Mounts
-  mount:
-    path: "{{ drbd_disk_mountpoint }}"
-    src: "{{ drbd_disk['device'] }}"
-    fstype: "{{ drbd_disk_filesystem }}"
-    opts: default
-    state: present
-  become: true
+# - name: Updating /etc/fstab Mounts
+#   mount:
+#     path: "{{ drbd_disk_mountpoint }}"
+#     src: "{{ drbd_disk['device'] }}"
+#     fstype: "{{ drbd_disk_filesystem }}"
+#     opts: default
+#     state: present
+#   become: true
