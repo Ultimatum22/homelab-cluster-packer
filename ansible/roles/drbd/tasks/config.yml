@@ -40,9 +40,8 @@
       "[need to type 'yes' to confirm]": "yes"
   become: true
   register: _drbd_mirror_device_created
-  with_items: "{{ _drbd_mirror_device_creation_status }}"
   when:
-    - not item['stat']['exists']
+    - not _drbd_mirror_device_creation_status['stat']['exists']
     - drbd_node != 'backup'
   notify: restart drbd
 
@@ -51,8 +50,7 @@
     path: "/etc/drbd.d/.{{ drbd_resource_lower }}.created"
     state: touch
   become: true
-  with_items: "{{ _drbd_mirror_device_created }}"
-  when: item['changed']
+  when: _drbd_mirror_device_created['changed']
 
 - name: Bringing DRBD Mirror Devices Up
   command: drbdadm up {{ drbd_resource_lower }}
