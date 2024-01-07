@@ -1,0 +1,6 @@
+---
+drbd_disk:
+  device: /dev/drbd0
+  disk: /dev/sda
+  partitions: 1
+  

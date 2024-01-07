@@ -29,6 +29,12 @@ drbd_disks:
     filesystem: ext4
     mountpoint: /mnt
 
+drbd_resource_lower: r0
+drbd_resource_upper: r0-U
+
+drbd_disk_filesystem: ext4
+drbd_disk_mountpoint: /mnt/storage
+
 drbd_vip: 192.168.2.220
 drbd_unicast_port: 694
 

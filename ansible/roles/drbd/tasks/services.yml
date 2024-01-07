@@ -1,12 +1,25 @@
 ---
-- name: Ensuring drbd Service Is Enabled On Boot
+- name: Ensuring drbd Service Is Enabled On Boot and started
   service:
     name: drbd
     enabled: true
+    state: started
   become: true
 
-- name: Ensuring heartbeat Service Is Enabled On Boot
+- name: Ensuring heartbeat Service Is Enabled On Boot and started
   service:
     name: heartbeat
     enabled: true
+    state: started
   become: true
+
+- name: Wait for heartbeat VIP {{ drbd_vip }} to be available
+  command: ping -c3 {{ drbd_vip }}
+  ignore_errors: true
+  register: _heartbeat_ping
+  until: ('Unreachable' not in _heartbeat_ping['stdout'])
+  retries: 20
+  delay: 10
+
+- meta: end_host
+  when: _heartbeat_ping.rc != 0

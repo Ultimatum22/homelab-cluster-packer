@@ -15,12 +15,13 @@
     - drbd-heartbeat
   when: "'heartbeat_cluster' in group_names"
 
-- include_tasks: config.yml
-  tags:
-    - drbd
-    - drbd-config
-
 - include_tasks: services.yml
   tags:
     - drbd
     - drbd-services
+  when: "'heartbeat_cluster' in group_names"
+
+- include_tasks: config.yml
+  tags:
+    - drbd
+    - drbd-config
