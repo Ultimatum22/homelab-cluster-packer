@@ -35,7 +35,7 @@
 
 - name: Creating DRBD Mirror Devices
   expect:
-    command: drbdadm create-md {{{ drbd_resource_lower }}
+    command: drbdadm create-md {{ drbd_resource_lower }}
     responses:
       "[need to type 'yes' to confirm]": "yes"
   become: true
