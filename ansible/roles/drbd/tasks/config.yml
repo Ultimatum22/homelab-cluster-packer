@@ -30,9 +30,6 @@
     path: "/etc/drbd.d/.{{ drbd_resource_lower }}.created"
   register: _drbd_mirror_device_creation_status
 
-- debug:
-    var: _drbd_mirror_device_creation_status
-
 - name: Creating DRBD Mirror Devices
   expect:
     command: drbdadm create-md {{ drbd_resource_lower }}
@@ -70,7 +67,7 @@
   command: drbdadm status
   become: true
   register: _drbd_primary_secondary_sync
-  until: ('UpToDate' in _drbd_primary_secondary_sync['stdout'])
+  until: ('Inconsistent' not in _drbd_primary_secondary_sync['stdout'])
   retries: 100
   delay: 30
   when:
@@ -129,12 +126,12 @@
   command: drbdadm status
   become: true
   register: _drbd_primary_backup_sync
-  until: ('UpToDate' in _drbd_primary_backup_sync['stdout'])
+  until: ('Inconsistent' not in _drbd_primary_backup_sync['stdout'])
   retries: 100
   delay: 30
   when:
     #- _drbd_mirror_device_up['changed']
-    - drbd_node == 'backup'
+    - drbd_node == 'primary'
 
 - name: Partitioning DRBD Device
   filesystem:
