@@ -147,7 +147,7 @@
 
 - name: Creating DRBD Mountpoint
   file:
-    path: "{{ item['drbd_disk_mountpoint'] }}"
+    path: "{{ drbd_disk_mountpoint }}"
     state: directory
   become: true
 
