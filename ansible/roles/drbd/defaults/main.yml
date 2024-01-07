@@ -20,15 +20,6 @@ drbd_common:
   #   degr-wfc-timeout 120;
   options: ''
 
-drbd_disks:
-  - device: /dev/drbd0
-    disk: /dev/sda
-    partitions: 1
-    state: present
-    resource: r0
-    filesystem: ext4
-    mountpoint: /mnt
-
 drbd_resource_lower: r0
 drbd_resource_upper: r0-U
 

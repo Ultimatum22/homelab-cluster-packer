@@ -27,18 +27,20 @@
 
 - name: Checking DRBD Mirror Devices Creation Status
   stat:
-    path: "/etc/drbd.d/.{{ item['resource'] }}.created"
+    path: "/etc/drbd.d/.{{ drbd_resource_lower }}.created"
   register: _drbd_mirror_device_creation_status
-  with_items: "{{ drbd_disks }}"
+
+- debug:
+    var: _drbd_mirror_device_creation_status
 
 - name: Creating DRBD Mirror Devices
   expect:
-    command: drbdadm create-md {{ item['item']['resource'] }}
+    command: drbdadm create-md {{{ drbd_resource_lower }}
     responses:
       "[need to type 'yes' to confirm]": "yes"
   become: true
   register: _drbd_mirror_device_created
-  with_items: "{{ _drbd_mirror_device_creation_status['results'] }}"
+  with_items: "{{ _drbd_mirror_device_creation_status }}"
   when:
     - not item['stat']['exists']
     - drbd_node != 'backup'
@@ -46,24 +48,22 @@
 
 - name: Marking DRDB Mirror Devices Created
   file:
-    path: "/etc/drbd.d/.{{ item['item']['item']['resource'] }}.created"
+    path: "/etc/drbd.d/.{{ drbd_resource_lower }}.created"
     state: touch
   become: true
-  with_items: "{{ _drbd_mirror_device_created['results'] }}"
+  with_items: "{{ _drbd_mirror_device_created }}"
   when: item['changed']
 
 - name: Bringing DRBD Mirror Devices Up
-  command: drbdadm up {{ item['resource'] }}
+  command: drbdadm up {{ drbd_resource_lower }}
   become: true
   register: _drbd_mirror_device_up
-  with_items: "{{ drbd_disks}}"
   when: _drbd_mirror_device_created['changed']
 
 - name: Defining DRBD Primary
-  command: drbdadm -- --overwrite-data-of-peer primary {{ item['resource'] }}
+  command: drbdadm -- --overwrite-data-of-peer primary {{ drbd_resource_lower }}
   become: true
   register: _drbd_primary
-  with_items: "{{ drbd_disks }}"
   when:
     #- _drbd_mirror_device_up['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
@@ -79,55 +79,50 @@
     #- _drbd_mirror_device_up['changed']
     - inventory_hostname == groups['drbd_cluster'][0]
 
-- name: Defining DRBD r0-U on primary
+- name: Defining DRBD {{ drbd_resource_upper }} on primary
   expect:
-    command: drbdadm --stacked create-md {{ item['resource'] }}-U
+    command: drbdadm --stacked create-md {{ drbd_resource_upper }}
     responses:
       "[need to type 'yes' to confirm]": "yes"
   become: true
   register: _drbd_r0_U_stacked
-  with_items: "{{ drbd_disks }}"
   when:
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'primary'
   notify: restart drbd
 
-- name: Defining DRBD r0-U on backup
+- name: Defining DRBD {{ drbd_resource_upper }} on backup
   expect:
-    command: drbdadm create-md {{ item['resource'] }}-U
+    command: drbdadm create-md {{ drbd_resource_upper }}
     responses:
       "[need to type 'yes' to confirm]": "yes"
   become: true
   register: _drbd_r0_U_backup
-  with_items: "{{ drbd_disks }}"
   when:
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'backup'
   notify: restart drbd
 
-- name: Defining DRBD r0-U stacked resource
-  command: drbdadm --stacked adjust {{ item['resource'] }}-U
+- name: Defining DRBD {{ drbd_resource_upper }} stacked resource
+  command: drbdadm --stacked adjust {{ drbd_resource_upper }}
   become: true
   register: _drbd_r0_U_primary_stacked
-  with_items: "{{ drbd_disks }}"
   when:
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'primary'
 
-- name: Defining DRBD r0-U stacked on backup
-  command: drbdadm adjust {{ item['resource'] }}-U
+- name: Defining DRBD {{ drbd_resource_upper }} stacked on backup
+  command: drbdadm adjust {{ drbd_resource_upper }}
   become: true
   register: _drbd_r0_U_backup_stacked
-  with_items: "{{ drbd_disks }}"
   when:
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'backup'
 
-- name: Defining DRBD Primary on r0-U
-  command: drbdadm --stacked -- --overwrite-data-of-peer primary {{ item['resource'] }}-U
+- name: Defining DRBD Primary on {{ drbd_resource_upper }}
+  command: drbdadm --stacked -- --overwrite-data-of-peer primary {{ drbd_resource_upper }}
   become: true
   register: _drbd_r0_U_primary
-  with_items: "{{ drbd_disks }}"
   when:
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'primary'
@@ -143,29 +138,26 @@
     #- _drbd_mirror_device_up['changed']
     - drbd_node == 'backup'
 
-# - name: Partitioning DRBD Device
-#   filesystem:
-#     fstype: "{{ item['filesystem'] }}"
-#     dev: "{{ item['device'] }}"
-#   become: true
-#   with_items: "{{ drbd_disks }}"
-#   when:
-#     - _drbd_primary_backup_sync['changed']
-#     - inventory_hostname == groups['drbd_cluster'][0]
+- name: Partitioning DRBD Device
+  filesystem:
+    fstype: "{{ drbd_disk_filesystem }}"
+    dev: "{{ drbd_disk['device'] }}"
+  become: true
+  when:
+    - _drbd_primary_backup_sync['changed']
+    - inventory_hostname == groups['drbd_cluster'][0]
 
-# - name: Creating DRBD Mountpoint
-#   file:
-#     path: "{{ item['mountpoint'] }}"
-#     state: directory
-#   become: true
-#   with_items: "{{ drbd_disks }}"
+- name: Creating DRBD Mountpoint
+  file:
+    path: "{{ item['drbd_disk_mountpoint'] }}"
+    state: directory
+  become: true
 
 # - name: Updating /etc/fstab Mounts
 #   mount:
-#     path: /mnt
-#     src: "{{ item['device'] }}"
-#     fstype: "{{ item['filesystem'] }}"
+#     path: "{{ drbd_disk_mountpoint }}"
+#     src: "{{ drbd_disk['device'] }}"
+#     fstype: "{{ drbd_disk_filesystem }}"
 #     opts: default
 #     state: present
 #   become: true
-#   with_items: "{{ drbd_disks }}"
