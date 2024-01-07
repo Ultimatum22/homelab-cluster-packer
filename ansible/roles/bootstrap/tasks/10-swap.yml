@@ -1,3 +1,4 @@
+---
 - name: Disable swap
   shell: dphys-swapfile swapoff
   become: true
@@ -10,7 +11,7 @@
   become: true
 
 - name: Setup swap
-  shell: dphys-swapfile setup   
+  shell: dphys-swapfile setup
   become: true
 
 - name: Enable swap

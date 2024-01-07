@@ -16,9 +16,13 @@
 
 - name: Increase SWAP
   ansible.builtin.include_tasks: 10-swap.yml
-  when: "'ansible_architecture' in ['armv6l', 'armv7l', 'aarch64']"
+  when: ansible_architecture in ['armv6l', 'armv7l', 'aarch64']
 
-- name: up UFW
+- name: Raspberry Pi firmware updater
+  ansible.builtin.include_tasks: 11-rpi-firmware-updater.yml
+  when: ansible_architecture in ['armv6l', 'armv7l', 'aarch64']
+
+- name: Setup UFW
   ansible.builtin.include_tasks: 20-ufw.yml
 
 - name: Setup fail2ban
